@@ -10,8 +10,14 @@ int main(){
     scanf(" %s", title);
     ptr_title = title;
     COLUMN* col = create_column(ptr_title);
-    printf("Taille physique : %d\tTaille logique : %d\tTitre : %s", col->TAILLE_PHYSIQUE, col->TAILLE_LOGIQUE, col->CHAINE);
-    insert_value(col, 10);
-    printf("%d", col->DONNEES[0]);
+    int val;
+    printf("Choisir une valeur : ");
+    scanf("%d", &val);
+    if (insert_value(col, val)) {
+        printf("Value added successfully to my column\n");
+        printf("%d", *col->DONNEES);
+    }
+    else
+        printf("Error adding value to my column\n");
     return 0;
 }
