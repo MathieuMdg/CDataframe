@@ -1,6 +1,7 @@
 #include "fonction.h.c"
 #define REALOC_SIZE 256
 #include <string.h>
+#include <stdio.h>
 
 
 
@@ -17,7 +18,8 @@ COLUMN* create_column(char* title) {
 }
 
 int insert_value(COLUMN* col, int value) {
-    if (col->TAILLE_LOGIQUE != col->TAILLE_PHYSIQUE) {
-
+    if (col->TAILLE_LOGIQUE == col->TAILLE_PHYSIQUE) {
+        printf("Impossible");
+        return 0;
     }
 }
