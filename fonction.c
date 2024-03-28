@@ -31,3 +31,8 @@ int insert_value(COLUMN* colonne, int value) {
         colonne->DONNEES = realloc(colonne->DONNEES, colonne->TAILLE_PHYSIQUE + REALOC_SIZE);
     }
 }
+
+void delete_column(COLUMN **col) {
+    free(col->DONNEES);
+    free()
+}
