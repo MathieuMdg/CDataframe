@@ -15,3 +15,9 @@ COLUMN* create_column(char* title) {
     ptr_colonne = &colonne;
     return ptr_colonne;
 }
+
+int insert_value(COLUMN* col, int value) {
+    if (col->TAILLE_LOGIQUE != col->TAILLE_PHYSIQUE) {
+
+    }
+}

@@ -4,7 +4,6 @@
 
 
 int main(){
-    COLUMN* col = create_column("miam");
-    printf("%d\t%d\t%s", col->TAILLE_LOGIQUE, col->TAILLE_PHYSIQUE, col->CHAINE);
+    COLUMN* col = create_column();
     return 0;
 }
