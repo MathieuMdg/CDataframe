@@ -28,6 +28,7 @@ int main(){
     insert_value(ptr_colonne, 7);
     print_col(ptr_colonne);
     printf("\n%d", occurence(ptr_colonne, 9));
+    printf("\n%d",positionx(ptr_colonne, 2));
     delete_column(&ptr_colonne);
     return 0;
 }

@@ -52,3 +52,12 @@ int occurence(COLUMN* colonne, int val) {
     }
     return occurence;
 }
+
+int positionx(COLUMN* colonne, int position) {
+    if (position < colonne->TAILLE_LOGIQUE) {
+        return colonne->DONNEES[position];
+    }
+    else {
+        return -1;
+    }
+}
