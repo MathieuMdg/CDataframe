@@ -45,6 +45,8 @@ int main(){
     CDataframe = (COLUMN**)malloc(sizeof(COLUMN*));
 
 
+
+    // Remplir le CDataframe par saisies utilisateur
     for (int CData_column = 0; CData_column < nbre_col; CData_column++) {
         char title[100] = "";
         char* ptr_title = malloc(strlen(title) + 1);
@@ -68,8 +70,17 @@ int main(){
         }
         print_col(CDataframe[CData_column]);
     }
+
+
+
+    // Affichage du CDataframe
+    print_CData(CDataframe, nbre_col);
+    printf("\n\n");
     for (int CData_column; CData_column < nbre_col; CData_column++) {
         delete_column(&CDataframe[CData_column]);
     }
     return 0;
 }
+
+
+

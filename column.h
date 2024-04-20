@@ -20,5 +20,6 @@ int occurence(COLUMN* colonne, int val);
 int positionx(COLUMN* colonne, int position);
 int sup_x(COLUMN* colonne, int x);
 int inf_x(COLUMN* colonne, int x);
+void print_CData(COLUMN** CData,int nbre_colonne);
 
 #endif

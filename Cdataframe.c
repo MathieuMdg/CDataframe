@@ -80,3 +80,11 @@ int inf_x(COLUMN* colonne, int x) {
     }
     return inf_x;
 }
+
+void print_CData(COLUMN** CData,int nbre_colonne) {
+    for(int i=0; i<nbre_colonne; i++) {
+        printf("%s\n", CData[i]->CHAINE);
+        print_col(CData[i]);
+        printf("\n");
+    }
+}
