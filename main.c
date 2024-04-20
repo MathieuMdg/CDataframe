@@ -13,7 +13,6 @@ int main(){
     int val;
     printf("Choisir une valeur : ");
     scanf("%d", &val);
-    ptr_colonne->TAILLE_LOGIQUE = 256;
     if (insert_value(ptr_colonne, val)) {
         printf("Value added successfully to my column\n");
         printf("%d", ptr_colonne->TAILLE_PHYSIQUE);
@@ -22,6 +21,12 @@ int main(){
     }
     else
         printf("Error adding value to my column\n");
+
+    insert_value(ptr_colonne, 5);
+    insert_value(ptr_colonne, 9);
+    insert_value(ptr_colonne, 9);
+    insert_value(ptr_colonne, 187);
+    print_col(ptr_colonne);
     delete_column(&ptr_colonne);
     return 0;
 }

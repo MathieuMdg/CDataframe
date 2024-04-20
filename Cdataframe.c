@@ -31,6 +31,9 @@ int insert_value(COLUMN* colonne, int value) {
 }
 
 void print_col(COLUMN* col) {
+    for (int i; i < col->TAILLE_LOGIQUE; i++) {
+        printf("\n[%d] %d", i, col->DONNEES[i]);
+    }
 
 }
 
