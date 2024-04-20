@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include "fonction.h.c"
+#include "column.h"
 
 
 
@@ -19,5 +19,6 @@ int main(){
     }
     else
         printf("Error adding value to my column\n");
+    delete_column(&col);
     return 0;
 }

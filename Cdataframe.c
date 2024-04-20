@@ -1,4 +1,4 @@
-#include "fonction.h.c"
+#include "column.h"
 #define REALOC_SIZE 256
 #include <string.h>
 #include <stdio.h>
@@ -33,6 +33,6 @@ int insert_value(COLUMN* colonne, int value) {
 }
 
 void delete_column(COLUMN **col) {
-    free(col->DONNEES);
-    free()
+    free((*col)->DONNEES);
+    free(col);
 }
