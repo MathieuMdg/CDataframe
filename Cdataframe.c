@@ -31,11 +31,10 @@ int insert_value(COLUMN* colonne, int value) {
 }
 
 void print_col(COLUMN* col) {
-    for (int i; i < col->TAILLE_LOGIQUE; i++) {
-        printf("\n[%d] %d", i, col->DONNEES[i]);
+    for (int i = 0; i < col->TAILLE_LOGIQUE; i++) {
+        printf("[%d] %d\n", i, col->DONNEES[i]);
     }
 }
-
 
 
 void delete_column(COLUMN **col) {
@@ -45,7 +44,7 @@ void delete_column(COLUMN **col) {
 
 int occurence(COLUMN* colonne, int val) {
     int occurence = 0;
-    for (int i; i < colonne->TAILLE_LOGIQUE; i++) {
+    for (int i = 0; i < colonne->TAILLE_LOGIQUE; i++) {
         if (colonne->DONNEES[i] == val) {
             occurence++;
         }
@@ -64,7 +63,7 @@ int positionx(COLUMN* colonne, int position) {
 
 int sup_x(COLUMN* colonne, int x) {
     int sup_x = 0;
-    for (int i; i < colonne->TAILLE_LOGIQUE; i++) {
+    for (int i = 0; i < colonne->TAILLE_LOGIQUE; i++) {
         if (colonne->DONNEES[i] > x) {
             sup_x++;
         }
@@ -74,7 +73,7 @@ int sup_x(COLUMN* colonne, int x) {
 
 int inf_x(COLUMN* colonne, int x) {
     int inf_x = 0;
-    for (int i; i < colonne->TAILLE_LOGIQUE; i++) {
+    for (int i = 0; i < colonne->TAILLE_LOGIQUE; i++) {
         if (colonne->DONNEES[i] < x) {
             inf_x++;
         }
