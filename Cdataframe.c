@@ -34,7 +34,6 @@ void print_col(COLUMN* col) {
     for (int i; i < col->TAILLE_LOGIQUE; i++) {
         printf("\n[%d] %d", i, col->DONNEES[i]);
     }
-
 }
 
 
@@ -42,4 +41,14 @@ void print_col(COLUMN* col) {
 void delete_column(COLUMN **col) {
     free((*col)->DONNEES);
     free(col);
+}
+
+int occurence(COLUMN* colonne, int val) {
+    int occurence = 0;
+    for (int i; i < colonne->TAILLE_LOGIQUE; i++) {
+        if (colonne->DONNEES[i] == val) {
+            occurence++;
+        }
+    }
+    return occurence;
 }

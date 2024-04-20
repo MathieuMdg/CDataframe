@@ -15,18 +15,19 @@ int main(){
     scanf("%d", &val);
     if (insert_value(ptr_colonne, val)) {
         printf("Value added successfully to my column\n");
-        printf("%d", ptr_colonne->TAILLE_PHYSIQUE);
-        printf("  %d", ptr_colonne->DONNEES[ptr_colonne->TAILLE_LOGIQUE-1]);
-        printf(" %d", ptr_colonne->TAILLE_LOGIQUE);
     }
     else
         printf("Error adding value to my column\n");
 
+    insert_value(ptr_colonne, 7);
     insert_value(ptr_colonne, 5);
     insert_value(ptr_colonne, 9);
+    insert_value(ptr_colonne, 7);
     insert_value(ptr_colonne, 9);
     insert_value(ptr_colonne, 187);
+    insert_value(ptr_colonne, 7);
     print_col(ptr_colonne);
+    printf("\n%d", occurence(ptr_colonne, 9));
     delete_column(&ptr_colonne);
     return 0;
 }
