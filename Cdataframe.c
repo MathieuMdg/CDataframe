@@ -61,3 +61,23 @@ int positionx(COLUMN* colonne, int position) {
         return -1;
     }
 }
+
+int sup_x(COLUMN* colonne, int x) {
+    int sup_x = 0;
+    for (int i; i < colonne->TAILLE_LOGIQUE; i++) {
+        if (colonne->DONNEES[i] > x) {
+            sup_x++;
+        }
+    }
+    return sup_x;
+}
+
+int inf_x(COLUMN* colonne, int x) {
+    int inf_x = 0;
+    for (int i; i < colonne->TAILLE_LOGIQUE; i++) {
+        if (colonne->DONNEES[i] < x) {
+            inf_x++;
+        }
+    }
+    return inf_x;
+}
