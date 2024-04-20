@@ -9,16 +9,19 @@ int main(){
     printf("Choisir un nom de colonne : ");
     scanf(" %s", title);
     ptr_title = title;
-    COLUMN* col = create_column(ptr_title);
+    COLUMN* ptr_colonne = create_column(ptr_title);
     int val;
     printf("Choisir une valeur : ");
     scanf("%d", &val);
-    if (insert_value(col, val)) {
+    ptr_colonne->TAILLE_LOGIQUE = 256;
+    if (insert_value(ptr_colonne, val)) {
         printf("Value added successfully to my column\n");
-        printf("%d", *col->DONNEES);
+        printf("%d", ptr_colonne->TAILLE_PHYSIQUE);
+        printf("  %d", ptr_colonne->DONNEES[ptr_colonne->TAILLE_LOGIQUE-1]);
+        printf(" %d", ptr_colonne->TAILLE_LOGIQUE);
     }
     else
         printf("Error adding value to my column\n");
-    delete_column(&col);
+    delete_column(&ptr_colonne);
     return 0;
 }
