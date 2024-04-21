@@ -51,21 +51,33 @@ int main() {
                                 CDataframe = NULL;
                                 for (int i = 0; i < 3; i++)
                                     printf("\n");
-                                printf("CDataframe cree avec succes...");
+                                printf("====================================\n");
+                                printf("|| CDataframe cree avec succes... ||\n");
+                                printf("====================================\n");
                                 init_CDataframe = 1;
                             } else {
                                 int answer;
-                                printf("Un CDataframe a deja ete cree, voulez-vous en creer un nouveau? Tapez 1 pour oui et 0 pour non (oui effacera le CDataframe actuel) : ");
+                                printf("\n\n");
+                                printf("--------------------------------------");
+                                printf("\n\n");
+                                printf("====================================================================\n");
+                                printf("|| Un CDataframe a deja ete cree, voulez-vous en creer un nouveau? ||\n");
+                                printf("====================================================================\n\n\n\n");
+                                printf("\tTapez 1 pour oui et 0 pour non (oui effacera le CDataframe actuel) : ");
                                 scanf(" %d", &answer);
                                 if (answer == 1) {
                                     CDataframe = NULL;
                                     for (int i = 0; i < 3; i++)
                                         printf("\n");
-                                    printf("Nouveau CDataframe cree avec succes...");
+                                    printf("============================================\n");
+                                    printf("|| Nouveau CDataframe cree avec succes... ||\n");
+                                    printf("============================================\n");
                                 } else {
                                     for (int i = 0; i < 3; i++)
                                         printf("\n");
-                                    printf("Annulation...");
+                                    printf("===================\n");
+                                    printf("|| Annulation... ||\n");
+                                    printf("===================\n");
                                 }
                             }
 
@@ -78,7 +90,7 @@ int main() {
                                 int nbre_col;
                                 for (int i = 0; i < 3; i++)
                                     printf("\n");
-                                printf("Choisir le nombre de colonne du CDataframe (ce nombre pourra être modifie plus tard) :");
+                                printf("\tChoisir le nombre de colonne du CDataframe (ce nombre pourra etre modifie plus tard) :");
                                 scanf(" %d", &nbre_col);
                                 for (int i = 0; i < 3; i++)
                                     printf("\n");
@@ -117,7 +129,7 @@ int main() {
                                     }
                                 }
                             } else {
-                                printf("Il faut initialiser le CDataframe...");
+                                init_CData();
                             }
                             break;
 
@@ -153,8 +165,13 @@ int main() {
                                     }
                                     random += 5;
                                 }
-                            } else {
-                                printf("Il faut initialiser le CDataframe...");
+                                printf("\n\n\n");
+                                printf("======================================\n");
+                                printf("|| CDataframe rempli avec succes... ||\n");
+                                printf("======================================\n");
+                            }
+                            else {
+                                init_CData();
                             }
                             break;
 
@@ -189,7 +206,7 @@ int main() {
                             if (init_CDataframe == 1) {
                                 print_CData_chaine(CDataframe);
                             } else {
-                                printf("Il faut initialiser le CDataframe...");
+                                init_CData();
                             }
                             break;
 
@@ -199,7 +216,7 @@ int main() {
                             if (init_CDataframe == 1) {
                                 print_CData_selected_lines(CDataframe);
                             } else {
-                                printf("Il faut initialiser le CDataframe...");
+                                init_CData();
                             }
                             break;
 
@@ -210,7 +227,7 @@ int main() {
                             if (init_CDataframe == 1) {
                                 print_CData_selected_column(CDataframe);
                             } else {
-                                printf("Il faut initialiser le CDataframe...");
+                                init_CData();
                             }
                             break;
 
@@ -235,10 +252,9 @@ int main() {
                     printf("\t 'b' - Supprimer une ligne de valeurs du CDataframe\n");
                     printf("\t 'c' - Ajouter une colonne au CDataframe\n");
                     printf("\t 'd' - Supprimer une colonne du CDataframe\n");
-                    printf("\t 'e' - Renommer le titre d’une colonne du CDataframe\n");
-                    printf("\t 'f' - Vérifier l’existence d’une valeur (recherche) dans le CDataframe\n");
-                    printf("\t 'g' - Accéder/remplacer la valeur se trouvant dans une cellule du CDataframe en utilisant son\n"
-                           "numéro de ligne et de colonne\n");
+                    printf("\t 'e' - Renommer le titre d une colonne du CDataframe\n");
+                    printf("\t 'f' - Verifier l existence d une valeur (recherche) dans le CDataframe\n");
+                    printf("\t 'g' - Acceder/remplacer la valeur se trouvant dans une cellule du CDataframe en utilisant son numero de ligne\n\t\t et de colonne\n");
                     printf("\t 'h' - Afficher les noms des colonnes\n ");
                     printf("\nChoisissez une fonctionnalite a, b ou c (pour revenir au menu tapez 0) :");
                     scanf(" %c", &fonction);
@@ -270,7 +286,7 @@ int main() {
                                     }
                                 }
                             } else {
-                                printf("Il faut initialiser le CDataframe...");
+                                init_CData();
                             }
                             break;
 
@@ -296,7 +312,7 @@ int main() {
                                     delete_line(tmp->COLUMN);
                                 }
                             } else {
-                                printf("Il faut initialiser le CDataframe...");
+                                init_CData();
                             }
                             break;
 
@@ -345,7 +361,7 @@ int main() {
                                     }
                                 }
                             } else {
-                                printf("Il faut initialiser le CDataframe...");
+                                init_CData();
                             }
                             break;
 
@@ -392,7 +408,7 @@ int main() {
                                     }
                                 }
                             } else {
-                                printf("Il faut initialiser le CDataframe...");
+                                init_CData();
                             }
                             break;
 
@@ -420,7 +436,7 @@ int main() {
                                     rename_columns_name(tmp->COLUMN);
                                 }
                             } else {
-                                printf("Il faut initialiser le CDataframe...");
+                                init_CData();
                             }
                             break;
 
@@ -448,7 +464,7 @@ int main() {
                                     printf("La valeur n'est pas present dans le CDataframe");
                                 }
                             } else {
-                                printf("Il faut initialiser le CDataframe...");
+                                init_CData();
                             }
                             break;
 
@@ -485,7 +501,7 @@ int main() {
                                     }
                                 }
                             } else {
-                                printf("Il faut initialiser le CDataframe...");
+                                init_CData();
                             }
                             break;
 
@@ -505,7 +521,7 @@ int main() {
                                     }
                                 }
                             } else {
-                                printf("Il faut initialiser le CDataframe...");
+                                init_CData();
                             }
                             break;
 
@@ -543,7 +559,7 @@ int main() {
                             if (init_CDataframe == 1) {
                                 print_CData_number_lines(CDataframe);
                             } else {
-                                printf("Il faut initialiser le CDataframe...");
+                                init_CData();
                             }
                             break;
 
@@ -553,7 +569,7 @@ int main() {
                             if (init_CDataframe == 1) {
                                 print_CData_number_column(CDataframe);
                             } else {
-                                printf("Il faut initialiser le CDataframe...");
+                                init_CData();
                             }
                             break;
 
@@ -577,7 +593,7 @@ int main() {
                                 }
                                 printf("La valeur recherchee est presente dans %d cellule(s).", occ);
                             } else {
-                                printf("Il faut initialiser le CDataframe...");
+                                init_CData();
                             }
                             break;
 
@@ -599,7 +615,7 @@ int main() {
                                 printf("Le nombre de cellule contenant une valeur superieur a %d est de %d.", value,
                                        sup);
                             } else {
-                                printf("Il faut initialiser le CDataframe...");
+                                init_CData();
                             }
                             break;
 
@@ -621,7 +637,7 @@ int main() {
                                 printf("Le nombre de cellule contenant une valeur inferieur a %d est de %d.", value,
                                        inf);
                             } else {
-                                printf("Il faut initialiser le CDataframe...");
+                                init_CData();
                             }
                             break;
 

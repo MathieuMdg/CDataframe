@@ -177,6 +177,15 @@ int value_research(COLUMN* col, int value) {
 }
 
 
+void init_CData() {
+    for(int i = 0; i < 3; i++) {
+        printf("\n");
+    }
+    printf("========================================================================\n");
+    printf("|| Il faut initialiser le Cdataframe avant de pouvoir le manipuler... ||\n");
+    printf("========================================================================\n");
+}
+
 // Analyse et statistiques
 
 

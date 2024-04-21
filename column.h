@@ -49,4 +49,7 @@ int print_Col_lines(COLUMN* col, int value1, int value2);
 // Affiche le menu
 void menu();
 
+// Affiche un message d'erreur
+void init_CData();
+
 #endif
