@@ -464,6 +464,69 @@ while (running == 1) {
                         }
                         break;
 
+                    case 'g':
+
+
+                        if(init_CDataframe == 1) {
+                            int column_number, line_number;
+                            printf("Choisir le numero de colonne : ");
+                            scanf(" %d", &column_number);
+                            printf("Choisir le numero de la ligne : ");
+                            scanf(" %d", &line_number);
+                            maillon* tmp ;
+                            if (CDataframe != NULL)
+                            {
+                                int i = 0;
+                                tmp = CDataframe;
+                                while(tmp != NULL && i < column_number - 1)
+                                {
+                                    i++;
+                                    tmp = (maillon *) tmp->SUCC;
+                                }
+                            }
+                            if (tmp == NULL){
+                                printf("La colonne n existe pas...");
+                            }
+                            else {
+                                printf("La valeur a la ligne %d de la colonne %s [%d] est %d", line_number, tmp->COLUMN->CHAINE, column_number, tmp->COLUMN->DONNEES[line_number]);
+                                int value;
+                                printf("Voulez-vous la changer? (oui: 1/ non: 0) : ");
+                                scanf(" %d", &value);
+                                if(value) {
+                                    printf("Choisir une valeur a ajouter : ");
+                                    scanf(" %d", &value);
+                                    tmp->COLUMN->DONNEES[line_number] = value;
+                                }
+                            }
+                        }
+                        else {
+                            printf("Il faut initialiser le CDataframe...");
+                        }
+                        break;
+
+
+                    case 'h':
+
+
+                        if(init_CDataframe == 1) {
+                            maillon* tmp ;
+                            if (CDataframe != NULL)
+                            {
+                                tmp = CDataframe;
+                                printf("%s ", tmp->COLUMN->CHAINE);
+                                tmp = (maillon *) tmp->SUCC;
+                                while(tmp != NULL)
+                                {
+                                    printf("- %s ", tmp->COLUMN->CHAINE);
+                                    tmp = (maillon *) tmp->SUCC;
+                                }
+                            }
+                        }
+                        else {
+                            printf("Il faut initialiser le CDataframe...");
+                        }
+                        break;
+
 
                     case '0':
                         categorie = 0;
