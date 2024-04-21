@@ -10,7 +10,13 @@ typedef struct {
     int* DONNEES;
 }COLUMN;
 
-
+struct maillon
+{
+    int INDEX;
+    struct mailllon *SUCC;
+    COLUMN* COLUMN;
+};
+typedef struct maillon maillon;
 
 COLUMN* create_column(char* title);
 int insert_value(COLUMN* col, int value);
@@ -29,5 +35,8 @@ void print_colonne(int nbre_colonne);
 int equal_x(COLUMN** CData, int nbre_colonne);
 int CData_sup_x(COLUMN** CData, int nbre_colonne);
 int CData_inf_x(COLUMN** CData, int nbre_colonne);
+
+
+void print_CData_chaine(maillon * CData);
 
 #endif

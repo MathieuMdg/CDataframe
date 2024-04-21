@@ -36,63 +36,106 @@ int main(){
 
 
 
-    // Création du CDataframe
-    COLUMN** CDataframe = NULL;
-    int nbre_col;
-    printf("Nombre de colonne du CDataframe? :");
-    scanf(" %d", &nbre_col);
+    // Création du CDataframe (version tableau de Colonne)
+//    COLUMN** CDataframe = NULL;
+//    int nbre_col;
+//    printf("Nombre de colonne du CDataframe? :");
+//    scanf(" %d", &nbre_col);
 
-    CDataframe = (COLUMN**)malloc(sizeof(COLUMN*));
+//    CDataframe = (COLUMN**)malloc(sizeof(COLUMN*));
 
 
 
     // Remplir le CDataframe par saisies utilisateur
-    for (int CData_column = 0; CData_column < nbre_col; CData_column++) {
-        char title[100] = "";
-        char* ptr_title = malloc(strlen(title) + 1);
-        printf("\nNom de la colonne numero %d :", CData_column);
-        scanf(" %s", title);
-        strcpy(ptr_title, title);
-        CDataframe[CData_column] = create_column(ptr_title);
-    }
+//    for (int CData_column = 0; CData_column < nbre_col; CData_column++) {
+//        char title[100] = "";
+//        char* ptr_title = malloc(strlen(title) + 1);
+//        printf("\nNom de la colonne numero %d :", CData_column);
+//        scanf(" %s", title);
+//        strcpy(ptr_title, title);
+//        CDataframe[CData_column] = create_column(ptr_title);
+//    }
 
 
 
-    for (int CData_column = 0; CData_column < nbre_col; CData_column++) {
-        int nbre_valeur;
-        printf("Combien de valeurs dans la colonne %d nommee %s: ", CData_column, CDataframe[CData_column]->CHAINE);
-        scanf(" %d", &nbre_valeur);
-        for (int column_line = 0; column_line<nbre_valeur; column_line++) {
-            int val;
-            printf("La valeur %d de la colonne %s : ", column_line, CDataframe[CData_column]->CHAINE);
-            scanf(" %d", &val),
-            insert_value(CDataframe[CData_column], val);
-        }
-        print_col(CDataframe[CData_column]);
-    }
+//    for (int CData_column = 0; CData_column < nbre_col; CData_column++) {
+//        int nbre_valeur;
+//        printf("Combien de valeurs dans la colonne %d nommee %s: ", CData_column, CDataframe[CData_column]->CHAINE);
+//        scanf(" %d", &nbre_valeur);
+//        for (int column_line = 0; column_line<nbre_valeur; column_line++) {
+//            int val;
+//            printf("La valeur %d de la colonne %s : ", column_line, CDataframe[CData_column]->CHAINE);
+//            scanf(" %d", &val),
+//            insert_value(CDataframe[CData_column], val);
+//       }
+//        print_col(CDataframe[CData_column]);
+//    }
 
 
 
     // Affichage du CDataframe
-    print_CData(CDataframe, nbre_col);
-    printf("\n\n");
-    add_line(CDataframe, nbre_col);
-    print_CData(CDataframe, nbre_col);
+//    print_CData(CDataframe, nbre_col);
+//    printf("\n\n");
+//    add_line(CDataframe, nbre_col);
+//    print_CData(CDataframe, nbre_col);
 
-    rename_columns_name(CDataframe, nbre_col);
-    print_CData(CDataframe, nbre_col);
+//    rename_columns_name(CDataframe, nbre_col);
+//    print_CData(CDataframe, nbre_col);
 
-    value_research(CDataframe, nbre_col, 3);
+//    value_research(CDataframe, nbre_col, 3);
 
-    print_lines(CDataframe, nbre_col);
+//    print_lines(CDataframe, nbre_col);
 
-    printf(" %d", equal_x(CDataframe, nbre_col));
-    printf(" %d", CData_inf_x(CDataframe, nbre_col));
-    printf(" %d", CData_sup_x(CDataframe, nbre_col));
+//    printf(" %d", equal_x(CDataframe, nbre_col));
+//    printf(" %d", CData_inf_x(CDataframe, nbre_col));
+//    printf(" %d", CData_sup_x(CDataframe, nbre_col));
 
-    for (int CData_column; CData_column < nbre_col; CData_column++) {
-        delete_column(&CDataframe[CData_column]);
+//    for (int CData_column; CData_column < nbre_col; CData_column++) {
+//        delete_column(&CDataframe[CData_column]);
+//    }
+
+
+
+
+
+
+
+// Création du CDataframe (sous forme de liste chainée)
+    maillon* CDataframe = NULL;
+    int nbre_col;
+    printf("Nombre de colonne du CDataframe? :");
+    scanf(" %d", &nbre_col);
+
+
+    maillon* tmp;
+
+    for (int i = 0; i < nbre_col; i++) {
+        maillon *nouveau = (maillon*)malloc(sizeof(maillon));
+        nouveau->INDEX = i;
+        nouveau->SUCC = NULL;
+        printf("\nQuel est le nom de la colonne %d : ", i);
+        char title[100] = "";
+        char* ptr_title = malloc(strlen(title) + 1);
+        scanf(" %s", title);
+        strcpy(ptr_title, title);
+        nouveau->COLUMN = create_column(ptr_title);
+        if(CDataframe == NULL) {
+            CDataframe = nouveau;
+        }
+        else
+        {
+            maillon *tmp = CDataframe;
+            while(tmp->SUCC != NULL)
+            {
+                tmp = (maillon *) tmp->SUCC;
+            }
+            tmp->SUCC = (struct mailllon *) nouveau;
+        }
     }
+    print_CData_chaine(CDataframe);
+    free(CDataframe);
+
+
     return 0;
 }
 

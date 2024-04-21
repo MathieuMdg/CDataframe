@@ -143,7 +143,7 @@ void value_research(COLUMN** CData, int nbre_colonne, int value) {
         }
     }
     if (presence == 0) {
-        printf("La valeur n'est pas presente dans le CDataframe.");
+        printf("La valeur n'est pas presente dans le CDataframe.\n");
     }
 }
 
@@ -152,12 +152,12 @@ void value_research(COLUMN** CData, int nbre_colonne, int value) {
 
 void print_lines(COLUMN** CData, int nbre_colonne) {
     for (int i = 0; i < nbre_colonne; i++) {
-            printf("Le nombre de ligne de la colonne %d est %d", i, CData[i]->TAILLE_LOGIQUE);
+            printf("Le nombre de ligne de la colonne %d est %d\n", i, CData[i]->TAILLE_LOGIQUE);
         }
 }
 
 void print_colonne(int nbre_colonne) {
-    printf("Le nombre de colonne est %d.", nbre_colonne);
+    printf("Le nombre de colonne est %d.\n", nbre_colonne);
 }
 
 int equal_x(COLUMN** CData, int nbre_colonne) {
@@ -194,4 +194,19 @@ int CData_inf_x(COLUMN** CData, int nbre_colonne) {
         }
     }
     return nbre;
+}
+
+void print_CData_chaine(maillon * CData) {
+    maillon* tmp ;
+    if ( CData != NULL)
+    {
+        tmp = CData;
+        while(tmp != NULL)
+        {
+            printf("%s\n", tmp->COLUMN->CHAINE);
+            print_col(tmp->COLUMN);
+            printf("\n");
+            tmp = (maillon *) tmp->SUCC;
+        }
+    }
 }
