@@ -86,6 +86,10 @@ int main(){
 
     print_lines(CDataframe, nbre_col);
 
+    printf(" %d", equal_x(CDataframe, nbre_col));
+    printf(" %d", CData_inf_x(CDataframe, nbre_col));
+    printf(" %d", CData_sup_x(CDataframe, nbre_col));
+
     for (int CData_column; CData_column < nbre_col; CData_column++) {
         delete_column(&CDataframe[CData_column]);
     }

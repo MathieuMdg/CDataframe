@@ -155,3 +155,43 @@ void print_lines(COLUMN** CData, int nbre_colonne) {
             printf("Le nombre de ligne de la colonne %d est %d", i, CData[i]->TAILLE_LOGIQUE);
         }
 }
+
+void print_colonne(int nbre_colonne) {
+    printf("Le nombre de colonne est %d.", nbre_colonne);
+}
+
+int equal_x(COLUMN** CData, int nbre_colonne) {
+    int nbre = 0, val;
+    printf("valeur de x : ");
+    scanf(" %d", &val);
+    for (int i = 0; i < nbre_colonne; i++) {
+        if (occurence(CData[i], val)) {
+            nbre++;
+        }
+    }
+    return nbre;
+}
+
+int CData_sup_x(COLUMN** CData, int nbre_colonne) {
+    int nbre = 0, val;
+    printf("valeur de x : ");
+    scanf(" %d", &val);
+    for (int i = 0; i < nbre_colonne; i++) {
+        if (sup_x(CData[i], val)) {
+            nbre++;
+        }
+    }
+    return nbre;
+}
+
+int CData_inf_x(COLUMN** CData, int nbre_colonne) {
+    int nbre = 0, val;
+    printf("valeur de x : ");
+    scanf(" %d", &val);
+    for (int i = 0; i < nbre_colonne; i++) {
+        if (inf_x(CData[i], val)) {
+            nbre++;
+        }
+    }
+    return nbre;
+}

@@ -25,5 +25,9 @@ void add_line(COLUMN** CData, int nbre_colonne);
 void rename_columns_name(COLUMN** CData, int nbre_colonne);
 void value_research(COLUMN** CData, int nbre_colonne, int value);
 void print_lines(COLUMN** CData, int nbre_colonne);
+void print_colonne(int nbre_colonne);
+int equal_x(COLUMN** CData, int nbre_colonne);
+int CData_sup_x(COLUMN** CData, int nbre_colonne);
+int CData_inf_x(COLUMN** CData, int nbre_colonne);
 
 #endif
