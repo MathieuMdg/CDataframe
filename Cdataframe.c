@@ -14,7 +14,11 @@ void menu() {
 
 void affichage_categorie(int number) {
 
+    char fonction;
+
     switch (number) {
+
+
         case 1 : {
             for(int i = 0; i<3; i++)
                 printf("\n");
@@ -22,6 +26,20 @@ void affichage_categorie(int number) {
             printf("\t 'a' - Creation du CDataframe vide\n");
             printf("\t 'b' - Remplissage du CDataframe à partir de saisies utilisateurs\n");
             printf("\t 'c' - Remplissage en dur du CDataframe (utilise un CDataframe prerempli pour le reste des fonctionnalites)\n");
+            printf("\nChoisissez une fonctionnalite a, b ou c (pour revenir au menu tapez 0) :");
+            scanf(" %c", &fonction);
+
+            switch (fonction) {
+                case 'a':
+                    break;
+                case 'b':
+                    break;
+                case 'c':
+                    break;
+                case '0':
+                    break;
+
+            }
             break;
         }
         case 2: {
