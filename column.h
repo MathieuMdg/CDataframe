@@ -21,5 +21,8 @@ int positionx(COLUMN* colonne, int position);
 int sup_x(COLUMN* colonne, int x);
 int inf_x(COLUMN* colonne, int x);
 void print_CData(COLUMN** CData,int nbre_colonne);
+void add_line(COLUMN** CData, int nbre_colonne);
+void rename_columns_name(COLUMN** CData, int nbre_colonne);
+void value_research(COLUMN** CData, int nbre_colonne, int value);
 
 #endif

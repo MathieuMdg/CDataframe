@@ -76,6 +76,14 @@ int main(){
     // Affichage du CDataframe
     print_CData(CDataframe, nbre_col);
     printf("\n\n");
+    add_line(CDataframe, nbre_col);
+    print_CData(CDataframe, nbre_col);
+
+    rename_columns_name(CDataframe, nbre_col);
+    print_CData(CDataframe, nbre_col);
+
+    value_research(CDataframe, nbre_col, 3);
+
     for (int CData_column; CData_column < nbre_col; CData_column++) {
         delete_column(&CDataframe[CData_column]);
     }

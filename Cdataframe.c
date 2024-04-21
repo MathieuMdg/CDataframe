@@ -81,6 +81,10 @@ int inf_x(COLUMN* colonne, int x) {
     return inf_x;
 }
 
+
+// Affichage
+
+
 void print_CData(COLUMN** CData,int nbre_colonne) {
     for(int i=0; i<nbre_colonne; i++) {
         printf("%s\n", CData[i]->CHAINE);
@@ -88,3 +92,61 @@ void print_CData(COLUMN** CData,int nbre_colonne) {
         printf("\n");
     }
 }
+
+
+// Opérations usuelles
+
+void add_line(COLUMN** CData, int nbre_colonne) {
+    int val, colonne;
+    do {
+        printf("Dans quelle colonne ajouter la valeur (indiqué le numéro) : ");
+        scanf(" %d", &colonne);
+        if (colonne > nbre_colonne - 1) {
+            printf("Colonne inexistante.");
+        }
+    }
+    while (colonne > nbre_colonne - 1);
+    printf("valuer à ajouter : ");
+    scanf(" %d", &val);
+    if (insert_value(CData[colonne], val)) {
+    }
+    else {
+        printf("Error adding value to my column\n");
+    }
+}
+
+void rename_columns_name(COLUMN** CData, int nbre_colonne) {
+    int colonne;
+    do {
+        printf("Choisir la colonne à renommer (numéro de colonne) : ");
+        scanf(" %d", &colonne);
+        if (colonne > nbre_colonne - 1) {
+            printf("Colonne inexistante.");
+        }
+    }
+    while (colonne > nbre_colonne - 1);
+    char title[100] = "";
+    char* ptr_title = malloc(strlen(title) + 1);
+    printf("Nouveau nom de la colonne : ");
+    scanf(" %s", title);
+    strcpy(CData[colonne]->CHAINE, title);
+}
+
+void value_research(COLUMN** CData, int nbre_colonne, int value) {
+    int presence = 0;
+    for (int i = 0; i < nbre_colonne; i++) {
+        for (int j = 0; j < CData[i]->TAILLE_LOGIQUE; j++) {
+            if (CData[i]->DONNEES[j] == value) {
+                printf("La valeur %d est presente a la colonne %d, ligne %d\n", value, i, j);
+                presence = 1;
+            }
+        }
+    }
+    if (presence == 0) {
+        printf("La valeur n'est pas presente dans le CDataframe.");
+    }
+}
+
+
+// Analyse et statistiques
+
