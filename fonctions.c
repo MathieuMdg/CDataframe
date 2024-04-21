@@ -249,14 +249,16 @@ void print_CData_chaine(maillon * CData) {
 void print_CData_selected_column(maillon* CData) {
     maillon* tmp ;
     int value1, value2;
-    printf("Quelle est la ligne 'minimum'? :");
+    printf("Quelle est la colonne 'minimum'? :");
     scanf(" %d", &value1);
-    printf("Quelle est la ligne 'maximum'? :");
+    printf("\n");
+    printf("Quelle est la colonne 'maximum'? :");
     scanf(" %d", &value2);
+    printf("\n");
     if (CData != NULL)
     {
         tmp = CData;
-        while(tmp->INDEX != value2 + 1)
+        while(tmp->INDEX != value2)
         {
             if(tmp->INDEX > value1 - 1) {
                 printf("%s\n", tmp->COLUMN->CHAINE);
@@ -265,12 +267,14 @@ void print_CData_selected_column(maillon* CData) {
             }
             tmp = (maillon *) tmp->SUCC;
         }
+        printf("%s\n", tmp->COLUMN->CHAINE);
+        print_col(tmp->COLUMN);
     }
 }
 
 int print_Col_lines(COLUMN* col, int value1, int value2) {
     if(value2 < col->TAILLE_LOGIQUE) {
-        for (int i = value1; i < value2; i++) {
+        for (int i = value1; i < value2 + 1; i++) {
             printf("[%d] %d\n", i, col->DONNEES[i]);
         }
         return 1;

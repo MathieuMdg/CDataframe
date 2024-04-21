@@ -13,6 +13,8 @@ int main() {
 
     int init_CDataframe = 0;
 
+    int full = 0;
+
 
     while (running == 1) {
 
@@ -86,7 +88,7 @@ int main() {
                         case 'b':
 
 
-                            if (init_CDataframe == 1) {
+                            if (init_CDataframe == 1 && full == 0) {
                                 int nbre_col;
                                 for (int i = 0; i < 3; i++)
                                     printf("\n");
@@ -128,8 +130,18 @@ int main() {
                                         tmp->SUCC = (struct mailllon *) nouveau;
                                     }
                                 }
-                            } else {
-                                init_CData();
+                                full = 1;
+                            }
+                            else {
+                                if(full == 1) {
+                                    printf("\n\n\n");
+                                    printf("============================================================\n");
+                                    printf("|| Tableau deja rempli manuellement ou automatiquement... ||\n");
+                                    printf("============================================================\n");
+                                }
+                                else {
+                                    init_CData();
+                                }
                             }
                             break;
 
@@ -137,7 +149,7 @@ int main() {
                         case 'c':
 
 
-                            if (init_CDataframe == 1) {
+                            if (init_CDataframe == 1 && full == 0) {
                                 maillon *tmp;
                                 int random = 0;
                                 for (int i = 0; i < 5; i++) {
@@ -169,9 +181,18 @@ int main() {
                                 printf("======================================\n");
                                 printf("|| CDataframe rempli avec succes... ||\n");
                                 printf("======================================\n");
+                                full = 1;
                             }
                             else {
-                                init_CData();
+                                if(full == 1) {
+                                    printf("\n\n\n");
+                                    printf("============================================================\n");
+                                    printf("|| Tableau deja rempli manuellement ou automatiquement... ||\n");
+                                    printf("============================================================\n");
+                                }
+                                else {
+                                    init_CData();
+                                }
                             }
                             break;
 
