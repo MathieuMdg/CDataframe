@@ -141,19 +141,18 @@ void rename_columns_name(COLUMN** CData, int nbre_colonne) {
     strcpy(CData[colonne]->CHAINE, title);
 }
 
-void value_research(COLUMN** CData, int nbre_colonne, int value) {
+int value_research(COLUMN* col, int value) {
     int presence = 0;
-    for (int i = 0; i < nbre_colonne; i++) {
-        for (int j = 0; j < CData[i]->TAILLE_LOGIQUE; j++) {
-            if (CData[i]->DONNEES[j] == value) {
-                printf("La valeur %d est presente a la colonne %d, ligne %d\n", value, i, j);
+    for (int i = 0; i < col->TAILLE_LOGIQUE; i++) {
+            if (col->DONNEES[i] == value) {
+                printf("La valeur %d est presente a la colonne %s.\n", value, col->CHAINE);
                 presence = 1;
             }
-        }
     }
     if (presence == 0) {
-        printf("La valeur n'est pas presente dans le CDataframe.\n");
+        printf("La valeur n'est pas presente dans la colonne %s.\n", col->CHAINE);
     }
+    return presence;
 }
 
 
@@ -277,4 +276,36 @@ void print_CData_selected_lines(maillon* CData) {
             tmp = (maillon *) tmp->SUCC;
         }
     }
+}
+
+void print_CData_number_lines(maillon* CData) {
+    int number_lines = 0;
+    maillon* tmp ;
+    if (CData != NULL)
+    {
+        tmp = CData;
+        while(tmp != NULL)
+        {
+            printf("Le nombre de ligne de la colonne %s est de %d\n", tmp->COLUMN->CHAINE, tmp->COLUMN->TAILLE_LOGIQUE);
+            number_lines += tmp->COLUMN->TAILLE_LOGIQUE;
+            tmp = (maillon *) tmp->SUCC;
+        }
+    }
+    printf("\nLe nombre total de ligne du CDataframe est de %d\n", number_lines);
+
+}
+
+void print_CData_number_column(maillon* CData) {
+    int number_column = 0;
+    maillon* tmp ;
+    if (CData != NULL)
+    {
+        tmp = CData;
+        while(tmp != NULL)
+        {
+            number_column++;
+            tmp = (maillon *) tmp->SUCC;
+        }
+    }
+    printf("Le nombre de colonne du CDataframe est de %d\n", number_column);
 }

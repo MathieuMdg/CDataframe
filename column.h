@@ -29,7 +29,7 @@ int inf_x(COLUMN* colonne, int x);
 void print_CData(COLUMN** CData,int nbre_colonne);
 void add_line(COLUMN** CData, int nbre_colonne);
 void rename_columns_name(COLUMN** CData, int nbre_colonne);
-void value_research(COLUMN** CData, int nbre_colonne, int value);
+int value_research(COLUMN* col, int value);
 void print_lines(COLUMN** CData, int nbre_colonne);
 void print_colonne(int nbre_colonne);
 int equal_x(COLUMN** CData, int nbre_colonne);
@@ -42,5 +42,7 @@ void print_CData_selected_column(maillon* CData);
 int print_Col_lines(COLUMN* col, int value1, int value2);
 void print_CData_selected_lines(maillon* CData);
 void menu();
+void print_CData_number_lines(maillon* CData);
+void print_CData_number_column(maillon* CData);
 
 #endif

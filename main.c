@@ -127,7 +127,7 @@ while (running == 1) {
                 printf("\n");
             printf("1. Alimentation\n\n");
             printf("\t 'a' - Creation du CDataframe vide\n");
-            printf("\t 'b' - Remplissage du CDataframe à partir de saisies utilisateurs\n");
+            printf("\t 'b' - Remplissage du CDataframe a partir de saisies utilisateurs\n");
             printf("\t 'c' - Remplissage en dur du CDataframe (utilise un CDataframe prerempli pour le reste des fonctionnalites)\n");
             printf("\nChoisissez une fonctionnalite a, b ou c (pour revenir au menu tapez 0) :");
             scanf(" %c", &fonction);
@@ -327,7 +327,128 @@ while (running == 1) {
             break;
         }
         case 4: {
-            break;
+
+            while(categorie ==4) {
+
+                for(int i = 0; i<3; i++)
+                    printf("\n");
+                printf("4. Analyse et statistiques\n\n");
+                printf("\t 'a' - Afficher le nombre de lignes\n");
+                printf("\t 'b' - Afficher le nombre de colonnes\n");
+                printf("\t 'c' - Nombre de cellules contenant une valeur egale a x (x donné en parametre)\n");
+                printf("\t 'd' - Nombre de cellules contenant une valeur superieure a x (x donné en parametre)\n");
+                printf("\t 'e' - Nombre de cellules contenant une valeur inferieure a x(x donné en parametre)\n");
+                printf("\nChoisissez une fonctionnalite a, b ou c (pour revenir au menu tapez 0) :");
+                scanf(" %c", &fonction);
+
+                switch (fonction) {
+
+                    case 'a':
+
+
+                        if(init_CDataframe == 1) {
+                            print_CData_number_lines(CDataframe);
+                        }
+                        else {
+                            printf("Il faut initialiser le CDataframe...");
+                        }
+                        break;
+
+                    case 'b':
+
+
+                        if(init_CDataframe == 1) {
+                            print_CData_number_column(CDataframe);
+                        }
+                        else {
+                            printf("Il faut initialiser le CDataframe...");
+                        }
+                        break;
+
+
+
+                    case 'c':
+
+
+                        if(init_CDataframe == 1) {
+                            maillon* tmp ;
+                            int value, occ =0;
+                            printf("Quelle est la valeur recherchee? : ");
+                            scanf(" %d", &value);
+                            if (CDataframe != NULL)
+                            {
+                                tmp = CDataframe;
+                                while(tmp != NULL)
+                                {
+                                    if(value_research(tmp->COLUMN, value)) {
+                                        occ++;
+                                    }
+                                    tmp = (maillon *) tmp->SUCC;
+                                }
+                            }
+                            printf("La valeur recherchee est presente dans %d cellule(s).", occ);
+                        }
+                        else {
+                            printf("Il faut initialiser le CDataframe...");
+                        }
+                        break;
+
+                    case 'd':
+
+
+                        if(init_CDataframe == 1) {
+                            maillon* tmp ;
+                            int value, sup =0;
+                            printf("Quelle est la valeur recherchee? : ");
+                            scanf(" %d", &value);
+                            if (CDataframe != NULL)
+                            {
+                                tmp = CDataframe;
+                                while(tmp != NULL)
+                                {
+                                    sup += sup_x(tmp->COLUMN, value);
+                                    tmp = (maillon *) tmp->SUCC;
+                                }
+                            }
+                            printf("Le nombre de cellule contenant une valeur superieur a %d est de %d.", value, sup);
+                        }
+                        else {
+                            printf("Il faut initialiser le CDataframe...");
+                        }
+                        break;
+
+                    case 'e':
+
+
+                        if(init_CDataframe == 1) {
+                            maillon* tmp ;
+                            int value, inf =0;
+                            printf("Quelle est la valeur recherchee? : ");
+                            scanf(" %d", &value);
+                            if (CDataframe != NULL)
+                            {
+                                tmp = CDataframe;
+                                while(tmp != NULL)
+                                {
+                                    inf += inf_x(tmp->COLUMN, value);
+                                    tmp = (maillon *) tmp->SUCC;
+                                }
+                            }
+                            printf("Le nombre de cellule contenant une valeur inferieur a %d est de %d.", value, inf);
+                        }
+                        else {
+                            printf("Il faut initialiser le CDataframe...");
+                        }
+                        break;
+
+
+                    case '0':
+                        categorie = 0;
+                        break;
+
+                }
+
+            }
         }
     }
 
