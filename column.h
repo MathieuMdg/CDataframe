@@ -24,5 +24,6 @@ void print_CData(COLUMN** CData,int nbre_colonne);
 void add_line(COLUMN** CData, int nbre_colonne);
 void rename_columns_name(COLUMN** CData, int nbre_colonne);
 void value_research(COLUMN** CData, int nbre_colonne, int value);
+void print_lines(COLUMN** CData, int nbre_colonne);
 
 #endif

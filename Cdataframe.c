@@ -150,3 +150,8 @@ void value_research(COLUMN** CData, int nbre_colonne, int value) {
 
 // Analyse et statistiques
 
+void print_lines(COLUMN** CData, int nbre_colonne) {
+    for (int i = 0; i < nbre_colonne; i++) {
+            printf("Le nombre de ligne de la colonne %d est %d", i, CData[i]->TAILLE_LOGIQUE);
+        }
+}

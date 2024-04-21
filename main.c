@@ -84,6 +84,8 @@ int main(){
 
     value_research(CDataframe, nbre_col, 3);
 
+    print_lines(CDataframe, nbre_col);
+
     for (int CData_column; CData_column < nbre_col; CData_column++) {
         delete_column(&CDataframe[CData_column]);
     }
