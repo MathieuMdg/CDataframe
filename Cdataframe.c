@@ -4,6 +4,38 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+void menu() {
+    for(int i = 0; i<6; i++)
+        printf("\n");
+    printf("1. Alimentation\n\n- Creation du CDataframe vide\n- Remplissage du CDataframe a partir de saisies utilisateurs\n- Remplissage en dur du CDataframe\n\n2. Affichage\n\n- Afficher tout le CDataframe\n- Afficher une partie des lignes du CDataframe selon une limite fournie par l utilisateur\n- Afficher une partie des colonnes du CDataframe selon une limite fournie par l utilisateur\n\n3. Operations usuelles\n\n- Ajouter une ligne de valeurs au CDataframe\n- Supprimer une ligne de valeurs du CDataframe\n- Ajouter une colonne au CDataframe\n- Supprimer une colonne du CDataframe\n- Renommer le titre d’une colonne du CDataframe\n- Verifier l’existence d’une valeur (recherche) dans le CDataframe\n- Acceder/remplacer la valeur se trouvant dans une cellule du CDataframe en utilisant son\nnumero de ligne et de colonne\n- Afficher les noms des colonnes\n\n4. Analyse et statistiques\n\n- Afficher le nombre de lignes\n- Afficher le nombre de colonnes\n- Nombre de cellules contenant une valeur egale a x (x donne en parametre)\n- Nombre de cellules contenant une valeur superieure a x (x donne en parametre)\n- Nombre de cellules contenant une valeur inferieure a x(x donne en parametre)\n");
+    for(int i = 0; i<3; i++)
+        printf("\n");
+}
+
+void affichage_categorie(int number) {
+
+    switch (number) {
+        case 1 : {
+            for(int i = 0; i<3; i++)
+                printf("\n");
+            printf("1. Alimentation\n\n");
+            printf("\t 'a' - Creation du CDataframe vide\n");
+            printf("\t 'b' - Remplissage du CDataframe à partir de saisies utilisateurs\n");
+            printf("\t 'c' - Remplissage en dur du CDataframe (utilise un CDataframe prerempli pour le reste des fonctionnalites)\n");
+            break;
+        }
+        case 2: {
+            break;
+        }
+        case 3 : {
+            break;
+        }
+        case 4: {
+            break;
+        }
+    }
+}
+
 
 
 // Fonction qui prend un titre de colonne et renvoie un pointer sur la colonne.

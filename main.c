@@ -5,6 +5,7 @@
 
 
 int main(){
+    int running = 1;
 ///    char title[20];
 ///    char* ptr_title;
 ///    printf("Choisir un nom de colonne : ");
@@ -95,27 +96,41 @@ int main(){
 //    }
 
 
+while (running == 1) {
+
+    menu();
+
+    int categorie;
+    printf("Choississez parmi les categories ci-dessus (entrez le numero de la categorie choisie 1-4) : ");
+    scanf(" %d", &categorie);
+    affichage_categorie(categorie);
+
+    running = 2;
+
+
+}
 
 
 
 
 
+while(running != 0) {
 // Création du CDataframe (sous forme de liste chainée)
-    maillon* CDataframe = NULL;
+    maillon *CDataframe = NULL;
     int nbre_col;
     printf("Nombre de colonne du CDataframe? :");
     scanf(" %d", &nbre_col);
 
 
-    maillon* tmp;
+    maillon *tmp;
 
     for (int i = 0; i < nbre_col; i++) {
-        maillon *nouveau = (maillon*)malloc(sizeof(maillon));
+        maillon *nouveau = (maillon *) malloc(sizeof(maillon));
         nouveau->INDEX = i;
         nouveau->SUCC = NULL;
         printf("\nQuel est le nom de la colonne %d : ", i);
         char title[100] = "";
-        char* ptr_title = malloc(strlen(title) + 1);
+        char *ptr_title = malloc(strlen(title) + 1);
         scanf(" %s", title);
         strcpy(ptr_title, title);
         nouveau->COLUMN = create_column(ptr_title);
@@ -124,14 +139,11 @@ int main(){
         insert_value(nouveau->COLUMN, 8);
         insert_value(nouveau->COLUMN, 5);
         insert_value(nouveau->COLUMN, 7);
-        if(CDataframe == NULL) {
+        if (CDataframe == NULL) {
             CDataframe = nouveau;
-        }
-        else
-        {
+        } else {
             maillon *tmp = CDataframe;
-            while(tmp->SUCC != NULL)
-            {
+            while (tmp->SUCC != NULL) {
                 tmp = (maillon *) tmp->SUCC;
             }
             tmp->SUCC = (struct mailllon *) nouveau;
@@ -144,7 +156,7 @@ int main(){
     print_CData_selected_lines(CDataframe, 2, 4);
     free(CDataframe);
 
-
+}
     return 0;
 }
 
