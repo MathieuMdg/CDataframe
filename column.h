@@ -28,7 +28,7 @@ int sup_x(COLUMN* colonne, int x);
 int inf_x(COLUMN* colonne, int x);
 void print_CData(COLUMN** CData,int nbre_colonne);
 void add_line(COLUMN** CData, int nbre_colonne);
-void rename_columns_name(COLUMN** CData, int nbre_colonne);
+void rename_columns_name(COLUMN* col);
 int value_research(COLUMN* col, int value);
 void print_lines(COLUMN** CData, int nbre_colonne);
 void print_colonne(int nbre_colonne);

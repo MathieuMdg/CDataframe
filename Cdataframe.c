@@ -124,21 +124,11 @@ void add_line(COLUMN** CData, int nbre_colonne) {
     }
 }
 
-void rename_columns_name(COLUMN** CData, int nbre_colonne) {
-    int colonne;
-    do {
-        printf("Choisir la colonne à renommer (numéro de colonne) : ");
-        scanf(" %d", &colonne);
-        if (colonne > nbre_colonne - 1) {
-            printf("Colonne inexistante.");
-        }
-    }
-    while (colonne > nbre_colonne - 1);
+void rename_columns_name(COLUMN* col) {
     char title[100] = "";
-    char* ptr_title = malloc(strlen(title) + 1);
-    printf("Nouveau nom de la colonne : ");
+    printf("Nouveau nom : ");
     scanf(" %s", title);
-    strcpy(CData[colonne]->CHAINE, title);
+    strcpy(col->CHAINE, title);
 }
 
 int value_research(COLUMN* col, int value) {
