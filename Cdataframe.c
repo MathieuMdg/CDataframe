@@ -46,9 +46,19 @@ void print_col(COLUMN* col) {
 }
 
 
-void delete_column(COLUMN **col) {
-    free((*col)->DONNEES);
+void delete_column(COLUMN* col) {
+    free(col->DONNEES);
     free(col);
+}
+
+void delete_line(COLUMN* col) {
+    int number_line;
+    printf("Ligne a supprime : ");
+    scanf(" %d", &number_line);
+    for(int i = number_line; i < col->TAILLE_LOGIQUE - 1; i++) {
+        col->DONNEES[i] = col->DONNEES[i+1];
+    }
+    col->TAILLE_LOGIQUE--;
 }
 
 int occurence(COLUMN* colonne, int val) {

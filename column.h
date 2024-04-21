@@ -20,7 +20,7 @@ typedef struct maillon maillon;
 
 COLUMN* create_column(char* title);
 int insert_value(COLUMN* col, int value);
-void delete_column(COLUMN **col);
+void delete_column(COLUMN *col);
 void print_col(COLUMN* col);
 int occurence(COLUMN* colonne, int val);
 int positionx(COLUMN* colonne, int position);
@@ -38,6 +38,7 @@ int CData_inf_x(COLUMN** CData, int nbre_colonne);
 
 
 void print_CData_chaine(maillon * CData);
+void delete_line(COLUMN* col);
 void print_CData_selected_column(maillon* CData);
 int print_Col_lines(COLUMN* col, int value1, int value2);
 void print_CData_selected_lines(maillon* CData);
