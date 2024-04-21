@@ -10,40 +10,43 @@ typedef struct {
     int* DONNEES;
 }COLUMN;
 
-struct maillon
-{
-    int INDEX;
-    struct mailllon *SUCC;
-    COLUMN* COLUMN;
-};
-typedef struct maillon maillon;
-
+// Création d'une colonne
 COLUMN* create_column(char* title);
+
+// Ajouter une valeur dans une colonne
 int insert_value(COLUMN* col, int value);
+
+// Supprimer l'espace mémoire occupé par une colonne
 void delete_column(COLUMN *col);
+
+// Afficher les valeurs contenues dans une colonne
 void print_col(COLUMN* col);
+
+// Determiner le nombre d'occurence d'une valeur dans une colonne
 int occurence(COLUMN* colonne, int val);
+
+// Retourner la valeur à une position donnée dans une colonne donnée
 int positionx(COLUMN* colonne, int position);
+
+// Indique le bombre de valeur supérieure à x
 int sup_x(COLUMN* colonne, int x);
+
+// Indique le nombre de valeur inférieure à x
 int inf_x(COLUMN* colonne, int x);
-void print_CData(COLUMN** CData,int nbre_colonne);
-void add_line(COLUMN** CData, int nbre_colonne);
+
+// Change le nom d'une colone
 void rename_columns_name(COLUMN* col);
+
+// Determine si une valeur est présente dans une colonne
 int value_research(COLUMN* col, int value);
-void print_lines(COLUMN** CData, int nbre_colonne);
-void print_colonne(int nbre_colonne);
-int equal_x(COLUMN** CData, int nbre_colonne);
-int CData_sup_x(COLUMN** CData, int nbre_colonne);
-int CData_inf_x(COLUMN** CData, int nbre_colonne);
 
-
-void print_CData_chaine(maillon * CData);
+// Supprime une ligne dans une colonne
 void delete_line(COLUMN* col);
-void print_CData_selected_column(maillon* CData);
+
+// Affiche les lignes d'une colonne situées dans un interval donné
 int print_Col_lines(COLUMN* col, int value1, int value2);
-void print_CData_selected_lines(maillon* CData);
+
+// Affiche le menu
 void menu();
-void print_CData_number_lines(maillon* CData);
-void print_CData_number_column(maillon* CData);
 
 #endif

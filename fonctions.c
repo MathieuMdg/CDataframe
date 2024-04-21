@@ -1,9 +1,12 @@
 #include "column.h"
+#include "fonctions.h"
 #define REALOC_SIZE 256
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
 
+
+// Affiche le menu du programme
 void menu() {
     for(int i = 0; i<6; i++)
         printf("\n");
@@ -25,6 +28,8 @@ COLUMN* create_column(char* title) {
     return ptr_colonne;
 }
 
+
+// Permet d'ajouter une valeur à la fin d'une colonne et de l'agrandir si besoin
 int insert_value(COLUMN* colonne, int value) {
     if (colonne->DONNEES == NULL) {
         colonne->DONNEES = (int *) malloc(REALOC_SIZE * sizeof(int));
@@ -39,6 +44,9 @@ int insert_value(COLUMN* colonne, int value) {
     return 1;
 }
 
+
+
+// Affiche une colonne en entier
 void print_col(COLUMN* col) {
     for (int i = 0; i < col->TAILLE_LOGIQUE; i++) {
         printf("[%d] %d\n", i, col->DONNEES[i]);
@@ -46,11 +54,15 @@ void print_col(COLUMN* col) {
 }
 
 
+// Supprime l'espace mémoire occupé par une colonne
 void delete_column(COLUMN* col) {
     free(col->DONNEES);
     free(col);
 }
 
+
+
+// Supprimer une ligne dans une colonne et décale les valeurs
 void delete_line(COLUMN* col) {
     int number_line;
     printf("Ligne a supprime : ");
@@ -61,6 +73,9 @@ void delete_line(COLUMN* col) {
     col->TAILLE_LOGIQUE--;
 }
 
+
+
+// Détermine le nombre d'occurence d'une valeur dans une colonne
 int occurence(COLUMN* colonne, int val) {
     int occurence = 0;
     for (int i = 0; i < colonne->TAILLE_LOGIQUE; i++) {
@@ -71,6 +86,8 @@ int occurence(COLUMN* colonne, int val) {
     return occurence;
 }
 
+
+// Retourne la valeur stockée dans une colonne avec sa position
 int positionx(COLUMN* colonne, int position) {
     if (position < colonne->TAILLE_LOGIQUE) {
         return colonne->DONNEES[position];
@@ -80,6 +97,9 @@ int positionx(COLUMN* colonne, int position) {
     }
 }
 
+
+
+// Calcul le nombre de valeur supérieure à x dans une colonne
 int sup_x(COLUMN* colonne, int x) {
     int sup_x = 0;
     for (int i = 0; i < colonne->TAILLE_LOGIQUE; i++) {
@@ -90,6 +110,9 @@ int sup_x(COLUMN* colonne, int x) {
     return sup_x;
 }
 
+
+
+// Calcul le nombre de valeur inférieure à x dans une colonne
 int inf_x(COLUMN* colonne, int x) {
     int inf_x = 0;
     for (int i = 0; i < colonne->TAILLE_LOGIQUE; i++) {
@@ -103,14 +126,6 @@ int inf_x(COLUMN* colonne, int x) {
 
 // Affichage
 
-
-void print_CData(COLUMN** CData,int nbre_colonne) {
-    for(int i=0; i<nbre_colonne; i++) {
-        printf("%s\n", CData[i]->CHAINE);
-        print_col(CData[i]);
-        printf("\n");
-    }
-}
 
 
 // Opérations usuelles
@@ -134,6 +149,9 @@ void add_line(COLUMN** CData, int nbre_colonne) {
     }
 }
 
+
+
+// Change le nom d'une colonne par un nom donné par l'utilisateur
 void rename_columns_name(COLUMN* col) {
     char title[100] = "";
     printf("Nouveau nom : ");
@@ -141,6 +159,9 @@ void rename_columns_name(COLUMN* col) {
     strcpy(col->CHAINE, title);
 }
 
+
+
+// Cherche si une valeur est présente dans une colonne
 int value_research(COLUMN* col, int value) {
     int presence = 0;
     for (int i = 0; i < col->TAILLE_LOGIQUE; i++) {
@@ -158,16 +179,8 @@ int value_research(COLUMN* col, int value) {
 
 // Analyse et statistiques
 
-void print_lines(COLUMN** CData, int nbre_colonne) {
-    for (int i = 0; i < nbre_colonne; i++) {
-            printf("Le nombre de ligne de la colonne %d est %d\n", i, CData[i]->TAILLE_LOGIQUE);
-        }
-}
 
-void print_colonne(int nbre_colonne) {
-    printf("Le nombre de colonne est %d.\n", nbre_colonne);
-}
-
+//
 int equal_x(COLUMN** CData, int nbre_colonne) {
     int nbre = 0, val;
     printf("valeur de x : ");
