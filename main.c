@@ -96,13 +96,17 @@ int main(){
 //    }
 
 
+
+maillon *CDataframe = NULL;
+
+int init_CDataframe = 0;
+
+
 while (running == 1) {
 
     menu();
 
-    maillon *CDataframe = NULL;
 
-    int init_CDataframe = 0;
 
     int categorie;
     printf("_______________________________________________\n\n");
@@ -159,11 +163,16 @@ while (running == 1) {
                     break;
 
                 case 'b':
+
+
                     if(init_CDataframe == 1) {
                         int nbre_col;
+                        for(int i = 0; i<3; i++)
+                            printf("\n");
                         printf("Choisir le nombre de colonne du CDataframe (ce nombre pourra être modifie plus tard) :");
                         scanf(" %d", &nbre_col);
-
+                        for(int i = 0; i<3; i++)
+                            printf("\n");
                         for (int i = 0; i < nbre_col; i++) {
                             maillon *nouveau = (maillon *) malloc(sizeof(maillon));
                             nouveau->INDEX = i;
@@ -178,6 +187,8 @@ while (running == 1) {
                             printf("Choisir un nombre de ligne pour la colonne [%d] %s : ", nouveau->INDEX,
                                    nouveau->COLUMN->CHAINE);
                             scanf(" %d", &number_lines);
+                            for(int i = 0; i<3; i++)
+                                printf("\n");
                             for (int j = 0; j < number_lines; j++) {
                                 int value;
                                 printf("\nChoisir une valeur pour la ligne [%d] de la colonne %s [%d] :", j,
@@ -196,8 +207,6 @@ while (running == 1) {
                                 tmp->SUCC = (struct mailllon *) nouveau;
                             }
                         }
-
-                    print_CData_chaine(CDataframe);
                     }
                     else {
                         printf("Il faut initialiser le CDataframe...");
@@ -207,6 +216,7 @@ while (running == 1) {
 
 
                 case 'c':
+
 
                     if(init_CDataframe == 1) {
                         maillon *tmp;
@@ -236,7 +246,6 @@ while (running == 1) {
                             }
                             random += 5;
                         }
-                        print_CData_chaine(CDataframe);
                     }
                     else {
                         printf("Il faut initialiser le CDataframe...");
@@ -255,8 +264,65 @@ while (running == 1) {
 
 
         case 2: {
-            break;
+
+            while(categorie ==2) {
+
+                for(int i = 0; i<3; i++)
+                    printf("\n");
+                printf("2. Affichage\n\n");
+                printf("\t 'a' - Afficher tout le CDataframe\n");
+                printf("\t 'b' - Afficher une partie des lignes du CDataframe selon une limite fournie par l utilisateur\n");
+                printf("\t 'c' - Afficher une partie des colonnes du CDataframe selon une limite fournie par l’utilisateur\n");
+                printf("\nChoisissez une fonctionnalite a, b ou c (pour revenir au menu tapez 0) :");
+                scanf(" %c", &fonction);
+
+                switch (fonction) {
+
+                    case 'a':
+
+
+                        if(init_CDataframe == 1) {
+                            print_CData_chaine(CDataframe);
+                        }
+                        else {
+                            printf("Il faut initialiser le CDataframe...");
+                        }
+                        break;
+
+                    case 'b':
+
+
+                        if(init_CDataframe == 1) {
+                            print_CData_selected_lines(CDataframe);
+                        }
+                        else {
+                            printf("Il faut initialiser le CDataframe...");
+                        }
+                        break;
+
+
+
+                    case 'c':
+
+
+                        if(init_CDataframe == 1) {
+                            print_CData_selected_column(CDataframe);
+                        }
+                        else {
+                            printf("Il faut initialiser le CDataframe...");
+                        }
+                        break;
+
+                    case '0':
+                        categorie = 0;
+                        break;
+
+                }
+
+            }
         }
+            break;
+
         case 3 : {
             break;
         }
@@ -310,9 +376,9 @@ while(running == 0) {
     }
     print_CData_chaine(CDataframe);
 
-    print_CData_selected_column(CDataframe, 2, 4);
+    print_CData_selected_column(CDataframe);
     printf("\n---------------------------\n");
-    print_CData_selected_lines(CDataframe, 2, 4);
+    print_CData_selected_lines(CDataframe);
     free(CDataframe);
 
 }

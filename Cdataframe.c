@@ -12,47 +12,6 @@ void menu() {
         printf("\n");
 }
 
-void affichage_categorie(int number) {
-
-    char fonction;
-
-    switch (number) {
-
-
-        case 1 : {
-            for(int i = 0; i<3; i++)
-                printf("\n");
-            printf("1. Alimentation\n\n");
-            printf("\t 'a' - Creation du CDataframe vide\n");
-            printf("\t 'b' - Remplissage du CDataframe à partir de saisies utilisateurs\n");
-            printf("\t 'c' - Remplissage en dur du CDataframe (utilise un CDataframe prerempli pour le reste des fonctionnalites)\n");
-            printf("\nChoisissez une fonctionnalite a, b ou c (pour revenir au menu tapez 0) :");
-            scanf(" %c", &fonction);
-
-            switch (fonction) {
-                case 'a':
-                    break;
-                case 'b':
-                    break;
-                case 'c':
-                    break;
-                case '0':
-                    break;
-
-            }
-            break;
-        }
-        case 2: {
-            break;
-        }
-        case 3 : {
-            break;
-        }
-        case 4: {
-            break;
-        }
-    }
-}
 
 
 
@@ -266,8 +225,13 @@ void print_CData_chaine(maillon * CData) {
     }
 }
 
-void print_CData_selected_column(maillon* CData,int value1,int value2) {
+void print_CData_selected_column(maillon* CData) {
     maillon* tmp ;
+    int value1, value2;
+    printf("Quelle est la ligne 'minimum'? :");
+    scanf(" %d", &value1);
+    printf("Quelle est la ligne 'maximum'? :");
+    scanf(" %d", &value2);
     if (CData != NULL)
     {
         tmp = CData;
@@ -295,9 +259,14 @@ int print_Col_lines(COLUMN* col, int value1, int value2) {
     }
 }
 
-void print_CData_selected_lines(maillon* CData,int value1,int value2) {
+void print_CData_selected_lines(maillon* CData) {
     maillon* tmp ;
-    if ( CData != NULL)
+    int value1, value2;
+    printf("Quelle est la ligne 'minimum'? :");
+    scanf(" %d", &value1);
+    printf("Quelle est la ligne 'maximum'? :");
+    scanf(" %d", &value2);
+    if (CData != NULL)
     {
         tmp = CData;
         while(tmp != NULL)

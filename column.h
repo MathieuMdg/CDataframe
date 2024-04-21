@@ -38,10 +38,9 @@ int CData_inf_x(COLUMN** CData, int nbre_colonne);
 
 
 void print_CData_chaine(maillon * CData);
-void print_CData_selected_column(maillon* CData,int value1,int value2);
+void print_CData_selected_column(maillon* CData);
 int print_Col_lines(COLUMN* col, int value1, int value2);
-void print_CData_selected_lines(maillon* CData,int value1,int value2);
+void print_CData_selected_lines(maillon* CData);
 void menu();
-void affichage_categorie(int number);
 
 #endif
