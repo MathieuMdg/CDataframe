@@ -196,6 +196,11 @@ int CData_inf_x(COLUMN** CData, int nbre_colonne) {
     return nbre;
 }
 
+
+
+// Affichage (CDataframe chainé)
+
+
 void print_CData_chaine(maillon * CData) {
     maillon* tmp ;
     if ( CData != NULL)
@@ -206,6 +211,23 @@ void print_CData_chaine(maillon * CData) {
             printf("%s\n", tmp->COLUMN->CHAINE);
             print_col(tmp->COLUMN);
             printf("\n");
+            tmp = (maillon *) tmp->SUCC;
+        }
+    }
+}
+
+void print_CData_selected_column(maillon* CData,int value1,int value2) {
+    maillon* tmp ;
+    if (CData != NULL)
+    {
+        tmp = CData;
+        while(tmp->INDEX != value2 + 1)
+        {
+            if(tmp->INDEX > value1 - 1) {
+                printf("%s\n", tmp->COLUMN->CHAINE);
+                print_col(tmp->COLUMN);
+                printf("\n");
+            }
             tmp = (maillon *) tmp->SUCC;
         }
     }

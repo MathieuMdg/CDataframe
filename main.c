@@ -133,6 +133,8 @@ int main(){
         }
     }
     print_CData_chaine(CDataframe);
+
+    print_CData_selected_column(CDataframe, 2, 4);
     free(CDataframe);
 
 
