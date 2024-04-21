@@ -232,3 +232,30 @@ void print_CData_selected_column(maillon* CData,int value1,int value2) {
         }
     }
 }
+
+int print_Col_lines(COLUMN* col, int value1, int value2) {
+    if(value2 < col->TAILLE_LOGIQUE) {
+        for (int i = value1; i < value2; i++) {
+            printf("[%d] %d\n", i, col->DONNEES[i]);
+        }
+        return 1;
+    }
+    else {
+        return 0;
+    }
+}
+
+void print_CData_selected_lines(maillon* CData,int value1,int value2) {
+    maillon* tmp ;
+    if ( CData != NULL)
+    {
+        tmp = CData;
+        while(tmp != NULL)
+        {
+            printf("%s\n", tmp->COLUMN->CHAINE);
+            print_Col_lines(tmp->COLUMN, value1, value2);
+            printf("\n");
+            tmp = (maillon *) tmp->SUCC;
+        }
+    }
+}

@@ -119,6 +119,11 @@ int main(){
         scanf(" %s", title);
         strcpy(ptr_title, title);
         nouveau->COLUMN = create_column(ptr_title);
+        insert_value(nouveau->COLUMN, 3);
+        insert_value(nouveau->COLUMN, 4);
+        insert_value(nouveau->COLUMN, 8);
+        insert_value(nouveau->COLUMN, 5);
+        insert_value(nouveau->COLUMN, 7);
         if(CDataframe == NULL) {
             CDataframe = nouveau;
         }
@@ -135,6 +140,8 @@ int main(){
     print_CData_chaine(CDataframe);
 
     print_CData_selected_column(CDataframe, 2, 4);
+    printf("\n---------------------------\n");
+    print_CData_selected_lines(CDataframe, 2, 4);
     free(CDataframe);
 
 
