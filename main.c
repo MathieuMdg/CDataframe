@@ -294,6 +294,7 @@ int main() {
                                 printf("\n\n\n");
                                 printf("NUMERO COLONNE : ");
                                 scanf(" %d", &column_number);
+                                column_number += 1;
                                 maillon *tmp;
                                 if (CDataframe != NULL) {
                                     int i = 0;
@@ -324,8 +325,10 @@ int main() {
                             if (init_CDataframe == 1) {
                                 maillon *tmp;
                                 int column_number;
-                                printf("Choisir le numero de la colonne : ");
+                                printf("\n\n\n");
+                                printf("NUMERO COLONNE : ");
                                 scanf(" %d", &column_number);
+                                column_number++;
                                 if (CDataframe != NULL) {
                                     int i = 0;
                                     tmp = CDataframe;

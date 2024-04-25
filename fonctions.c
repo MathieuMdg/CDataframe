@@ -77,8 +77,10 @@ void delete_column(COLUMN* col) {
 // Supprimer une ligne dans une colonne et décale les valeurs
 void delete_line(COLUMN* col) {
     int number_line;
-    printf("Ligne a supprime : ");
+    printf("\n\n\n");
+    printf("LIGNE A SUPPRIME : ");
     scanf(" %d", &number_line);
+    printf("\n");
     for(int i = number_line; i < col->TAILLE_LOGIQUE - 1; i++) {
         col->DONNEES[i] = col->DONNEES[i+1];
     }
