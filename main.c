@@ -107,7 +107,7 @@ int main() {
                                     strcpy(ptr_title, title);
                                     nouveau->COLUMN = create_column(ptr_title);
                                     int number_lines;
-                                    printf("Choisir un nombre de ligne pour la colonne [%d] %s : ", nouveau->INDEX,
+                                    printf("CHOISIR NOMBRE DE LIGNE POUR LA COLONNE [%d] %s : ", nouveau->INDEX,
                                            nouveau->COLUMN->CHAINE);
                                     scanf(" %d", &number_lines);
                                     for (int i = 0; i < 3; i++)
@@ -203,6 +203,7 @@ int main() {
                     }
 
                 }
+                break;
             }
 
 
@@ -214,8 +215,8 @@ int main() {
                         printf("\n");
                     printf("2. Affichage\n\n");
                     printf("\t 'a' - Afficher tout le CDataframe\n");
-                    printf("\t 'b' - Afficher une partie des lignes du CDataframe selon une limite fournie par l utilisateur\n");
-                    printf("\t 'c' - Afficher une partie des colonnes du CDataframe selon une limite fournie par l’utilisateur\n");
+                    printf("\t 'b' - Afficher une partie des lignes du CDataframe selon une limite fournie par un utilisateur\n");
+                    printf("\t 'c' - Afficher une partie des colonnes du CDataframe selon une limite fournie par un utilisateur\n");
                     printf("\nChoisissez une fonctionnalite a, b ou c (pour revenir au menu tapez 0) :");
                     scanf(" %c", &fonction);
 
@@ -225,6 +226,7 @@ int main() {
 
 
                             if (init_CDataframe == 1) {
+                                print_answer("Affichage...");
                                 print_CData_chaine(CDataframe);
                             } else {
                                 init_CData();
@@ -235,6 +237,7 @@ int main() {
 
 
                             if (init_CDataframe == 1) {
+                                printf("\n\n\n");
                                 print_CData_selected_lines(CDataframe);
                             } else {
                                 init_CData();
@@ -259,8 +262,9 @@ int main() {
                     }
 
                 }
-            }
                 break;
+            }
+
 
             case 3 : {
 
@@ -287,7 +291,8 @@ int main() {
 
                             if (init_CDataframe == 1) {
                                 int column_number;
-                                printf("Choisir le numero de la colonne : ");
+                                printf("\n\n\n");
+                                printf("NUMERO COLONNE : ");
                                 scanf(" %d", &column_number);
                                 maillon *tmp;
                                 if (CDataframe != NULL) {
@@ -298,11 +303,13 @@ int main() {
                                         tmp = (maillon *) tmp->SUCC;
                                     }
                                     if (tmp == NULL) {
-                                        printf("La colonne n existe pas...");
+                                        print_answer("Colonne inexistante...");
                                     } else {
                                         int value;
-                                        printf("Choisir une valeur a ajouter : ");
+                                        printf("\n\n\n");
+                                        printf("VALEUR A AJOUTER : ");
                                         scanf(" %d", &value);
+                                        printf("\n");
                                         insert_value(tmp->COLUMN, value);
                                     }
                                 }
@@ -328,7 +335,7 @@ int main() {
                                     }
                                 }
                                 if (tmp == NULL) {
-                                    printf("La colonne n existe pas...");
+                                    print_answer("Colonne inexistante...");
                                 } else {
                                     delete_line(tmp->COLUMN);
                                 }
@@ -375,7 +382,7 @@ int main() {
                                         }
                                     }
                                     if (tmp == NULL) {
-                                        printf("La colonne n existe pas...");
+                                        print_answer("Colonne inexistante...");
                                     } else {
                                         nouveau->SUCC = tmp->SUCC;
                                         tmp->SUCC = (struct mailllon *) nouveau;
@@ -438,8 +445,10 @@ int main() {
 
                             if (init_CDataframe == 1) {
                                 int column_number;
-                                printf("Choisir le numero de colonne : ");
+                                printf("------------------------------------------\n\n\n");
+                                printf("CHOISIR NUMERO DE COLONNE : ");
                                 scanf(" %d", &column_number);
+                                printf("\n");
                                 maillon *tmp;
                                 if (CDataframe != NULL) {
                                     int i = 0;
@@ -450,7 +459,7 @@ int main() {
                                     }
                                 }
                                 if (tmp == NULL) {
-                                    printf("La colonne n existe pas...");
+                                    print_answer("Colonne inexistante...");
                                 } else {
                                     printf("Nouveau nom de la colonne %s [%d]...\n ", tmp->COLUMN->CHAINE,
                                            column_number);
@@ -554,6 +563,7 @@ int main() {
                     }
 
                 }
+                break;
             }
 
 
@@ -655,8 +665,10 @@ int main() {
                                         tmp = (maillon *) tmp->SUCC;
                                     }
                                 }
-                                printf("Le nombre de cellule contenant une valeur inferieur a %d est de %d.", value,
-                                       inf);
+                                printf("\n\n\n");
+                                printf("========================================================================\n");
+                                printf("|| Le nombre de cellule contenant une valeur inferieur a %d est de %d ||\n", value,inf);
+                                printf("========================================================================\n");
                             } else {
                                 init_CData();
                             }
@@ -670,7 +682,15 @@ int main() {
                     }
 
                 }
+                break;
             }
+
+            case 0 :
+                printf("\n\n\n");
+                printf("======================\n");
+                printf("|| Fin de programme ||\n");
+                printf("======================\n");
+                running = 0;
         }
 
 

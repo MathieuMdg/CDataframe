@@ -16,6 +16,18 @@ void menu() {
 }
 
 
+void print_answer(char* string) {
+    printf("\n\n\n");
+    for(int i = 0; i < strlen(string) + 6; i++) {
+        printf("=");
+    }
+    printf("\n|| %s ||\n", string);
+    for(int i = 0; i < strlen(string) + 6; i++) {
+        printf("=");
+    }
+    printf("\n\n\n");
+}
+
 
 
 // Fonction qui prend un titre de colonne et renvoie un pointer sur la colonne.
@@ -194,6 +206,7 @@ int equal_x(COLUMN** CData, int nbre_colonne) {
     int nbre = 0, val;
     printf("valeur de x : ");
     scanf(" %d", &val);
+    printf("\n");
     for (int i = 0; i < nbre_colonne; i++) {
         if (occurence(CData[i], val)) {
             nbre++;
@@ -249,10 +262,11 @@ void print_CData_chaine(maillon * CData) {
 void print_CData_selected_column(maillon* CData) {
     maillon* tmp ;
     int value1, value2;
-    printf("Quelle est la colonne 'minimum'? :");
+    printf("\n\n");
+    printf("COLONNE MINIMUM :");
     scanf(" %d", &value1);
     printf("\n");
-    printf("Quelle est la colonne 'maximum'? :");
+    printf("COLONNE MAXIMUM :");
     scanf(" %d", &value2);
     printf("\n");
     if (CData != NULL)
@@ -274,8 +288,20 @@ void print_CData_selected_column(maillon* CData) {
 
 int print_Col_lines(COLUMN* col, int value1, int value2) {
     if(value2 < col->TAILLE_LOGIQUE) {
-        for (int i = value1; i < value2 + 1; i++) {
-            printf("[%d] %d\n", i, col->DONNEES[i]);
+        print_answer("Affichage");
+        if (value2 < value1) {
+            for (int i = 0; i<value2; i++) {
+                printf("[%d] %d\n", i, col->DONNEES[i]);
+            }
+            printf("\n\n--------------------------------------------\n\n");
+            for (int i = value1; i<col->TAILLE_LOGIQUE; i++) {
+                printf("[%d] %d\n", i, col->DONNEES[i]);
+            }
+        }
+        else {
+            for (int i = value1; i < value2 + 1; i++) {
+                printf("[%d] %d\n", i, col->DONNEES[i]);
+            }
         }
         return 1;
     }
@@ -287,10 +313,12 @@ int print_Col_lines(COLUMN* col, int value1, int value2) {
 void print_CData_selected_lines(maillon* CData) {
     maillon* tmp ;
     int value1, value2;
-    printf("Quelle est la ligne 'minimum'? :");
+    printf("LIGNE MINIMUM :");
     scanf(" %d", &value1);
-    printf("Quelle est la ligne 'maximum'? :");
+    printf("\n");
+    printf("LIGNE MAXIMUM :");
     scanf(" %d", &value2);
+    printf("\n");
     if (CData != NULL)
     {
         tmp = CData;

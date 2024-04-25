@@ -7,6 +7,8 @@ struct maillon
     struct mailllon *SUCC;
     COLUMN* COLUMN;
 };
+
+
 typedef struct maillon maillon;
 
 // Affiche le CDatafram en entier

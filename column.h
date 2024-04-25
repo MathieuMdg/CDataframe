@@ -8,7 +8,18 @@ typedef struct {
     int TAILLE_LOGIQUE;
     int TAILLE_PHYSIQUE;
     int* DONNEES;
+    int* INDEX;
 }COLUMN;
+
+
+enum enum_type
+{
+    NULLVAL = 1 , UINT, INT, CHAR, FLOAT, DOUBLE, STRING, STRUCTURE
+};
+typedef enum enum_type ENUM_TYPE;
+
+
+
 
 // Création d'une colonne
 COLUMN* create_column(char* title);
@@ -48,6 +59,9 @@ int print_Col_lines(COLUMN* col, int value1, int value2);
 
 // Affiche le menu
 void menu();
+
+// Affichage des réponses
+void print_answer(char* string);
 
 // Affiche un message d'erreur
 void init_CData();
