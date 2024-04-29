@@ -323,7 +323,7 @@ int main() {
 
 
                             if (init_CDataframe == 1) {
-                                maillon *tmp;
+                                maillon *tmp = NULL;
                                 int column_number;
                                 printf("\n\n\n");
                                 printf("NUMERO COLONNE : ");
@@ -354,13 +354,17 @@ int main() {
                             if (init_CDataframe == 1) {
                                 maillon *tmp;
                                 int column_position;
-                                printf("Position du nouveau maillon (0: debut, x: postion de x et -1 : fin : ");
+                                printf("\n\n\n");
+                                printf("POSITION NOUVELLE COLONNE (DEBUT[0], POSITION[0], FIN[-1]) : ");
                                 scanf(" %d", &column_position);
+                                printf("\n");
                                 if (CDataframe != NULL) {
                                     maillon *nouveau = (maillon *) malloc(sizeof(maillon));
                                     char title[100];
-                                    printf("Nom de la colonne : ");
+                                    printf("\n\n\n");
+                                    printf("TITRE COLONNE : ");
                                     scanf(" %s", title);
+                                    printf("\n");
                                     char *ptr_title = malloc(strlen(title) + 1);
                                     strcpy(ptr_title, title);
                                     nouveau->COLUMN = create_column(ptr_title);
@@ -378,6 +382,7 @@ int main() {
                                     }
                                     if (column_position != 0 && column_position != -1) {
                                         int i = 0;
+                                        column_position += 1;
                                         tmp = CDataframe;
                                         while (tmp != NULL && i < column_position - 2) {
                                             i++;
@@ -424,6 +429,7 @@ int main() {
                                     }
                                     if (column_position != 0 && column_position != -1) {
                                         int i = 0;
+                                        column_position += 1;
                                         tmp = CDataframe;
                                         while (tmp != NULL && i < column_position - 1) {
                                             i++;
@@ -452,11 +458,11 @@ int main() {
                                 printf("CHOISIR NUMERO DE COLONNE : ");
                                 scanf(" %d", &column_number);
                                 printf("\n");
-                                maillon *tmp;
+                                maillon *tmp = NULL;
                                 if (CDataframe != NULL) {
                                     int i = 0;
                                     tmp = CDataframe;
-                                    while (tmp != NULL && i < column_number - 1) {
+                                    while (tmp != NULL && i < column_number) {
                                         i++;
                                         tmp = (maillon *) tmp->SUCC;
                                     }
@@ -480,7 +486,9 @@ int main() {
                             if (init_CDataframe == 1) {
                                 maillon *tmp;
                                 int presence = 0, value;
-                                printf("Quelle est la valeur recherchee? : ");
+                                printf("\n\n");
+                                printf("------------------------------------------\n\n");
+                                printf("VALEUR RECHERCHEE : ");
                                 scanf(" %d", &value);
                                 if (CDataframe != NULL) {
                                     tmp = CDataframe;
@@ -492,9 +500,9 @@ int main() {
                                     }
                                 }
                                 if (presence == 1) {
-                                    printf("La valeur est presente dans le CDataframe");
+                                    print_answer("La valeur est presente dans le CDataframe");
                                 } else {
-                                    printf("La valeur n'est pas present dans le CDataframe");
+                                    print_answer("La valeur n'est pas presente dans le CDataframe");
                                 }
                             } else {
                                 init_CData();
@@ -506,30 +514,33 @@ int main() {
 
                             if (init_CDataframe == 1) {
                                 int column_number, line_number;
-                                printf("Choisir le numero de colonne : ");
+                                printf("\n\n\nNUMERO COLONNE : ");
                                 scanf(" %d", &column_number);
-                                printf("Choisir le numero de la ligne : ");
+                                printf("\n");
+                                printf("NUMERO LIGNE : ");
                                 scanf(" %d", &line_number);
-                                maillon *tmp;
+                                printf("\n");
+                                maillon *tmp = NULL;
                                 if (CDataframe != NULL) {
                                     int i = 0;
                                     tmp = CDataframe;
-                                    while (tmp != NULL && i < column_number - 1) {
+                                    while (tmp != NULL && i < column_number) {
                                         i++;
                                         tmp = (maillon *) tmp->SUCC;
                                     }
                                 }
                                 if (tmp == NULL) {
-                                    printf("La colonne n existe pas...");
+                                    print_answer("La colonne n existe pas...");
                                 } else {
-                                    printf("La valeur a la ligne %d de la colonne %s [%d] est %d", line_number,
-                                           tmp->COLUMN->CHAINE, column_number, tmp->COLUMN->DONNEES[line_number]);
+                                    printf("La valeur a la ligne %d de la colonne %s [%d] est %d\n", line_number, tmp->COLUMN->CHAINE, column_number, tmp->COLUMN->DONNEES[line_number]);
                                     int value;
-                                    printf("Voulez-vous la changer? (oui: 1/ non: 0) : ");
+                                    printf("\n\nCHANGER VALEUR? (oui: 1/ non: 0) : ");
                                     scanf(" %d", &value);
+                                    printf("\n");
                                     if (value) {
-                                        printf("Choisir une valeur a ajouter : ");
+                                        printf("\n\nVALEUR : ");
                                         scanf(" %d", &value);
+                                        printf("\n");
                                         tmp->COLUMN->DONNEES[line_number] = value;
                                     }
                                 }
@@ -543,6 +554,7 @@ int main() {
 
 
                             if (init_CDataframe == 1) {
+                                printf("\n\n\n");
                                 maillon *tmp;
                                 if (CDataframe != NULL) {
                                     tmp = CDataframe;
@@ -614,8 +626,9 @@ int main() {
                             if (init_CDataframe == 1) {
                                 maillon *tmp;
                                 int value, occ = 0;
-                                printf("Quelle est la valeur recherchee? : ");
+                                printf("\n\n\nVALEUR RECHERCHEE? : ");
                                 scanf(" %d", &value);
+                                printf("\n");
                                 if (CDataframe != NULL) {
                                     tmp = CDataframe;
                                     while (tmp != NULL) {
@@ -637,8 +650,9 @@ int main() {
                             if (init_CDataframe == 1) {
                                 maillon *tmp;
                                 int value, sup = 0;
-                                printf("Quelle est la valeur recherchee? : ");
+                                printf("\n\n\nVALEUR RECHERCHEE? : ");
                                 scanf(" %d", &value);
+                                printf("\n");
                                 if (CDataframe != NULL) {
                                     tmp = CDataframe;
                                     while (tmp != NULL) {
@@ -659,8 +673,9 @@ int main() {
                             if (init_CDataframe == 1) {
                                 maillon *tmp;
                                 int value, inf = 0;
-                                printf("Quelle est la valeur recherchee? : ");
+                                printf("<\n\n\nVALEUR RECHERCHEE? : ");
                                 scanf(" %d", &value);
+                                printf("\n");
                                 if (CDataframe != NULL) {
                                     tmp = CDataframe;
                                     while (tmp != NULL) {
