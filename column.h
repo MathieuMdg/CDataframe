@@ -2,16 +2,6 @@
 #define FONCTIONS_H
 
 
-// Definition du type structure
-typedef struct {
-    char* CHAINE;
-    int TAILLE_LOGIQUE;
-    int TAILLE_PHYSIQUE;
-    int* DONNEES;
-    int* INDEX;
-}COLUMN;
-
-
 enum enum_type
 {
     NULLVAL = 1 , UINT, INT, CHAR, FLOAT, DOUBLE, STRING, STRUCTURE
@@ -19,13 +9,40 @@ enum enum_type
 typedef enum enum_type ENUM_TYPE;
 
 
+union column_type{
+    unsigned int UINT_VALUE;
+    signed int INT_VALUE;
+    char CHAR_VALUE;
+    float FLOAT_VALUE;
+    double DOUBLE_VALUE;
+    char* STRING_VALUE;
+    void* STRUCT_VALUE;
+};
+typedef union COLUMN_TYPE COL_TYPE ;
+
+
+// Définition du type COLUMN
+struct column {
+    char* CHAINE;
+    unsigned int TAILLE_LOGIQUE;
+    unsigned int TAILLE_PHYSIQUE;
+    ENUM_TYPE COLUMN_TYPE;
+    COL_TYPE ** DONNEES;
+    unsigned long long int * INDEX;
+};
+typedef struct column COLUMN;
+
+
+
+
+
 
 
 // Création d'une colonne
-COLUMN* create_column(char* title);
+COLUMN* create_column(ENUM_TYPE type, char* title);
 
 // Ajouter une valeur dans une colonne
-int insert_value(COLUMN* col, int value);
+int insert_value(COLUMN *col, void *value);
 
 // Supprimer l'espace mémoire occupé par une colonne
 void delete_column(COLUMN *col);

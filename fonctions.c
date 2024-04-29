@@ -31,10 +31,11 @@ void print_answer(char* string) {
 
 
 // Fonction qui prend un titre de colonne et renvoie un pointer sur la colonne.
-COLUMN* create_column(char* title) {
+COLUMN* create_column(ENUM_TYPE type, char* title) {
     COLUMN* ptr_colonne = (COLUMN*)malloc(sizeof(COLUMN));
     ptr_colonne->CHAINE = title;
     ptr_colonne->TAILLE_LOGIQUE = 0;
+    ptr_colonne->COLUMN_TYPE = type;
     ptr_colonne->TAILLE_PHYSIQUE = REALOC_SIZE;
     ptr_colonne->DONNEES= NULL;
     return ptr_colonne;
@@ -42,16 +43,16 @@ COLUMN* create_column(char* title) {
 
 
 // Permet d'ajouter une valeur à la fin d'une colonne et de l'agrandir si besoin
-int insert_value(COLUMN* colonne, int value) {
+int insert_value(COLUMN* colonne, void* value) {
     if (colonne->DONNEES == NULL) {
-        colonne->DONNEES = (int *) malloc(REALOC_SIZE * sizeof(int));
+        colonne->DONNEES = (COL_TYPE **) (ENUM_TYPE *) malloc(REALOC_SIZE * sizeof(ENUM_TYPE));
         colonne->TAILLE_PHYSIQUE = REALOC_SIZE;
     }
     if (colonne->TAILLE_LOGIQUE == colonne->TAILLE_PHYSIQUE) {
         colonne->TAILLE_PHYSIQUE += REALOC_SIZE;
         colonne->DONNEES = realloc(colonne->DONNEES, colonne->TAILLE_PHYSIQUE + REALOC_SIZE);
     }
-    colonne->DONNEES[colonne->TAILLE_LOGIQUE] = value;
+    colonne->DONNEES[colonne->TAILLE_LOGIQUE] = (COL_TYPE *) value;
     colonne->TAILLE_LOGIQUE++;
     return 1;
 }
