@@ -43,17 +43,75 @@ COLUMN* create_column(ENUM_TYPE type, char* title) {
 
 
 // Permet d'ajouter une valeur à la fin d'une colonne et de l'agrandir si besoin
-int insert_value(COLUMN* colonne, void* value) {
-    if (colonne->DONNEES == NULL) {
-        colonne->DONNEES = (COL_TYPE **) (ENUM_TYPE *) malloc(REALOC_SIZE * sizeof(ENUM_TYPE));
-        colonne->TAILLE_PHYSIQUE = REALOC_SIZE;
+int insert_value(COLUMN* col, void* value) {
+
+    // Si la colonne est vide
+    if (col == NULL) {
+        printf("COLONNE NON INITIALISEE\n");
+        return 0;
     }
-    if (colonne->TAILLE_LOGIQUE == colonne->TAILLE_PHYSIQUE) {
-        colonne->TAILLE_PHYSIQUE += REALOC_SIZE;
-        colonne->DONNEES = realloc(colonne->DONNEES, colonne->TAILLE_PHYSIQUE + REALOC_SIZE);
+
+    // Allouer de la mémoire pour le tableau de pointeurs si ce n'est pas déjà fait
+    if (col->DONNEES == NULL) {
+        col->DONNEES = (COL_TYPE**) malloc(sizeof(COL_TYPE*));
+        if (col->DONNEES == NULL) {
+            printf( "ERREUR ALLOCATION\n");
+            return 0;
+        }
     }
-    colonne->DONNEES[colonne->TAILLE_LOGIQUE] = (COL_TYPE *) value;
-    colonne->TAILLE_LOGIQUE++;
+
+    // Allocation de l'espace pour la valeur
+    col->DONNEES[col->TAILLE_LOGIQUE] = (COL_TYPE*) malloc(sizeof(COL_TYPE*));
+    if (col->DONNEES[col->TAILLE_LOGIQUE] == NULL) {
+        printf( "ERREUR ALLOCATION\n");
+        return 0;
+    }
+    if (value == NULL){
+        col->DONNEES[col->TAILLE_LOGIQUE] = NULL;
+    }
+    else {
+        // Affecter la valeur en fonction du type de colonne
+        switch (col->COLUMN_TYPE) {
+            case CHAR:
+                col->DONNEES[col->TAILLE_LOGIQUE] = (char *) malloc(sizeof(char));
+                *((char *) col->DONNEES[col->TAILLE_LOGIQUE]) = *((char *) value);
+                break;
+            case INT:
+                col->DONNEES[col->TAILLE_LOGIQUE] = (int *) malloc(sizeof(int));
+                *((int *) col->DONNEES[col->TAILLE_LOGIQUE]) = *((int *) value);
+                break;
+            case UINT:
+                col->DONNEES[col->TAILLE_LOGIQUE] = (unsigned int *) malloc(sizeof(unsigned int));
+                *((unsigned int *) col->DONNEES[col->TAILLE_LOGIQUE]) = *((unsigned int *) value);
+                break;
+            case FLOAT:
+                col->DONNEES[col->TAILLE_LOGIQUE] = (float *) malloc(sizeof(float));
+                *((float *) col->DONNEES[col->TAILLE_LOGIQUE]) = *((float *) value);
+                break;
+            case DOUBLE:
+                col->DONNEES[col->TAILLE_LOGIQUE] = (double *) malloc(sizeof(double ));
+                *((double *) col->DONNEES[col->TAILLE_LOGIQUE]) = *((double *) value);
+                break;
+            case STRING:
+                col->DONNEES[col->TAILLE_LOGIQUE] = (char **) malloc(sizeof(char*));
+                *((char **) col->DONNEES[col->TAILLE_LOGIQUE]) = *((char **) value);
+                break;
+            case NULLVAL:
+                col->DONNEES[col->TAILLE_LOGIQUE] = NULL;
+                break;
+            case STRUCTURE:
+                //col->DONNEES[col->TAILLE_LOGIQUE] = (double *) malloc(sizeof(double ));
+                //*((double *) col->DONNEES[col->TAILLE_LOGIQUE]) = *((double *) value);
+                break;
+
+                // Ajoutez d'autres cas pour les autres types ici
+            default:
+                printf("TYPE DE COLONNE ERRONE\n");
+                break;
+        }
+    }
+
+    col->TAILLE_LOGIQUE++;
     return 1;
 }
 
@@ -62,16 +120,63 @@ int insert_value(COLUMN* colonne, void* value) {
 // Affiche une colonne en entier
 void print_col(COLUMN* col) {
     for (int i = 0; i < col->TAILLE_LOGIQUE; i++) {
-        printf("[%d] %d\n", i, col->DONNEES[i]);
+        if (col->DONNEES[i] == NULL) {
+            printf("[%d] NULL\n", i);
+        }
+        else {
+            char str[100];
+            convert_value(col, i, str, 100);
+            printf("[%d] %s\n", i, str);
+        }
     }
 }
 
 
 // Supprime l'espace mémoire occupé par une colonne
 void delete_column(COLUMN* col) {
+    for (int i = 0; i<col->TAILLE_LOGIQUE; i++) {
+        free(col->DONNEES[i]);
+    }
     free(col->DONNEES);
     free(col);
 }
+
+void convert_value(COLUMN *col, unsigned long long int i, char *str, int size) {
+
+    switch (col->COLUMN_TYPE){
+
+        case INT:
+            snprintf(str, size, "%d", *((int *) col->DONNEES[i]));
+            break;
+
+        case UINT:
+            snprintf(str, size, "%u", *((unsigned int *) col->DONNEES[i]));
+            break;
+
+        case FLOAT:
+            snprintf(str, size, "%f", *((float *) col->DONNEES[i]));
+            break;
+
+        case DOUBLE:
+            snprintf(str, size, "%f", *((double *) col->DONNEES[i]));
+            break;
+
+        case STRING:
+            strcpy(str, *((char **) col->DONNEES[col->TAILLE_LOGIQUE]));
+            break;
+
+        case CHAR:
+            snprintf(str, size, "%c", *((char *) col->DONNEES[i]));
+            break;
+
+        case NULLVAL:
+            snprintf(str, size, "%d", col->DONNEES[i]);
+            break;
+
+    }
+
+}
+
 
 
 

@@ -7,23 +7,15 @@
 
 int main() {
 
-    int running;
-    running = 0;
+    COLUMN *mycol = create_column(CHAR, "Column 1");
+    char a = 'A', c = 'C', b = 'Z';
+    insert_value(mycol, &a);
+    insert_value(mycol, &c);
+    insert_value(mycol, NULL);
+    insert_value(mycol, &b);
+    print_col(mycol);
 
-    maillon *CDataframe = NULL;
 
-    int init_CDataframe = 0;
-
-    int full = 0;
-
-    COLUMN *mycol = create_column(INT, "My column");
-
-    for(int i = 0 ; i < 100 ; i++){
-        insert_value(mycol, &i);
-    }
-    for(int i = 0 ; i < 100 ; i++){
-        printf(" %", mycol->DONNEES[i]);
-    }
 
     return 0;
     }

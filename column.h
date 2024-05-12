@@ -80,6 +80,11 @@ void menu();
 // Affichage des réponses
 void print_answer(char* string);
 
+// Convertir une valeur en chaine de caractère
+void convert_value(COLUMN *col, unsigned long long int i, char *str, int size);
+
+
+
 // Affiche un message d'erreur
 void init_CData();
 
