@@ -3,7 +3,8 @@
 #include "fonctions.h"
 #include <stdlib.h>
 #include <string.h>
-
+#define ASC 0
+#define DESC 1
 
 int main() {
 
@@ -22,9 +23,10 @@ int main() {
     insert_value(mycol, &d);
     printf("Column content before sorting : \n");
     print_col(mycol);
-    sort(mycol,0);
+    sort(mycol,ASC);
     printf("Column content after sorting : \n");
     print_col_by_index(mycol);
+    printf("\n%d", search_value_in_column(mycol, (void *) 34));
 
 
 

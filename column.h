@@ -101,11 +101,20 @@ int partition(COL_TYPE * arr[], unsigned long long int index[], int low, unsigne
 
 void insertion(COL_TYPE * arr[], unsigned long long int index[], unsigned int n);
 
-void echanger(int *a, int *b);
+int search_value_in_column(COLUMN *col, void *val);
+
+void erase_index(COLUMN *col);
+
+int check_index(COLUMN *col);
+
+void update_index(COLUMN *col);
+
 
 void print_col_by_index(COLUMN *col);
 
 void sort_index(COLUMN* col, int sort_dir);
+
+int search_value_in_column(COLUMN* col, void* value);
 
 
 

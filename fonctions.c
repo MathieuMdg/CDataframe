@@ -41,7 +41,7 @@ COLUMN* create_column(ENUM_TYPE type, char* title) {
     ptr_colonne->COLUMN_TYPE = type;
     ptr_colonne->TAILLE_PHYSIQUE = REALOC_SIZE;
     ptr_colonne->DONNEES= NULL;
-    ptr_colonne->VALID_INDEX = -1;
+    ptr_colonne->VALID_INDEX = 0;
     ptr_colonne->INDEX = (unsigned long long int*) malloc(sizeof(unsigned long long int) * REALOC_SIZE);
     return ptr_colonne;
 }
@@ -195,8 +195,59 @@ void sort(COLUMN* col, int sort_dir) {
             j--;
         }
     }
+    col->VALID_INDEX = 1;
+    col->SORT_DIR = sort_dir;
 }
 
+// Fonction de recherche dichotomique dans un tableau d'index trié
+int binarySearch(COLUMN * col, int left, int right, void* value) {
+
+    while (left <= right) {
+
+        int middle = left + (right - left) / 2;
+
+        // Accéder à l'élément cible dans le tableau principal de données via l'index
+        int current = *((int*)col->DONNEES[col->INDEX[middle]]);
+
+
+        // Comparaison de l'élément actuel avec la cible
+        // Ici, nous supposons que nous comparons des entiers (à adapter en fonction de COLUMN_TYPE)
+        if (current == (int*) value) {
+
+            return middle; // Retourne l'indice dans le tableau d'index
+        }
+
+        // Mise à jour des limites de recherche en fonction de la comparaison
+        if (current < (int*) value) {
+            left = middle + 1;
+        }
+        else {
+            right = middle - 1;
+        }
+    }
+
+    // Si la cible n'est pas trouvée dans le tableau d'index
+    return 0;
+}
+
+// Fonction de recherche de valeur dans la colonne avec tableau d'index et recherche dichotomique
+int search_value_in_column(COLUMN* col, void* value) {
+    if (col == NULL || col->INDEX == NULL || col->TAILLE_LOGIQUE == 0 || col->VALID_INDEX != 1)
+        return -1; // Cas de tableau vide ou index non valide
+
+    // Utilisation de la recherche dichotomique sur le tableau d'index trié
+    int result = binarySearch(col, 0, col->TAILLE_LOGIQUE - 1, value);
+
+    return result;
+}
+
+
+
+void erase_index(COLUMN *col) {
+    free(col->INDEX);
+    col->INDEX = NULL;
+    col->VALID_INDEX = 0;
+}
 
 
 void print_col_by_index(COLUMN *col) {
@@ -224,6 +275,22 @@ void print_col(COLUMN* col) {
             printf("[%d] %s\n", i, str);
         }
     }
+}
+
+int check_index(COLUMN *col) {
+    if (col->VALID_INDEX == 0) {
+        return 0;
+    }
+    if (col->VALID_INDEX == -1) {
+        return -1;
+    }
+    else {
+        return 1;
+    }
+}
+
+void update_index(COLUMN *col) {
+    sort(col, col->SORT_DIR);
 }
 
 
