@@ -29,6 +29,17 @@ struct column {
     ENUM_TYPE COLUMN_TYPE;
     COL_TYPE ** DONNEES;
     unsigned long long int * INDEX;
+
+    int VALID_INDEX;
+    // index valid
+    // 0 : no index
+    // -1 invalid index
+    // 1 : valid index
+
+    int SORT_DIR;
+    // direction de tri Ascendant ou descendant
+    // 0 : ASC
+    // 1 : DESC
 };
 typedef struct column COLUMN;
 
@@ -82,6 +93,21 @@ void print_answer(char* string);
 
 // Convertir une valeur en chaine de caractère
 void convert_value(COLUMN *col, unsigned long long int i, char *str, int size);
+
+// Créer un tableau d'index pour trier les valeurs dans un ordre donnée
+void sort(COLUMN* col, int sort_dir);
+
+void tri_insertion(COL_TYPE ** tab[], unsigned int N);
+
+void quicksort(COL_TYPE ** tab[], int gauche, unsigned int droite);
+
+int partition(COL_TYPE ** tab[], int gauche, unsigned int droite);
+
+void echanger(int *a, int *b);
+
+void print_col_by_index(COLUMN *col);
+
+
 
 
 

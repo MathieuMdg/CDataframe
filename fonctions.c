@@ -4,6 +4,9 @@
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
+#define ASC 0
+#define DESC 1
+
 
 
 // Affiche le menu du programme
@@ -38,6 +41,8 @@ COLUMN* create_column(ENUM_TYPE type, char* title) {
     ptr_colonne->COLUMN_TYPE = type;
     ptr_colonne->TAILLE_PHYSIQUE = REALOC_SIZE;
     ptr_colonne->DONNEES= NULL;
+    ptr_colonne->VALID_INDEX = 0;
+    ptr_colonne->INDEX = NULL;
     return ptr_colonne;
 }
 
@@ -89,7 +94,7 @@ int insert_value(COLUMN* col, void* value) {
                 *((float *) col->DONNEES[col->TAILLE_LOGIQUE]) = *((float *) value);
                 break;
             case DOUBLE:
-                col->DONNEES[col->TAILLE_LOGIQUE] = (double *) malloc(sizeof(double ));
+                col->DONNEES[col->TAILLE_LOGIQUE] = (double *) malloc(sizeof(double));
                 *((double *) col->DONNEES[col->TAILLE_LOGIQUE]) = *((double *) value);
                 break;
             case STRING:
@@ -115,7 +120,94 @@ int insert_value(COLUMN* col, void* value) {
     return 1;
 }
 
+// Fonction d'échange pour échanger deux éléments dans un tableau
+void echanger(int *a, int *b) {
+    int temp = *a;
+    *a = *b;
+    *b = temp;
+}
 
+// Fonction de partitionnement pour l'algorithme Quicksort
+int partition(COL_TYPE ** tab[], int gauche, unsigned int droite) {
+    int pivot = *((int*) tab[droite]); // Choix du pivot comme dernier élément
+    int i = gauche - 1;
+
+    for (int j = gauche; j < droite; j++) {
+        if (*((int*) tab[j]) <= pivot) {
+            i++;
+            echanger((int*) tab[i], (int*) tab[j]);
+        }
+    }
+
+    echanger((int*) tab[i + 1], (int*) tab[droite]);
+    return i + 1;
+}
+
+
+// Fonction Quicksort pour trier un tableau
+void quicksort(COL_TYPE ** tab[], int gauche, unsigned int droite) {
+    if (gauche < droite) {
+        int pi = partition(tab, gauche, droite);
+        quicksort(tab, gauche, pi - 1);
+        quicksort(tab, pi + 1, droite);
+    }
+}
+
+// Fonction tri_insertion
+void tri_insertion(COL_TYPE ** tab[], unsigned int N) {
+    for (int i = 1; i < N; i++) {
+        int k = *((int*) tab[i]); // Élément à insérer dans la partie triée
+        int j = i - 1;
+
+        // Déplacer les éléments plus grands que k vers la droite
+        while (j >= 0 && *((int*) tab[j]) > k) {
+            *((int*) tab[j + 1]) = *((int*) tab[j]);
+            j--;
+        }
+
+        // Insérer k à la bonne position dans la partie triée
+        *((int*) tab[j + 1]) = k;
+    }
+}
+
+// Fonction de tri générale en fonction du type de tri pour un tableau d'index
+void sort(COLUMN* col, int sort_dir) {
+    if (col->VALID_INDEX == 0) {
+
+        // Tri non trié : Utiliser Quicksort pour le tableau d'index
+        quicksort((int *) col->DONNEES, 0, col->TAILLE_LOGIQUE - 1);
+    } else if (col->VALID_INDEX == -1) {
+        // Tri partiellement trié : Utiliser Insertion Sort pour le tableau d'index
+        tri_insertion((int *) col->DONNEES, col->TAILLE_LOGIQUE);
+    }
+
+    // Si le tri est DESC, inverser le tableau d'index trié
+    if (sort_dir == 1) {
+        int i = 0;
+        int j = col->TAILLE_LOGIQUE - 1;
+        while (i < j) {
+            int temp = col->INDEX[i];
+            col->INDEX[i] = col->INDEX[j];
+            col->INDEX[j] = temp;
+            i++;
+            j--;
+        }
+    }
+}
+
+
+void print_col_by_index(COLUMN *col) {
+    for (int i = 0; i < col->TAILLE_LOGIQUE; i++) {
+        if (col->DONNEES[col->INDEX[i]] == NULL) {
+            printf("[%d] NULL\n", i);
+        }
+        else {
+            char str[100];
+            convert_value(col, col->INDEX[i], str, 100);
+            printf("[%d] %s\n", i, str);
+        }
+    }
+}
 
 // Affiche une colonne en entier
 void print_col(COLUMN* col) {
