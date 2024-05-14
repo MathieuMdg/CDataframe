@@ -24,7 +24,7 @@ int main() {
     print_col(mycol);
     sort(mycol,0);
     printf("Column content after sorting : \n");
-    print_col(mycol);
+    print_col_by_index(mycol);
 
 
 

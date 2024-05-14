@@ -41,8 +41,8 @@ COLUMN* create_column(ENUM_TYPE type, char* title) {
     ptr_colonne->COLUMN_TYPE = type;
     ptr_colonne->TAILLE_PHYSIQUE = REALOC_SIZE;
     ptr_colonne->DONNEES= NULL;
-    ptr_colonne->VALID_INDEX = 0;
-    ptr_colonne->INDEX = NULL;
+    ptr_colonne->VALID_INDEX = -1;
+    ptr_colonne->INDEX = (unsigned long long int*) malloc(sizeof(unsigned long long int) * REALOC_SIZE);
     return ptr_colonne;
 }
 
@@ -67,6 +67,7 @@ int insert_value(COLUMN* col, void* value) {
 
     // Allocation de l'espace pour la valeur
     col->DONNEES[col->TAILLE_LOGIQUE] = (COL_TYPE*) malloc(sizeof(COL_TYPE*));
+    col->INDEX[col->TAILLE_LOGIQUE] = col->TAILLE_LOGIQUE;
     if (col->DONNEES[col->TAILLE_LOGIQUE] == NULL) {
         printf( "ERREUR ALLOCATION\n");
         return 0;
@@ -114,79 +115,80 @@ int insert_value(COLUMN* col, void* value) {
                 printf("TYPE DE COLONNE ERRONE\n");
                 break;
         }
+
     }
 
     col->TAILLE_LOGIQUE++;
     return 1;
 }
 
-// Fonction d'échange pour échanger deux éléments dans un tableau
-void echanger(int *a, int *b) {
-    int temp = *a;
-    *a = *b;
-    *b = temp;
+
+// Fonction de tri par insertion pour un tableau d'index
+void insertion(COL_TYPE * arr[], unsigned long long int index[], unsigned int n) {
+    int i, j;
+    unsigned long long int key_index;
+    for (i = 1; i < n; i++) {
+        key_index = index[i];
+        int key_data = *((int*) arr[key_index]);
+        j = i - 1;
+
+        while (j >= 0 && *((int*) arr[index[j]]) > key_data) {
+            index[j + 1] = index[j];
+            j = j - 1;
+        }
+        index[j + 1] = key_index;
+    }
 }
 
-// Fonction de partitionnement pour l'algorithme Quicksort
-int partition(COL_TYPE * tab[], int gauche, unsigned int droite) {
-    int pivot = *((int*) tab[droite]); // Choix du pivot comme dernier élément
-    int i = gauche - 1;
+// Fonction Partition utilisée dans Quicksort pour un tableau d'index
+int partition(COL_TYPE * arr[], unsigned long long int index[], int low, unsigned int high) {
+    int pivot = *((int*) arr[index[high]]);
+    int i = (low - 1); // Index du plus petit élément
 
-    for (int j = gauche; j < droite; j++) {
-        if (*((int*) tab[j]) <= pivot) {
+    for (int j = low; j <= high - 1; j++) {
+        if (*((int*) arr[index[j]]) <= pivot) {
             i++;
-            echanger((int*) tab[i], (int*) tab[j]);
+            // Échanger index[i] et index[j]
+            unsigned long long int temp = index[i];
+            index[i] = index[j];
+            index[j] = temp;
         }
     }
-
-    echanger((int*) tab[i + 1], (int*) tab[droite]);
-    return i + 1;
+    // Échanger index[i + 1] et index[high] (pivot)
+    unsigned long long int temp = index[i + 1];
+    index[i + 1] = index[high];
+    index[high] = temp;
+    return (i + 1);
 }
 
+// Fonction Quicksort pour un tableau d'index
+void quicksort(COL_TYPE * arr[], unsigned long long int index[], int low, unsigned int high) {
+    if (low < high) {
+        // pi est l'index de partition, index[pi] est à la bonne position
+        int pi = partition(arr, index, low, high);
 
-// Fonction Quicksort pour trier un tableau
-void quicksort(COL_TYPE * tab[], int gauche, unsigned int droite) {
-    if (gauche < droite) {
-        int pi = partition(tab, gauche, droite);
-        quicksort(tab, gauche, pi - 1);
-        quicksort(tab, pi + 1, droite);
-    }
-}
-
-// Fonction tri_insertion
-void tri_insertion(COL_TYPE * tab[], unsigned int N) {
-    for (int i = 1; i < N; i++) {
-        int k = *((int*) tab[i]); // Élément à insérer dans la partie triée
-        int j = i - 1;
-
-        // Déplacer les éléments plus grands que k vers la droite
-        while (j >= 0 && *((int*) tab[j]) > k) {
-            *((int*) tab[j + 1]) = *((int*) tab[j]);
-            j--;
-        }
-
-        // Insérer k à la bonne position dans la partie triée
-        *((int*) tab[j + 1]) = k;
+        // Tri des éléments séparément avant et après la partition
+        quicksort(arr, index, low, pi - 1);
+        quicksort(arr, index, pi + 1, high);
     }
 }
 
 // Fonction de tri générale en fonction du type de tri pour un tableau d'index
 void sort(COLUMN* col, int sort_dir) {
     if (col->VALID_INDEX == 0) {
-
         // Tri non trié : Utiliser Quicksort pour le tableau d'index
-        quicksort( col->DONNEES, 0, col->TAILLE_LOGIQUE - 1);
+        quicksort(col->DONNEES, col->INDEX, 0, col->TAILLE_LOGIQUE - 1);
     } else if (col->VALID_INDEX == -1) {
         // Tri partiellement trié : Utiliser Insertion Sort pour le tableau d'index
-        tri_insertion( col->DONNEES, col->TAILLE_LOGIQUE);
+        insertion(col->DONNEES, col->INDEX, col->TAILLE_LOGIQUE);
     }
 
     // Si le tri est DESC, inverser le tableau d'index trié
-    if (sort_dir == 1) {
+    if (sort_dir == DESC) {
         int i = 0;
         unsigned int j = col->TAILLE_LOGIQUE - 1;
         while (i < j) {
-            unsigned int temp = col->INDEX[i];
+            unsigned long long int temp = col->INDEX[i];
             col->INDEX[i] = col->INDEX[j];
             col->INDEX[j] = temp;
             i++;
@@ -194,6 +196,7 @@ void sort(COLUMN* col, int sort_dir) {
         }
     }
 }
+
 
 
 void print_col_by_index(COLUMN *col) {

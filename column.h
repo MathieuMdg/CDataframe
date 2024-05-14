@@ -97,16 +97,15 @@ void convert_value(COLUMN *col, unsigned long long int i, char *str, int size);
 // Créer un tableau d'index pour trier les valeurs dans un ordre donnée
 void sort(COLUMN* col, int sort_dir);
 
-void tri_insertion(COL_TYPE * tab[], unsigned int N);
+int partition(COL_TYPE * arr[], unsigned long long int index[], int low, unsigned int high);
 
-void quicksort(COL_TYPE * tab[], int gauche, unsigned int droite);
-
-int partition(COL_TYPE * tab[], int gauche, unsigned int droite);
+void insertion(COL_TYPE * arr[], unsigned long long int index[], unsigned int n);
 
 void echanger(int *a, int *b);
 
 void print_col_by_index(COLUMN *col);
 
+void sort_index(COLUMN* col, int sort_dir);
 
 
 
