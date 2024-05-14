@@ -8,12 +8,12 @@
 
 int main() {
 
-    COLUMN *mycol = create_column(STRING, "sorted column");
-    char a[] = "abracadabra";
-    char b[] = "boboub";
-    char c[] = "c";
-    char d[] = "duouloul";
-    char e[] = "escalib";
+    COLUMN *mycol = create_column(INT, "sorted column");
+    int a = 2;
+    int b = 6;
+    int c = 9;
+    int d = 23;
+    int e = 5;
     insert_value(mycol, &a);
     insert_value(mycol, &b);
     insert_value(mycol, &e);
@@ -26,7 +26,7 @@ int main() {
     sort(mycol,DESC);
     printf("Column content after sorting : \n");
     print_col_by_index(mycol);
-    printf("\n%d", search_value_in_column(mycol, (void *) "c"));
+    printf("\n%d", search_value_in_column(mycol, (void *) 9));
 
 
 

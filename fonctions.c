@@ -223,28 +223,76 @@ void sort(COLUMN* col, int sort_dir) {
 
 // Fonction de recherche dichotomique dans un tableau d'index trié
 int binarySearch(COLUMN * col, int left, int right, void* value) {
+    if (col->COLUMN_TYPE == STRING) {
+        while (left <= right) {
 
-    while (left <= right) {
+            int middle = left + (right - left) / 2;
 
-        int middle = left + (right - left) / 2;
+            // Accéder à l'élément cible dans le tableau principal de données via l'index
+            char* current = (char *) col->DONNEES[col->INDEX[middle]];
+            printf(" %s", current);
 
-        // Accéder à l'élément cible dans le tableau principal de données via l'index
-        int current = *((int*)col->DONNEES[col->INDEX[middle]]);
 
+            // Comparaison de l'élément actuel avec la cible
+            // Ici, nous supposons que nous comparons des entiers (à adapter en fonction de COLUMN_TYPE)
+            if (strcmp(current, (char *) value) == 0) {
 
-        // Comparaison de l'élément actuel avec la cible
-        // Ici, nous supposons que nous comparons des entiers (à adapter en fonction de COLUMN_TYPE)
-        if (current == (int*) value) {
+                return middle; // Retourne l'indice dans le tableau d'index
+            }
 
-            return middle; // Retourne l'indice dans le tableau d'index
+            // Mise à jour des limites de recherche en fonction de la comparaison
+            if (col->SORT_DIR == ASC) {
+                if (strcmp(current, (char *) value) < 0 ) {
+                    left = middle + 1;
+                }
+                else {
+                    right = middle - 1;
+                }
+            }
+            else {
+                if (strcmp(current, (char *) value) < 0) {
+                    right = middle - 1;
+                }
+                else {
+                    left = middle + 1;
+                }
+            }
         }
+    }
+    else {
+        while (left <= right) {
 
-        // Mise à jour des limites de recherche en fonction de la comparaison
-        if (current < (int*) value) {
-            left = middle + 1;
-        }
-        else {
-            right = middle - 1;
+            int middle = left + (right - left) / 2;
+
+            // Accéder à l'élément cible dans le tableau principal de données via l'index
+            int current = *((int *) col->DONNEES[col->INDEX[middle]]);
+
+
+            // Comparaison de l'élément actuel avec la cible
+            // Ici, nous supposons que nous comparons des entiers (à adapter en fonction de COLUMN_TYPE)
+            if (current == (int *) value) {
+
+                return middle; // Retourne l'indice dans le tableau d'index
+            }
+
+            // Mise à jour des limites de recherche en fonction de la comparaison
+            if (col->SORT_DIR == ASC) {
+                if (current < (int *) value) {
+                    left = middle + 1;
+                }
+                else {
+                    right = middle - 1;
+                }
+            }
+            else {
+                if (current < (int *) value) {
+                    right = middle + 1;
+                }
+                else {
+                    left = middle - 1;
+                }
+            }
+
         }
     }
 
