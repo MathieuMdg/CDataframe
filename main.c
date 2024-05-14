@@ -15,6 +15,8 @@ int main() {
     int e = 78;
     insert_value(mycol, &a);
     insert_value(mycol, &b);
+    insert_value(mycol, &e);
+    insert_value(mycol, &e);
     insert_value(mycol, &c);
     insert_value(mycol, &e);
     insert_value(mycol, &d);
