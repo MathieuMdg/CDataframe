@@ -99,8 +99,8 @@ int insert_value(COLUMN* col, void* value) {
                 *((double *) col->DONNEES[col->TAILLE_LOGIQUE]) = *((double *) value);
                 break;
             case STRING:
-                col->DONNEES[col->TAILLE_LOGIQUE] = (char **) malloc(sizeof(char*));
-                *((char **) col->DONNEES[col->TAILLE_LOGIQUE]) = *((char **) value);
+                col->DONNEES[col->TAILLE_LOGIQUE] = (char *) malloc(sizeof(char));
+                col->DONNEES[col->TAILLE_LOGIQUE] = value;
                 break;
             case NULLVAL:
                 col->DONNEES[col->TAILLE_LOGIQUE] = NULL;
@@ -141,35 +141,57 @@ void insertion(COL_TYPE * arr[], unsigned long long int index[], unsigned int n)
 }
 
 // Fonction Partition utilisée dans Quicksort pour un tableau d'index
-int partition(COL_TYPE * arr[], unsigned long long int index[], int low, unsigned int high) {
-    int pivot = *((int*) arr[index[high]]);
-    int i = (low - 1); // Index du plus petit élément
+int partition(COL_TYPE * arr[], unsigned long long int index[], int low, unsigned int high, COLUMN* col) {
+    if (col->COLUMN_TYPE == STRING) {
+        char* pivot = (char*) arr[index[high]];
+        int i = (low - 1); // Index du plus petit élément
 
-    for (int j = low; j <= high - 1; j++) {
-        if (*((int*) arr[index[j]]) <= pivot) {
-            i++;
-            // Échanger index[i] et index[j]
-            unsigned long long int temp = index[i];
-            index[i] = index[j];
-            index[j] = temp;
+
+        for (int j = low; j <= high - 1; j++) {
+            if (strcmp((char *) arr[index[j]], pivot) <= 0) {
+                i++;
+                // Échanger index[i] et index[j]
+                unsigned long long int temp = index[i];
+                index[i] = index[j];
+                index[j] = temp;
+            }
         }
+        // Échanger index[i + 1] et index[high] (pivot)
+        unsigned long long int temp = index[i + 1];
+        index[i + 1] = index[high];
+        index[high] = temp;
+        return (i + 1);
     }
-    // Échanger index[i + 1] et index[high] (pivot)
-    unsigned long long int temp = index[i + 1];
-    index[i + 1] = index[high];
-    index[high] = temp;
-    return (i + 1);
+    else {
+        int pivot = *((int *) arr[index[high]]);
+        int i = (low - 1); // Index du plus petit élément
+
+        for (int j = low; j <= high - 1; j++) {
+            if (*((int *) arr[index[j]]) <= pivot) {
+                i++;
+                // Échanger index[i] et index[j]
+                unsigned long long int temp = index[i];
+                index[i] = index[j];
+                index[j] = temp;
+            }
+        }
+        // Échanger index[i + 1] et index[high] (pivot)
+        unsigned long long int temp = index[i + 1];
+        index[i + 1] = index[high];
+        index[high] = temp;
+        return (i + 1);
+    }
 }
 
 // Fonction Quicksort pour un tableau d'index
-void quicksort(COL_TYPE * arr[], unsigned long long int index[], int low, unsigned int high) {
+void quicksort(COL_TYPE * arr[], unsigned long long int index[], int low, unsigned int high, COLUMN* col) {
     if (low < high) {
         // pi est l'index de partition, index[pi] est à la bonne position
-        int pi = partition(arr, index, low, high);
+        int pi = partition(arr, index, low, high, col);
 
         // Tri des éléments séparément avant et après la partition
-        quicksort(arr, index, low, pi - 1);
-        quicksort(arr, index, pi + 1, high);
+        quicksort(arr, index, low, pi - 1, col);
+        quicksort(arr, index, pi + 1, high, col);
     }
 }
 
@@ -177,7 +199,7 @@ void quicksort(COL_TYPE * arr[], unsigned long long int index[], int low, unsign
 void sort(COLUMN* col, int sort_dir) {
     if (col->VALID_INDEX == 0) {
         // Tri non trié : Utiliser Quicksort pour le tableau d'index
-        quicksort(col->DONNEES, col->INDEX, 0, col->TAILLE_LOGIQUE - 1);
+        quicksort(col->DONNEES, col->INDEX, 0, col->TAILLE_LOGIQUE - 1, col);
     } else if (col->VALID_INDEX == -1) {
         // Tri partiellement trié : Utiliser Insertion Sort pour le tableau d'index
         insertion(col->DONNEES, col->INDEX, col->TAILLE_LOGIQUE);
@@ -256,9 +278,15 @@ void print_col_by_index(COLUMN *col) {
             printf("[%d] NULL\n", i);
         }
         else {
-            char str[100];
-            convert_value(col, col->INDEX[i], str, 100);
-            printf("[%d] %s\n", i, str);
+            if (col->COLUMN_TYPE != STRING) {
+                char str[100];
+                convert_value(col, col->INDEX[i], str, 100);
+                printf("[%d] %s\n", i, str);
+            }
+            else {
+                printf("[%d] %s\n", i, (char*) col->DONNEES[col->INDEX[i]]);
+            }
+
         }
     }
 }
@@ -270,9 +298,15 @@ void print_col(COLUMN* col) {
             printf("[%d] NULL\n", i);
         }
         else {
-            char str[100];
-            convert_value(col, i, str, 100);
-            printf("[%d] %s\n", i, str);
+            if (col->COLUMN_TYPE != STRING) {
+                char str[100];
+                convert_value(col, i, str, 100);
+                printf("[%d] %s\n", i, str);
+            }
+            else {
+                printf("[%d] %s\n", i, (char*) col->DONNEES[i]);
+            }
+
         }
     }
 }

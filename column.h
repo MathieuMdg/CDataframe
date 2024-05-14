@@ -97,7 +97,7 @@ void convert_value(COLUMN *col, unsigned long long int i, char *str, int size);
 // Créer un tableau d'index pour trier les valeurs dans un ordre donnée
 void sort(COLUMN* col, int sort_dir);
 
-int partition(COL_TYPE * arr[], unsigned long long int index[], int low, unsigned int high);
+int partition(COL_TYPE * arr[], unsigned long long int index[], int low, unsigned int high, COLUMN* col);
 
 void insertion(COL_TYPE * arr[], unsigned long long int index[], unsigned int n);
 
