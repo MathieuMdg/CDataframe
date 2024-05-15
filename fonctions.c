@@ -31,7 +31,68 @@ void print_answer(char* string) {
     printf("\n\n\n");
 }
 
+void* type_choice(COLUMN* col) {
+    switch (col->COLUMN_TYPE) {
+        case CHAR:
+            printf("CHOISIR VALEUR TYPE [CHAR] : ");
+            char* value_char = (char*) malloc(sizeof (char));
+            scanf(" %c", (char*) &value_char);
+            printf("\n\n\n");
+            return value_char;
 
+        case INT:
+            printf("CHOISIR VALEUR TYPE [INT] : ");
+            int* value_int = (int*) malloc(sizeof (int));
+            scanf(" %d", (int*) &value_int);
+            printf("\n\n\n");
+            return value_int;
+
+        case UINT:
+            printf("CHOISIR VALEUR TYPE [UINT] : ");
+            unsigned int* value_uint = (unsigned int*) malloc(sizeof (unsigned int));
+            scanf(" %u", (unsigned int*) &value_uint);
+            printf("\n\n\n");
+            return value_uint;
+
+        case FLOAT:
+            printf("CHOISIR VALEUR TYPE [FLOAT] : ");
+            float* value_float = (float*) malloc(sizeof (float));
+            scanf(" %f", (float*) &value_float);
+            printf("\n\n\n");
+            return value_float;
+
+        case DOUBLE:
+            printf("CHOISIR VALEUR TYPE [DOUBLE] : ");
+            double* value_double = (double *) malloc(sizeof (double ));
+            scanf(" %lf", (double*) &value_double);
+            printf("\n\n\n");
+            return value_double;
+
+        case NULLVAL:
+            printf("CHOISIR VALEUR TYPE [NULLVAL] : ");
+            void* value_null = NULL;
+            printf("\n\n\n");
+            return value_null;
+
+        case STRING:
+            printf("CHOISIR VALEUR TYPE [STRING] : ");
+            char* value_string = (char*) malloc(sizeof (char));
+            scanf(" %s", value_string);
+            printf("\n\n\n");
+            return value_string;
+
+        case STRUCTURE:
+            printf("CHOISIR VALEUR TYPE [STRUCTURE] : ");
+            //double* value_double = (double *) malloc(sizeof (double ));
+            //scanf(" %lf", (double*) &value_double);
+            //printf("\n\n\n");
+           // return value_double;
+
+        default:
+            printf("TYPE DE COLONNE ERRONE\n");
+            break;
+    }
+}
 
 // Fonction qui prend un titre de colonne et renvoie un pointer sur la colonne.
 COLUMN* create_column(ENUM_TYPE type, char* title) {
@@ -624,9 +685,9 @@ void print_CData_selected_column(maillon* CData) {
     if (CData != NULL)
     {
         tmp = CData;
-        while(tmp->INDEX != value2)
+        while(tmp->NUMBER_COLONNE != value2)
         {
-            if(tmp->INDEX > value1 - 1) {
+            if(tmp->NUMBER_COLONNE > value1 - 1) {
                 printf("%s\n", tmp->COLUMN->CHAINE);
                 print_col(tmp->COLUMN);
                 printf("\n");

@@ -1,4 +1,5 @@
 [] Améliorer les fonctions pour le type struct
 [/] Résoudre le problème pour les chaînes de caractères
-[] Résoudre le problème de tri pour les chaînes de caractères
+[/] Résoudre le problème de tri pour les chaînes de caractères
 [] Implémenter les fonctionnalités du CDataframe précedent
+[] Améliorer le CDataframe (partie 3 du projet)

@@ -3,7 +3,7 @@
 
 struct maillon
 {
-    int INDEX;
+    int NUMBER_COLONNE;
     struct mailllon *SUCC;
     COLUMN* COLUMN;
 };

@@ -116,7 +116,7 @@ void sort_index(COLUMN* col, int sort_dir);
 
 int search_value_in_column(COLUMN* col, void* value);
 
-
+void* type_choice(COLUMN* col);
 
 
 // Affiche un message d'erreur
