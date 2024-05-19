@@ -760,7 +760,8 @@ int main() {
     LNODE * tmp = MIAM->head;
 
     while (tmp!= NULL) {
-        char ch[] = "hehe";
+        int* ch = (int*) malloc(sizeof (int));
+        *ch= 1;
         insert_value(tmp->COLUMN, ch);
         insert_value(tmp->COLUMN, ch);
         print_col(tmp->COLUMN);
@@ -770,8 +771,18 @@ int main() {
     printf("\n");
 
     printf("\hehr\n");
-    save_into_csv(MIAM, "MIAM.csv");
+    save_into_csv(MIAM, "CHIPS.csv");
+
+    CDATAFRAME* SLURP = load_from_csv("MIAM.csv", cdata_type, 3);
+
+    printf("\n\n\n\n");
+    tmp = SLURP->head;
+    while (tmp!= NULL) {
+        print_col(tmp->COLUMN);
+        tmp = tmp->SUCC;
+    }
     delete_cdataframe(&MIAM);
+    delete_cdataframe(&SLURP);
     return 0;
 }
 

@@ -494,9 +494,7 @@ void update_index(COLUMN *col) {
 // Supprime l'espace mémoire occupé par une colonne
 void delete_column(COLUMN* col) {
     for (int i = 0; i<col->TAILLE_LOGIQUE; i++) {
-        printf("AHHHHHHHHHHHHH");
         free(col->DONNEES[i]);
-        printf("OHHHHHHHHHHHHH");
     }
     free(col->DONNEES);
     free(col);
@@ -884,6 +882,9 @@ int get_cdataframe_cols_size(CDATAFRAME *cdf) {
 }
 
 CDATAFRAME* load_from_csv(char *file_name, ENUM_TYPE *dftype, int size) {
+
+    CDATAFRAME* Cdata = create_cdataframe(dftype, size);
+
     FILE *file;
     char ligne[256];  // Buffer pour stocker les lignes lues
     char file_path[] = "C:\\Users\\abuhl\\Documents\\GitHub\\CDataframe\\";
@@ -896,20 +897,30 @@ CDATAFRAME* load_from_csv(char *file_name, ENUM_TYPE *dftype, int size) {
         return NULL;
     }
 
-    int line_count = 0;
+    LNODE* tmp = Cdata->head;
 
-    // Lecture du fichier ligne par ligne
-    while (fgets(ligne, sizeof(ligne), file) != NULL) {
-        line_count++;
-        // Supprimer le caractère de nouvelle ligne s'il existe
-        ligne[strcspn(ligne, "\n")] = '\0';
-
-        // Afficher la ligne lue
-        printf("Ligne %d: %s\n", line_count, ligne);
+    while (tmp != NULL) {
+        tmp->COLUMN = create_column(dftype[tmp->NUMBER_COLONNE],"");
+        tmp = tmp->SUCC;
     }
 
-    fclose(file);  // Ferme le fichier après utilisation
-    return NULL;
+    char* chaine;
+    while (fgets(ligne, sizeof(ligne), file) != NULL) {
+        tmp = Cdata->head;
+        const char * separators = ",;\n";
+        chaine = strtok (ligne, separators);
+        while (tmp != NULL) {
+            char *ptr_chaine = (char*) malloc(sizeof (char));
+            strcpy(ptr_chaine, chaine);
+            printf("%s\n", ptr_chaine);
+            insert_value(tmp->COLUMN, ptr_chaine);
+            tmp = tmp->SUCC;
+            chaine = strtok (NULL, separators);
+        }
+
+    }
+    return Cdata;
+
 }
 
 
