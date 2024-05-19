@@ -1172,4 +1172,30 @@ CDATAFRAME* fill_CDataframe_auto(CDATAFRAME* Cdata) {
     return Cdata;
 }
 
+int add_lines(CDATAFRAME* CData) {
 
+    printf("NOM DE LA COLONNE :");
+    char title[100] = "";
+    char *ptr_title = malloc(strlen(title) + 1);
+    scanf(" %s", title);
+    strcpy(ptr_title, title);
+
+    LNODE* tmp = CData->head;
+
+    while (tmp != NULL && strcmp(ptr_title, tmp->COLUMN->CHAINE) != 0) {
+        tmp = tmp->SUCC;
+    }
+
+    if (tmp == NULL) {
+        print_answer("Colonne inexistante...");
+    }
+    if (strcmp(ptr_title, tmp->COLUMN->CHAINE) == 0) {
+        if (insert_value(tmp->COLUMN, type_choice(tmp->COLUMN) ,tmp->COLUMN->COLUMN_TYPE)) {
+            print_answer("Valeur ajoutee...");
+        };
+    }
+
+    return 1;
+
+
+}

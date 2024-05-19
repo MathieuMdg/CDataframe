@@ -2,4 +2,5 @@
 [/] Résoudre le problème pour les chaînes de caractères
 [/] Résoudre le problème de tri pour les chaînes de caractères
 [] Implémenter les fonctionnalités du CDataframe précedent
-[] Améliorer le CDataframe (partie 3 du projet)
+[/] Améliorer le CDataframe (partie 3 du projet)
+[] Fonction print_columns_Dataframe a améliorer si l'utilisateur saisie une val1 > val2

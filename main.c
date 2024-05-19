@@ -158,35 +158,8 @@ int main() {
 
                         case 'a':
 
+                            add_lines(ptr_CDataframe);
 
-                            if (init_CDataframe == 1) {
-                                int column_number;
-                                printf("\n\n\n");
-                                printf("NUMERO COLONNE : ");
-                                scanf(" %d", &column_number);
-                                column_number += 1;
-                                LNODE *tmp;
-                                if (ptr_CDataframe != NULL) {
-                                    int i = 0;
-                                    tmp = ptr_CDataframe->head;
-                                    while (tmp != NULL && i < column_number - 1) {
-                                        i++;
-                                        tmp = (LNODE *) tmp->SUCC;
-                                    }
-                                    if (tmp == NULL) {
-                                        print_answer("Colonne inexistante...");
-                                    } else {
-                                        ENUM_TYPE value;
-                                        printf("\n\n\n");
-                                        printf("VALEUR A AJOUTER : ");
-                                        scanf(" %d", &value);
-                                        printf("\n");
-                                        insert_value(tmp->COLUMN, &value, tmp->COLUMN->COLUMN_TYPE);
-                                    }
-                                }
-                            } else {
-                                init_CData();
-                            }
                             break;
 
                         case 'b':

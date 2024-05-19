@@ -28,6 +28,8 @@ CDATAFRAME* load_from_csv(char *file_name, ENUM_TYPE *dftype, int size);
 
 COLUMN* acces_column_by_name(CDATAFRAME* cdata, char* column_name);
 
+int add_lines(CDATAFRAME* CData);
+
 CDATAFRAME* fill_CDataframe(CDATAFRAME* Cdata);
 
 LNODE* create_lnode();
