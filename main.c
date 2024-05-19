@@ -754,16 +754,14 @@ int main() {
         }
     }
 
-    ENUM_TYPE cdata_type[] = {INT, INT, INT, INT, CHAR, INT, INT, CHAR, INT};
+    ENUM_TYPE cdata_type[] = {STRING, STRING, STRING, STRING, CHAR, INT, INT, CHAR, INT};
     int number_column = 3;
     CDATAFRAME* MIAM = create_cdataframe(cdata_type,  number_column);
     LNODE * tmp = MIAM->head;
 
     while (tmp!= NULL) {
-        int* ch = (int*) malloc(sizeof (int));
-        *ch = 9;
+        char ch[] = "hehe";
         insert_value(tmp->COLUMN, ch);
-        *ch += 1;
         insert_value(tmp->COLUMN, ch);
         print_col(tmp->COLUMN);
         tmp = tmp->SUCC;

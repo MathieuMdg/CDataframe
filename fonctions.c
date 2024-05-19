@@ -50,6 +50,7 @@ void menu() {
 }
 
 
+// Fonction d'affichage des réponseds
 void print_answer(char* string) {
     printf("\n\n\n");
     for(int i = 0; i < strlen(string) + 6; i++) {
@@ -62,6 +63,8 @@ void print_answer(char* string) {
     printf("\n\n\n");
 }
 
+
+// Fonction qui permet à l'utilisateur de saisir la donnée dans le type de la colonne
 void* type_choice(COLUMN* col) {
     switch (col->COLUMN_TYPE) {
         case CHAR:
@@ -124,6 +127,7 @@ void* type_choice(COLUMN* col) {
             break;
     }
 }
+
 
 // Fonction qui prend un titre de colonne et renvoie un pointer sur la colonne.
 COLUMN* create_column(ENUM_TYPE type, char* title) {
@@ -244,6 +248,7 @@ void insertion(COL_TYPE * arr[], unsigned long long int index[], unsigned int n)
     }
 }
 
+
 // Fonction Partition utilisée dans Quicksort pour un tableau d'index
 int partition(COL_TYPE * arr[], unsigned long long int index[], int low, unsigned int high, COLUMN* col) {
     if (col->COLUMN_TYPE == STRING) {
@@ -287,6 +292,7 @@ int partition(COL_TYPE * arr[], unsigned long long int index[], int low, unsigne
     }
 }
 
+
 // Fonction Quicksort pour un tableau d'index
 void quicksort(COL_TYPE * arr[], unsigned long long int index[], int low, unsigned int high, COLUMN* col) {
     if (low < high) {
@@ -298,6 +304,7 @@ void quicksort(COL_TYPE * arr[], unsigned long long int index[], int low, unsign
         quicksort(arr, index, pi + 1, high, col);
     }
 }
+
 
 // Fonction de tri générale en fonction du type de tri pour un tableau d'index
 void sort(COLUMN* col, int sort_dir) {
@@ -324,6 +331,7 @@ void sort(COLUMN* col, int sort_dir) {
     col->VALID_INDEX = 1;
     col->SORT_DIR = sort_dir;
 }
+
 
 // Fonction de recherche dichotomique dans un tableau d'index trié
 int binarySearch(COLUMN * col, int left, int right, void* value) {
@@ -404,6 +412,7 @@ int binarySearch(COLUMN * col, int left, int right, void* value) {
     return 0;
 }
 
+
 // Fonction de recherche de valeur dans la colonne avec tableau d'index et recherche dichotomique
 int search_value_in_column(COLUMN* col, void* value) {
     if (col == NULL || col->INDEX == NULL || col->TAILLE_LOGIQUE == 0 || col->VALID_INDEX != 1)
@@ -414,7 +423,6 @@ int search_value_in_column(COLUMN* col, void* value) {
 
     return result;
 }
-
 
 
 void erase_index(COLUMN *col) {
@@ -443,6 +451,7 @@ void print_col_by_index(COLUMN *col) {
     }
 }
 
+
 // Affiche une colonne en entier
 void print_col(COLUMN* col) {
     for (int i = 0; i < col->TAILLE_LOGIQUE; i++) {
@@ -463,6 +472,7 @@ void print_col(COLUMN* col) {
     }
 }
 
+
 int check_index(COLUMN *col) {
     if (col->VALID_INDEX == 0) {
         return 0;
@@ -475,6 +485,7 @@ int check_index(COLUMN *col) {
     }
 }
 
+
 void update_index(COLUMN *col) {
     sort(col, col->SORT_DIR);
 }
@@ -483,12 +494,16 @@ void update_index(COLUMN *col) {
 // Supprime l'espace mémoire occupé par une colonne
 void delete_column(COLUMN* col) {
     for (int i = 0; i<col->TAILLE_LOGIQUE; i++) {
+        printf("AHHHHHHHHHHHHH");
         free(col->DONNEES[i]);
+        printf("OHHHHHHHHHHHHH");
     }
     free(col->DONNEES);
     free(col);
 }
 
+
+// Converti les valeurs d'une colonne en chaine de caractère
 void convert_value(COLUMN *col, unsigned long long int i, char *str, int size) {
 
     switch (col->COLUMN_TYPE){
@@ -510,7 +525,7 @@ void convert_value(COLUMN *col, unsigned long long int i, char *str, int size) {
             break;
 
         case STRING:
-            strcpy(str, *((char **) col->DONNEES[col->TAILLE_LOGIQUE]));
+            strcpy(str, (char*) col->DONNEES[i]);
             break;
 
         case CHAR:
@@ -526,8 +541,6 @@ void convert_value(COLUMN *col, unsigned long long int i, char *str, int size) {
 }
 
 
-
-
 // Supprimer une ligne dans une colonne et décale les valeurs
 void delete_line(COLUMN* col) {
     int number_line;
@@ -540,7 +553,6 @@ void delete_line(COLUMN* col) {
     }
     col->TAILLE_LOGIQUE--;
 }
-
 
 
 // Détermine le nombre d'occurence d'une valeur dans une colonne
@@ -566,7 +578,6 @@ int positionx(COLUMN* colonne, int position) {
 }
 
 
-
 // Calcul le nombre de valeur supérieure à x dans une colonne
 int sup_x(COLUMN* colonne, int x) {
     int sup_x = 0;
@@ -577,7 +588,6 @@ int sup_x(COLUMN* colonne, int x) {
     }
     return sup_x;
 }
-
 
 
 // Calcul le nombre de valeur inférieure à x dans une colonne
@@ -618,7 +628,6 @@ void add_line(COLUMN** CData, int nbre_colonne) {
 }
 
 
-
 // Change le nom d'une colonne par un nom donné par l'utilisateur
 void rename_columns_name(COLUMN* col) {
     char title[100] = "";
@@ -626,7 +635,6 @@ void rename_columns_name(COLUMN* col) {
     scanf(" %s", title);
     strcpy(col->CHAINE, title);
 }
-
 
 
 // Cherche si une valeur est présente dans une colonne
@@ -920,12 +928,12 @@ void save_into_csv(CDATAFRAME *cdf, char *file_name) {
         for(int i = 0; i<tmp->COLUMN->TAILLE_LOGIQUE; i++) {
             tmp = cdf->head;
             while (tmp->SUCC != NULL) {
-                char str[50];
+                char* str = (char*) malloc(sizeof (char) * 50);
                 convert_value(tmp->COLUMN, i, str, 50);
                 fprintf(fpt, "%s,", str);
                 tmp = tmp->SUCC;
             }
-            char str[50];
+            char* str = (char*) malloc(sizeof (char) * 50);
             convert_value(tmp->COLUMN, i, str, 50);
             fprintf(fpt, "%s", str);
             fprintf(fpt, "\n");
