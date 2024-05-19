@@ -601,11 +601,14 @@ int main() {
                     switch (fonction) {
 
                         case 'a':
+
                             char* column_name = NULL;
                             printf("\n\n\nNOM COLONNE :");
                             scanf(" %s", column_name);
                             printf("\n");
+
                             COLUMN* new_column = acces_column_by_name(ptr_CDataframe, column_name);
+
                             printf("\n\n\nTYPE DE TRI (ASC ou DES) :");
                             int sort_dir;
                             scanf(" %d", &sort_dir);
@@ -617,10 +620,26 @@ int main() {
 
                         case 'b':
 
+                            char name_column[100];
+                            printf("\n\n\nNOM COLONNE :");
+                            scanf(" %s", name_column);
+
+                            check_index(acces_column_by_name(ptr_CDataframe, name_column));
+
+                            print_answer("Indice de la colonne efface...");
+
                             break;
 
 
                         case 'c':
+
+                            char column[100];
+                            printf("\n\n\nNOM COLONNE :");
+                            scanf(" %s", column);
+
+                            erase_index(acces_column_by_name(ptr_CDataframe, column));
+
+                            print_answer("Indice de la colonne efface...");
 
                             break;
 
@@ -646,21 +665,24 @@ int main() {
 
                                     ptr_CDataframe = load_from_csv(file_name, type, column_number);
 
-                                    print_answer("ptr_CDataframe creer...");
+                                    print_answer("ptr_CDataframe cree...");
                                 }
                                 else{
                                     print_answer("CDataframe déjà rempli, veuillez en créer un nouveau...");
                                 }
+
                             break;
 
                         case 'e':
 
-                            printf("NOM DU FICHIER :");
+                            printf("\n\n\nNOM DU FICHIER :");
                             char file_name[100];
                             scanf(" %s", file_name);
                             printf("\n\n\n\n");
 
                             save_into_csv(ptr_CDataframe, file_name);
+
+                            print_answer("CDataframe sauvegarde dans le fichier...");
 
                             break;
 
