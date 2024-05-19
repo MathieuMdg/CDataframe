@@ -495,7 +495,6 @@ void convert_value(COLUMN *col, unsigned long long int i, char *str, int size) {
 
         case INT:
             snprintf(str, size, "%d", *((int *) col->DONNEES[i]));
-            printf("%d", *((int*) col->DONNEES[i]));
             break;
 
         case UINT:
@@ -903,5 +902,35 @@ CDATAFRAME* load_from_csv(char *file_name, ENUM_TYPE *dftype, int size) {
 
     fclose(file);  // Ferme le fichier après utilisation
     return NULL;
+}
+
+
+void save_into_csv(CDATAFRAME *cdf, char *file_name) {
+    FILE *fpt;
+
+    char file_path[] = "C:\\Users\\abuhl\\Documents\\GitHub\\CDataframe\\";
+    strcat(file_path, file_name);
+
+    fpt = fopen(file_path, "w+");
+
+
+    LNODE* tmp = cdf->head;
+    printf("%d", tmp->COLUMN->TAILLE_LOGIQUE);
+
+        for(int i = 0; i<tmp->COLUMN->TAILLE_LOGIQUE; i++) {
+            tmp = cdf->head;
+            while (tmp->SUCC != NULL) {
+                char str[50];
+                convert_value(tmp->COLUMN, i, str, 50);
+                fprintf(fpt, "%s,", str);
+                tmp = tmp->SUCC;
+            }
+            char str[50];
+            convert_value(tmp->COLUMN, i, str, 50);
+            fprintf(fpt, "%s", str);
+            fprintf(fpt, "\n");
+        }
+
+    fclose(fpt);
 }
 

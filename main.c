@@ -754,11 +754,25 @@ int main() {
         }
     }
 
-    ENUM_TYPE cdata_type[] = {INT, CHAR, INT, INT, CHAR, INT, INT, CHAR, INT};
-    int number_column = 9;
+    ENUM_TYPE cdata_type[] = {INT, INT, INT, INT, CHAR, INT, INT, CHAR, INT};
+    int number_column = 3;
     CDATAFRAME* MIAM = create_cdataframe(cdata_type,  number_column);
+    LNODE * tmp = MIAM->head;
+
+    while (tmp!= NULL) {
+        int* ch = (int*) malloc(sizeof (int));
+        *ch = 9;
+        insert_value(tmp->COLUMN, ch);
+        *ch += 1;
+        insert_value(tmp->COLUMN, ch);
+        print_col(tmp->COLUMN);
+        tmp = tmp->SUCC;
+    }
+
     printf("\n");
-    load_from_csv("Classeur1.csv", cdata_type, 3);
+
+    printf("\hehr\n");
+    save_into_csv(MIAM, "MIAM.csv");
     delete_cdataframe(&MIAM);
     return 0;
 }

@@ -20,5 +20,7 @@ void print_CData_number_column(LNODE* CData);
 // Créer un nouveau LNODE du CDataframe
 LNODE * CData_create_column();
 
+void save_into_csv(CDATAFRAME *cdf, char *file_name);
+
 
 #endif //CDATAFRAME_CDATAFRAME_H
