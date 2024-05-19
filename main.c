@@ -649,8 +649,19 @@ int main() {
                                     print_answer("ptr_CDataframe creer...");
                                 }
                                 else{
-                                    print_answer("CDatafrale déjà rempli, veuillez en créer un nouveau...");
+                                    print_answer("CDataframe déjà rempli, veuillez en créer un nouveau...");
                                 }
+                            break;
+
+                        case 'e':
+
+                            printf("NOM DU FICHIER :");
+                            char file_name[100];
+                            scanf(" %s", file_name);
+                            printf("\n\n\n\n");
+
+                            save_into_csv(ptr_CDataframe, file_name);
+
                             break;
 
 

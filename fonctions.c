@@ -1020,6 +1020,7 @@ void save_into_csv(CDATAFRAME *cdf, char *file_name) {
     fclose(fpt);
 }
 
+
 COLUMN* acces_column_by_name(CDATAFRAME* cdata, char* column_name) {
     LNODE* tmp = cdata->head;
     while (tmp != NULL && strcmp((tmp->COLUMN->CHAINE), column_name) != 0) {
