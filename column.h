@@ -53,7 +53,7 @@ typedef struct column COLUMN;
 COLUMN* create_column(ENUM_TYPE type, char* title);
 
 // Ajouter une valeur dans une colonne
-int insert_value(COLUMN *col, void *value);
+int insert_value(COLUMN *col, void *value, ENUM_TYPE col_type);
 
 // Supprimer l'espace mémoire occupé par une colonne
 void delete_column(COLUMN *col);

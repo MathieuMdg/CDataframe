@@ -31,9 +31,9 @@ LNODE * CData_create_column() {
     for (int j = 0; j < number_lines; j++) {
         void *value = type_choice(nouveau->COLUMN);
         if (nouveau->COLUMN->COLUMN_TYPE == STRING) {
-            insert_value(nouveau->COLUMN, value);
+            insert_value(nouveau->COLUMN, value, nouveau->COLUMN->COLUMN_TYPE);
         } else {
-            insert_value(nouveau->COLUMN, &value);
+            insert_value(nouveau->COLUMN, &value, nouveau->COLUMN->COLUMN_TYPE);
         }
     }
     return nouveau;
@@ -44,7 +44,7 @@ LNODE * CData_create_column() {
 void menu() {
     for(int i = 0; i<6; i++)
         printf("\n");
-    printf("1. Alimentation\n\n- Creation du CDataframe vide\n- Remplissage du CDataframe a partir de saisies utilisateurs\n- Remplissage en dur du CDataframe\n\n2. Affichage\n\n- Afficher tout le CDataframe\n- Afficher une partie des lignes du CDataframe selon une limite fournie par l utilisateur\n- Afficher une partie des colonnes du CDataframe selon une limite fournie par l utilisateur\n\n3. Operations usuelles\n\n- Ajouter une ligne de valeurs au CDataframe\n- Supprimer une ligne de valeurs du CDataframe\n- Ajouter une colonne au CDataframe\n- Supprimer une colonne du CDataframe\n- Renommer le titre d une colonne du CDataframe\n- Verifier l existence d une valeur (recherche) dans le CDataframe\n- Acceder/remplacer la valeur se trouvant dans une cellule du CDataframe en utilisant son\nnumero de ligne et de colonne\n- Afficher les noms des colonnes\n\n4. Analyse et statistiques\n\n- Afficher le nombre de lignes\n- Afficher le nombre de colonnes\n- Nombre de cellules contenant une valeur egale a x (x donne en parametre)\n- Nombre de cellules contenant une valeur superieure a x (x donne en parametre)\n- Nombre de cellules contenant une valeur inferieure a x(x donne en parametre)\n");
+    printf("1. Alimentation\n\n- Creation du CDataframe vide\n- Remplissage du CDataframe a partir de saisies utilisateurs\n- Remplissage en dur du CDataframe\n\n2. Affichage\n\n- Afficher tout le CDataframe\n- Afficher une partie des lignes du CDataframe selon une limite fournie par l utilisateur\n- Afficher une partie des colonnes du CDataframe selon une limite fournie par l utilisateur\n\n3. Operations usuelles\n\n- Ajouter une ligne de valeurs au CDataframe\n- Supprimer une ligne de valeurs du CDataframe\n- Ajouter une colonne au CDataframe\n- Supprimer une colonne du CDataframe\n- Renommer le titre d une colonne du CDataframe\n- Verifier l existence d une valeur (recherche) dans le CDataframe\n- Acceder/remplacer la valeur se trouvant dans une cellule du CDataframe en utilisant son\nnumero de ligne et de colonne\n- Afficher les noms des colonnes\n\n4. Analyse et statistiques\n\n- Afficher le nombre de lignes\n- Afficher le nombre de colonnes\n- Nombre de cellules contenant une valeur egale a x (x donne en parametre)\n- Nombre de cellules contenant une valeur superieure a x (x donne en parametre)\n- Nombre de cellules contenant une valeur inferieure a x(x donne en parametre)\n\n5.Manupulation de CDataframe\n\n- Trier une colonne\n- Regarder le statut d'index d'une colonne\n- Effacer l'index d'une colonne\n- Importer un CDataframe d'un fichier .csv\n- Sauvegarder un CDataframe dans un fichier .csv");
     for(int i = 0; i<3; i++)
         printf("\n");
 }
@@ -67,17 +67,19 @@ void print_answer(char* string) {
 // Fonction qui permet à l'utilisateur de saisir la donnée dans le type de la colonne
 void* type_choice(COLUMN* col) {
     switch (col->COLUMN_TYPE) {
+
         case CHAR:
             printf("CHOISIR VALEUR TYPE [CHAR] : ");
             char* value_char = (char*) malloc(sizeof (char));
-            scanf(" %c", (char*) &value_char);
+            scanf(" %c", value_char);
             printf("\n\n\n");
+            col->DONNEES[col->TAILLE_LOGIQUE] = (COL_TYPE *) value_char;
             return value_char;
 
         case INT:
             printf("CHOISIR VALEUR TYPE [INT] : ");
             int* value_int = (int*) malloc(sizeof (int));
-            scanf(" %d", (int*) &value_int);
+            scanf(" %d", value_int);
             printf("\n\n\n");
             return value_int;
 
@@ -144,7 +146,7 @@ COLUMN* create_column(ENUM_TYPE type, char* title) {
 
 
 // Permet d'ajouter une valeur à la fin d'une colonne et de l'agrandir si besoin
-int insert_value(COLUMN* col, void* value) {
+int insert_value(COLUMN* col, void* value, ENUM_TYPE col_type) {
 
     // Si la colonne est vide
     if (col == NULL) {
@@ -160,33 +162,43 @@ int insert_value(COLUMN* col, void* value) {
             return 0;
         }
     }
+
     if (col->TAILLE_LOGIQUE == col->TAILLE_PHYSIQUE) {
         col->TAILLE_PHYSIQUE += REALOC_SIZE;
         col->DONNEES = realloc(col->DONNEES, col->TAILLE_PHYSIQUE);
         col->INDEX = realloc(col->INDEX, col->TAILLE_PHYSIQUE);
+        printf("REALLOCATION...");
     }
 
-    // Allocation de l'espace pour la valeur
+
     col->INDEX[col->TAILLE_LOGIQUE] = col->TAILLE_LOGIQUE;
+
     if (value == NULL){
         col->DONNEES[col->TAILLE_LOGIQUE] = NULL;
     }
+
     else {
+
         // Affecter la valeur en fonction du type de colonne
         switch (col->COLUMN_TYPE) {
+
             case CHAR:
                 col->DONNEES[col->TAILLE_LOGIQUE] = (COL_TYPE *) (char *) malloc(sizeof(char));
                 *((char *) col->DONNEES[col->TAILLE_LOGIQUE]) = *((char *) value);
                 break;
 
             case INT:
+
                 col->DONNEES[col->TAILLE_LOGIQUE] = (COL_TYPE *) (int *) malloc(sizeof(int));
                 if (col->DONNEES[col->TAILLE_LOGIQUE] == NULL) {
                     printf("ERREUR ALLOCATION");
                     printf("%d", *((int*) value));
                 }
-                printf("%d", *((int*) value));
+
                 *((int *) col->DONNEES[col->TAILLE_LOGIQUE]) = *((int *) value);
+                if (col->DONNEES[col->TAILLE_LOGIQUE] == NULL) {
+                    printf("ERREUR D ASSIGNATION DE LA VALEUR");
+                }
                 break;
 
             case UINT:
@@ -618,7 +630,7 @@ void add_line(COLUMN** CData, int nbre_colonne) {
     while (colonne > nbre_colonne - 1);
     printf("valuer à ajouter : ");
     scanf(" %d", &val);
-    if (insert_value(CData[colonne], val)) {
+    if (insert_value(CData[colonne], val, INT)) {
     }
     else {
         printf("Error adding value to my column\n");
@@ -706,11 +718,12 @@ int CData_inf_x(COLUMN** CData, int nbre_colonne) {
 // Affichage (CDataframe chainé)
 
 
-void print_CData_chaine(LNODE * CData) {
+void print_CData_chaine(CDATAFRAME* CData) {
+
     LNODE* tmp ;
-    if (CData != NULL)
+    if (CData->head != NULL)
     {
-        tmp = CData;
+        tmp = CData->head;
         while(tmp != NULL)
         {
             printf("%s\n", tmp->COLUMN->CHAINE);
@@ -721,7 +734,8 @@ void print_CData_chaine(LNODE * CData) {
     }
 }
 
-void print_CData_selected_column(LNODE* CData) {
+void print_CData_selected_column(CDATAFRAME* CData) {
+
     LNODE* tmp ;
     int value1, value2;
     printf("\n\n");
@@ -731,16 +745,23 @@ void print_CData_selected_column(LNODE* CData) {
     printf("COLONNE MAXIMUM :");
     scanf(" %d", &value2);
     printf("\n");
-    if (CData != NULL)
+
+    print_answer("Affichage...");
+
+    if (CData != NULL && CData->head != NULL)
     {
-        tmp = CData;
-        while(tmp->NUMBER_COLONNE != value2)
+        tmp = CData->head;
+        int i = 0;
+
+        while(tmp != NULL && i < value2)
         {
-            if(tmp->NUMBER_COLONNE > value1 - 1) {
+            if(i > value1 - 1) {
                 printf("%s\n", tmp->COLUMN->CHAINE);
                 print_col(tmp->COLUMN);
                 printf("\n");
+
             }
+            i++;
             tmp = (LNODE *) tmp->SUCC;
         }
         printf("%s\n", tmp->COLUMN->CHAINE);
@@ -750,29 +771,69 @@ void print_CData_selected_column(LNODE* CData) {
 
 int print_Col_lines(COLUMN* col, int value1, int value2) {
     if(value2 < col->TAILLE_LOGIQUE) {
-        print_answer("Affichage");
+
         if (value2 < value1) {
             for (int i = 0; i<value2; i++) {
-                printf("[%d] %d\n", i, col->DONNEES[i]);
+                if (col->DONNEES[i] == NULL) {
+                    printf("[%d] NULL\n", i);
+                }
+                else {
+                    if (col->COLUMN_TYPE != STRING) {
+                        char str[50];
+                        convert_value(col, i, str, 50);
+                        printf("[%d] %s\n", i, str);
+                    }
+                    else {
+                        printf("[%d] %s\n", i, (char*) col->DONNEES[i]);
+                    }
+
+                }
             }
             printf("\n\n--------------------------------------------\n\n");
             for (int i = value1; i<col->TAILLE_LOGIQUE; i++) {
-                printf("[%d] %d\n", i, col->DONNEES[i]);
+                if (col->DONNEES[i] == NULL) {
+                    printf("[%d] NULL\n", i);
+                }
+                else {
+                    if (col->COLUMN_TYPE != STRING) {
+                        char str[50];
+                        convert_value(col, i, str, 50);
+                        printf("[%d] %s\n", i, str);
+                    }
+                    else {
+                        printf("[%d] %s\n", i, (char*) col->DONNEES[i]);
+                    }
+
+                }
             }
         }
         else {
             for (int i = value1; i < value2 + 1; i++) {
-                printf("[%d] %d\n", i, col->DONNEES[i]);
+                if (col->DONNEES[i] == NULL) {
+                    printf("[%d] NULL\n", i);
+                }
+                else {
+                    if (col->COLUMN_TYPE != STRING) {
+                        char str[50];
+                        convert_value(col, i, str, 50);
+                        printf("[%d] %s\n", i, str);
+                    }
+                    else {
+                        printf("[%d] %s\n", i, (char*) col->DONNEES[i]);
+                    }
+
+                }
             }
         }
         return 1;
     }
     else {
+        print_answer("Les valeurs sont superieurs a la taille de la colonne...");
         return 0;
     }
 }
 
-void print_CData_selected_lines(LNODE* CData) {
+void print_CData_selected_lines(CDATAFRAME* CData) {
     LNODE* tmp ;
     int value1, value2;
     printf("LIGNE MINIMUM :");
@@ -781,9 +842,12 @@ void print_CData_selected_lines(LNODE* CData) {
     printf("LIGNE MAXIMUM :");
     scanf(" %d", &value2);
     printf("\n");
+
+    print_answer("Affichage");
+
     if (CData != NULL)
     {
-        tmp = CData;
+        tmp = CData->head;
         while(tmp != NULL)
         {
             printf("%s\n", tmp->COLUMN->CHAINE);
@@ -830,6 +894,11 @@ CDATAFRAME *create_cdataframe(ENUM_TYPE *cdata_type, int number_column) {
     CDATAFRAME* CData = (LIST*) malloc(sizeof (LIST));
     CData->head = NULL;
     CData->tail = NULL;
+
+    if(number_column == 0) {
+        return CData;
+    }
+
     if (number_column > 0) {
         for (int i = 0; i<number_column; i++) {
 
@@ -838,9 +907,7 @@ CDATAFRAME *create_cdataframe(ENUM_TYPE *cdata_type, int number_column) {
             lnode->PREC = NULL;
             lnode->SUCC = NULL;
 
-            char column_name[] = "colonne";
-
-            lnode->COLUMN = create_column(cdata_type[i], (char *) &column_name);
+            lnode->COLUMN = create_column(cdata_type[i], "colonne");
 
             if(CData->head == NULL) {
                 CData->head = lnode;
@@ -913,7 +980,7 @@ CDATAFRAME* load_from_csv(char *file_name, ENUM_TYPE *dftype, int size) {
             char *ptr_chaine = (char*) malloc(sizeof (char));
             strcpy(ptr_chaine, chaine);
             printf("%s\n", ptr_chaine);
-            insert_value(tmp->COLUMN, ptr_chaine);
+            insert_value(tmp->COLUMN, ptr_chaine, STRING);
             tmp = tmp->SUCC;
             chaine = strtok (NULL, separators);
         }
@@ -952,4 +1019,157 @@ void save_into_csv(CDATAFRAME *cdf, char *file_name) {
 
     fclose(fpt);
 }
+
+COLUMN* acces_column_by_name(CDATAFRAME* cdata, char* column_name) {
+    LNODE* tmp = cdata->head;
+    while (tmp != NULL && strcmp((tmp->COLUMN->CHAINE), column_name) != 0) {
+        tmp = tmp->SUCC;
+    }
+    if (tmp != NULL){
+        return tmp->COLUMN;
+    }
+    else{
+        print_answer("Colonne introuvable");
+        return NULL;
+    }
+}
+
+
+// Rempli un CDataframe vide avec des saisies utilisateurs
+CDATAFRAME* fill_CDataframe(CDATAFRAME* Cdata) {
+
+    int number_column;
+    printf("\n\n\n");
+
+    printf("CHOISIR NOMBRE DE COLONNE DU CDATAFRAME :");
+    scanf(" %d", &number_column);
+    printf("\n\n\n");
+
+    for (int i = 0; i < number_column; i++) {
+
+        LNODE* lnode = create_lnode();
+
+
+        insert_lnode(Cdata, lnode, 1);
+        printf("ZJFQOF");
+
+        printf("NOM DE LA COLONNE %d : ", i);
+        char title[100] = "";
+        char *ptr_title = malloc(strlen(title) + 1);
+        enum enum_type type;
+
+
+        scanf(" %s", title);
+        strcpy(ptr_title, title);
+        printf("\n\n\nTYPE DE LA COLONNE %s (NULLVAL[1] , UINT[2], INT[3], CHAR[4], FLOAT[5], DOUBLE[6], STRING[7], STRUCTURE[8]) : ", ptr_title);
+        scanf(" %u", &type);
+        printf("\n\n\n");
+
+
+        lnode->COLUMN = create_column(type, ptr_title);
+
+        int number_lines;
+        printf("CHOISIR NOMBRE DE LIGNE POUR LA COLONNE %s[%d] : ", lnode->COLUMN->CHAINE, lnode->NUMBER_COLONNE);
+        scanf(" %d", &number_lines);
+        printf("\n");
+        printf("\n\n\n");
+
+        for (int j = 0; j < number_lines; j++) {
+
+
+
+            if (insert_value(lnode->COLUMN, type_choice(lnode->COLUMN), lnode->COLUMN->COLUMN_TYPE)) {
+                printf("\nINSERTION GOOD");
+            }
+            else {
+                printf("\nNICHT GUT");
+            }
+
+        }
+    }
+    printf("mim");
+    return Cdata;
+}
+
+
+// Créer un nouveau maillon
+LNODE* create_lnode() {
+
+    LNODE* new_lnode = (LNODE *)malloc(sizeof(LNODE));
+    new_lnode->SUCC = NULL;
+    new_lnode->PREC = NULL;
+    new_lnode->NUMBER_COLONNE = 0;
+    new_lnode->COLUMN = NULL;
+    return new_lnode;
+
+}
+
+int insert_lnode(CDATAFRAME* Cdata, LNODE* lnode, int position) {
+    if (Cdata == NULL) {
+        CDATAFRAME new_Cdata;
+        Cdata = &new_Cdata;
+        Cdata->head = lnode;
+        Cdata->tail = lnode;
+        return 1;
+    } else {
+        if (Cdata->head == NULL) {
+            Cdata->head = lnode;
+            Cdata->tail = lnode;
+        } else {
+            if (position == 0) {
+                LNODE *tmp = Cdata->head;
+                tmp->PREC = lnode;
+                lnode->SUCC = tmp;
+                Cdata->head = lnode;
+                return 1;
+            } else {
+                LNODE *tmp = Cdata->tail;
+                tmp->SUCC = lnode;
+                lnode->PREC = tmp;
+                Cdata->tail = lnode;
+                return 1;
+            }
+        }
+    }
+    return 0;
+
+}
+
+
+CDATAFRAME* fill_CDataframe_auto(CDATAFRAME* Cdata) {
+
+    int number_column = 3;
+
+
+    for (int i = 0; i < number_column; i++) {
+
+        LNODE* lnode = create_lnode();
+
+
+        insert_lnode(Cdata, lnode, 1);
+
+
+        lnode->COLUMN = create_column(INT, "colonne");
+
+        int number_lines = 3;
+
+
+        for (int j = 0; j < number_lines; j++) {
+
+            int number = j + i;
+
+            if (insert_value(lnode->COLUMN, &number, lnode->COLUMN->COLUMN_TYPE)) {
+                printf("\nINSERTION GOOD");
+            }
+            else {
+                printf("\nNICHT GUT");
+            }
+
+
+        }
+    }
+
+    return Cdata;
+}
+
 
