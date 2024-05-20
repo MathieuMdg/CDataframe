@@ -1,3 +1,7 @@
+// Commentaire : Fichier regroupant l'ensemble des fonctions de gestion de la chaîne doublement chainée (représentation choisie pour le CDataframe)
+
+
+
 #ifndef CDATAFRAME_LIST_H
 #define CDATAFRAME_LIST_H
 #include "column.h"

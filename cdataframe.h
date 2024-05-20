@@ -1,3 +1,6 @@
+// Commentaire : Fichier regroupant l'ensemble des définitions nécessaires pour la chaîne doublement chainée du CDataframe et les fonctions de gestion du CDataframe
+
+
 #ifndef CDATAFRAME_CDATAFRAME_H
 #define CDATAFRAME_CDATAFRAME_H
 #include "column.h"
@@ -44,3 +47,4 @@ void print_CData_number_lines(CDATAFRAME* CData);
 void save_into_csv(CDATAFRAME *cdf, char *file_name);
 
 #endif //CDATAFRAME_CDATAFRAME_H
+

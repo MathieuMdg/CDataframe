@@ -1,3 +1,7 @@
+// Commentaire : Fichier regroupant l'ensemble des fonctions de gestion des colonnes et les définitions des types utilisés pour les colonnes
+
+
+
 #ifndef FONCTIONS_H
 #define FONCTIONS_H
 

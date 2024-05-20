@@ -1,3 +1,7 @@
+// Commentaire : Fichier regroupant l'ensemble des fonctions de tri pour le CDataframe.
+
+
+
 #ifndef CDATAFRAME_SORT_H
 #define CDATAFRAME_SORT_H
 #include "column.h"

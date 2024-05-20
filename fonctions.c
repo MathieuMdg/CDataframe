@@ -1,3 +1,7 @@
+// Commentaire : Fichier regroupant l'ensemble des prototypes pour les fonctions
+
+
+
 #include "column.h"
 #include "cdataframe.h"
 #define REALOC_SIZE 256
