@@ -52,19 +52,45 @@ int main() {
 
                         case 'a':
 
-                            ENUM_TYPE INIT[10];
-                            ptr_CDataframe = create_cdataframe(INIT,0);
+                            if (init_CDataframe == 0) {
 
-                            print_answer("CDataframe creer...");
+                                ENUM_TYPE INIT[10];
+                                ptr_CDataframe = create_cdataframe(INIT, 0);
+
+                                print_answer("CDataframe creer...");
+
+                                init_CDataframe = 1;
+
+                                full = 0;
+
+                            } else{
+
+                                delete_cdataframe( ptr_CDataframe);
+                                ptr_CDataframe = NULL;
+
+                                ENUM_TYPE INIT[10];
+                                ptr_CDataframe = create_cdataframe(INIT, 0);
+
+                                print_answer("Nouveau CDataframe creer...");
+
+                                full = 0;
+                            }
 
                             break;
 
                         case 'b':
 
-                            print_answer("REMPLISSAGE...");
+                            if (init_CDataframe == 1) {
 
-                            fill_CDataframe(ptr_CDataframe);
+                                print_answer("REMPLISSAGE...");
 
+                                fill_CDataframe(ptr_CDataframe);
+
+                                full = 1;
+                            }
+                            else {
+                                init_CData();
+                            }
                             break;
 
 
@@ -460,7 +486,7 @@ int main() {
                             break;
 
                         case 'd':
-                                if(ptr_CDataframe == NULL) {
+                                if(full != 1) {
 
                                     printf("NOM DU FICHIER :");
                                     char file_name[100];
@@ -484,7 +510,7 @@ int main() {
                                     print_answer("ptr_CDataframe cree...");
                                 }
                                 else{
-                                    print_answer("CDataframe déjà rempli, veuillez en créer un nouveau...");
+                                    print_answer("CDataframe deja rempli, veuillez en creer un nouveau...");
                                 }
 
                             break;

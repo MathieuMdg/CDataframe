@@ -73,7 +73,6 @@ void* type_choice(COLUMN* col) {
             char* value_char = (char*) malloc(sizeof (char));
             scanf(" %c", value_char);
             printf("\n\n\n");
-            col->DONNEES[col->TAILLE_LOGIQUE] = (COL_TYPE *) value_char;
             return value_char;
 
         case INT:
@@ -86,21 +85,21 @@ void* type_choice(COLUMN* col) {
         case UINT:
             printf("CHOISIR VALEUR TYPE [UINT] : ");
             unsigned int* value_uint = (unsigned int*) malloc(sizeof (unsigned int));
-            scanf(" %u", (unsigned int*) &value_uint);
+            scanf(" %u", value_uint);
             printf("\n\n\n");
             return value_uint;
 
         case FLOAT:
             printf("CHOISIR VALEUR TYPE [FLOAT] : ");
             float* value_float = (float*) malloc(sizeof (float));
-            scanf(" %f", (float*) &value_float);
+            scanf(" %f", value_float);
             printf("\n\n\n");
             return value_float;
 
         case DOUBLE:
             printf("CHOISIR VALEUR TYPE [DOUBLE] : ");
             double* value_double = (double *) malloc(sizeof (double ));
-            scanf(" %lf", (double*) &value_double);
+            scanf(" %lf", value_double);
             printf("\n\n\n");
             return value_double;
 
@@ -118,11 +117,10 @@ void* type_choice(COLUMN* col) {
             return value_string;
 
         case STRUCTURE:
-            printf("CHOISIR VALEUR TYPE [STRUCTURE] : ");
-            //double* value_double = (double *) malloc(sizeof (double ));
-            //scanf(" %lf", (double*) &value_double);
-            //printf("\n\n\n");
-           // return value_double;
+            printf("PAS DE PRISE EN CHARGE DE TYPE STRUCTURE...");
+            void* value_struct = NULL;
+            printf("\n\n\n");
+            return value_struct;
 
         default:
             printf("TYPE DE COLONNE ERRONE\n");
@@ -1035,8 +1033,8 @@ CDATAFRAME* fill_CDataframe(CDATAFRAME* Cdata) {
         LNODE* lnode = create_lnode();
 
 
-        insert_lnode(Cdata, lnode, 1);
-
+        insert_lnode(Cdata, lnode, -1);
+        printf("sheeesh");
         printf("NOM DE LA COLONNE %d : ", i);
         char title[100] = "";
         char *ptr_title = malloc(strlen(title) + 1);
@@ -1089,6 +1087,7 @@ LNODE* create_lnode() {
 }
 
 int insert_lnode(CDATAFRAME* Cdata, LNODE* lnode, int position) {
+
     if (Cdata == NULL) {
         CDATAFRAME new_Cdata;
         Cdata = &new_Cdata;
