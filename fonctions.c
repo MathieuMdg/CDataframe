@@ -578,17 +578,6 @@ int occurence(COLUMN* colonne, int val) {
 }
 
 
-// Retourne la valeur stockée dans une colonne avec sa position
-int positionx(COLUMN* colonne, int position) {
-    if (position < colonne->TAILLE_LOGIQUE) {
-        return colonne->DONNEES[position];
-    }
-    else {
-        return -1;
-    }
-}
-
-
 // Calcul le nombre de valeur supérieure à x dans une colonne
 int sup_x(COLUMN* colonne, int x) {
     int sup_x = 0;
@@ -992,6 +981,7 @@ void save_into_csv(CDATAFRAME *cdf, char *file_name) {
                 fprintf(fpt, "%s,", str);
                 tmp = tmp->SUCC;
             }
+            printf("hehe");
             char* str = (char*) malloc(sizeof (char) * 50);
             convert_value(tmp->COLUMN, i, str, 50);
             fprintf(fpt, "%s", str);
