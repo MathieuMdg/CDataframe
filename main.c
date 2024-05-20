@@ -519,9 +519,7 @@ int main() {
                                         int sort_dir;
                                         scanf(" %d", &sort_dir);
                                         printf("\n");
-                                        printf("slure");
                                         sort(new_column, sort_dir);
-                                        printf("miam");
                                         print_col_by_index(new_column);
                                     }
                                 } else{

@@ -40,6 +40,8 @@ void print_answer(char* string) {
 
 // Fonction qui permet à l'utilisateur de saisir la donnée dans le type de la colonne (pour faciliter l'affectation des données)
 void* type_choice(COLUMN* col) {
+
+    // En fonction du type de la colonne la fonction alloue de l'espace au type de la donnée et retourne son adresse
     switch (col->COLUMN_TYPE) {
 
         case CHAR:
@@ -105,6 +107,8 @@ void* type_choice(COLUMN* col) {
 
 // Fonction qui prend un titre de colonne et renvoie un pointer
 COLUMN* create_column(ENUM_TYPE type, char* title) {
+
+    // La colonne est créée et initialisée
     COLUMN* ptr_colonne = (COLUMN*)malloc(sizeof(COLUMN));
     ptr_colonne->CHAINE = title;
     ptr_colonne->TAILLE_LOGIQUE = 0;
@@ -135,6 +139,7 @@ int insert_value(COLUMN* col, void* value, ENUM_TYPE col_type) {
         }
     }
 
+    // Si la taille physique de la colonne est atteinte
     if (col->TAILLE_LOGIQUE == col->TAILLE_PHYSIQUE) {
         col->TAILLE_PHYSIQUE += REALOC_SIZE;
         col->DONNEES = realloc(col->DONNEES, col->TAILLE_PHYSIQUE);
@@ -209,6 +214,7 @@ int insert_value(COLUMN* col, void* value, ENUM_TYPE col_type) {
 
     }
 
+    // Augmenter la taille logique
     col->TAILLE_LOGIQUE++;
     return 1;
 }
@@ -291,18 +297,13 @@ void quicksort(COL_TYPE * arr[], unsigned long long int index[], int low, unsign
 
 // Fonction de tri générale en fonction du type de tri pour un tableau d'index
 void sort(COLUMN* col, int sort_dir) {
-    printf("entre");
     if (col->VALID_INDEX == 0) {
-        printf("valid");
         // Tri non trié : Utiliser Quicksort pour le tableau d'index
         quicksort(col->DONNEES, col->INDEX, 0, col->TAILLE_LOGIQUE - 1, col);
-        printf("quicksort");
     } else {
         if (col->VALID_INDEX == -1) {
-            printf("egal 1");
                 // Tri partiellement trié : Utiliser Insertion Sort pour le tableau d'index
                 insertion(col->DONNEES, col->INDEX, col->TAILLE_LOGIQUE);
-            printf("insertion");
             }
         }
 
@@ -411,6 +412,8 @@ int search_value_in_column(COLUMN* col, void* value) {
 
 // Supprime l'index d'une colonne
 void erase_index(COLUMN *col) {
+
+    // Remplace les valeurs du tableau d'index comme initialement
     for (int i = 0; i<col->TAILLE_LOGIQUE; i++) {
         col->INDEX[i] = i;
     }
@@ -423,15 +426,14 @@ void print_col_by_index(COLUMN *col) {
 
     for (int i = 0; i < col->TAILLE_LOGIQUE; i++) {
         if (col->DONNEES[col->INDEX[i]] == NULL) {
-            printf("col[i]");
             printf("[%d] NULL\n", i);
         }
         else {
+
+            // Converti et affiche les valeurs si elles ne sont pas de type STRING
             if (col->COLUMN_TYPE != STRING) {
                 char str[100];
-                printf("avant convert");
                 convert_value(col, col->INDEX[i], str, 100);
-                printf("après convert");
                 printf("[%d] %s\n", i, str);
             }
             else {
@@ -451,6 +453,7 @@ void print_col(COLUMN* col) {
             printf("[%d] NULL\n", i);
         }
         else {
+            // Converti et affiche les valeurs si elles ne sont pas de type STRING
             if (col->COLUMN_TYPE != STRING) {
                 char str[50];
                 convert_value(col, i, str, 50);
@@ -498,6 +501,7 @@ void delete_column(COLUMN* col) {
 // Converti les valeurs d'une colonne en chaine de caractère
 void convert_value(COLUMN *col, unsigned long long int i, char *str, int size) {
 
+    // Converti les données en chaines de caractère pour pouvoir être affiché à l'écran
     switch (col->COLUMN_TYPE){
 
         case INT:
@@ -621,10 +625,12 @@ void print_CData_chaine(CDATAFRAME* CData) {
     if (CData->head != NULL)
     {
         tmp = CData->head;
+
+        // Parcours le  CDataframe jusqu'à la fin et affiche chaque colonne
         while(tmp != NULL)
         {
             printf("%s\n", tmp->COLUMN->CHAINE);
-            print_col(tmp->COLUMN);
+            print_col_by_index(tmp->COLUMN);
             printf("\n");
             tmp = tmp->SUCC;
         }
@@ -652,6 +658,7 @@ void print_CData_selected_column(CDATAFRAME* CData) {
         tmp = CData->head;
         int i = 0;
 
+        // Parcours le CDataframe jusqu'au numéro de la colonne ou jusqu'à la fin si la colonne n'est pas trouvée
         while(tmp != NULL && i < value2)
         {
             if(i > value1 - 1) {
@@ -822,11 +829,12 @@ CDATAFRAME *create_cdataframe(ENUM_TYPE *cdata_type, int number_column) {
 // Fonction qui supprime un CDataframe
 void delete_cdataframe(CDATAFRAME **cdf) {
     LNODE* tmp = (*cdf)->head;
+    int i = 0;
     while (tmp != NULL) {
         delete_column(tmp->COLUMN);
-        LNODE* tmp_succ = tmp->SUCC;
-        free(tmp);
-        tmp = tmp_succ;
+        tmp = tmp->SUCC;
+        delete_lnode(*cdf, i);
+        i++;
     }
 
     free(*cdf);
