@@ -32,6 +32,8 @@ int add_lines(CDATAFRAME* CData);
 
 CDATAFRAME* fill_CDataframe(CDATAFRAME* Cdata);
 
+int load_from_cqv_insert_value(COLUMN* col, char* str, ENUM_TYPE col_type);
+
 LNODE* create_lnode();
 
 int insert_lnode(CDATAFRAME* Cdata, LNODE* lnode, int position);

@@ -43,8 +43,8 @@ int main() {
                         printf("\n");
                     printf("1. Alimentation\n\n");
                     printf("\t 'a' - Creation du ptr_CDataframe vide\n");
-                    printf("\t 'b' - Remplissage du ptr_CDataframe a partir de saisies utilisateurs\n");
-                    printf("\t 'c' - Remplissage en dur du ptr_CDataframe (utilise un ptr_CDataframe prerempli pour le reste des fonctionnalites)\n");
+                    printf("\t 'b' - Remplissage du CDataframe a partir de saisies utilisateurs\n");
+                    printf("\t 'c' - Remplissage en dur du CDataframe\n");
                     printf("\nChoisissez une fonctionnalite a, b ou c (pour revenir au menu tapez 0) :");
                     scanf(" %c", &fonction);
 

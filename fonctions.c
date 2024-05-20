@@ -942,7 +942,9 @@ CDATAFRAME* load_from_csv(char *file_name, ENUM_TYPE *dftype, int size) {
     }
 
     char* chaine;
+
     while (fgets(ligne, sizeof(ligne), file) != NULL) {
+
         tmp = Cdata->head;
         const char * separators = ",;\n";
         chaine = strtok (ligne, separators);
@@ -950,7 +952,7 @@ CDATAFRAME* load_from_csv(char *file_name, ENUM_TYPE *dftype, int size) {
             char *ptr_chaine = (char*) malloc(sizeof (char));
             strcpy(ptr_chaine, chaine);
             printf("%s\n", ptr_chaine);
-            insert_value(tmp->COLUMN, ptr_chaine, STRING);
+            load_from_cqv_insert_value(tmp->COLUMN, ptr_chaine, tmp->COLUMN->COLUMN_TYPE);
             tmp = tmp->SUCC;
             chaine = strtok (NULL, separators);
         }
@@ -974,6 +976,7 @@ void save_into_csv(CDATAFRAME *cdf, char *file_name) {
     printf("%d", tmp->COLUMN->TAILLE_LOGIQUE);
 
         for(int i = 0; i<tmp->COLUMN->TAILLE_LOGIQUE; i++) {
+
             tmp = cdf->head;
             while (tmp->SUCC != NULL) {
                 char* str = (char*) malloc(sizeof (char) * 50);
@@ -981,7 +984,7 @@ void save_into_csv(CDATAFRAME *cdf, char *file_name) {
                 fprintf(fpt, "%s,", str);
                 tmp = tmp->SUCC;
             }
-            printf("hehe");
+
             char* str = (char*) malloc(sizeof (char) * 50);
             convert_value(tmp->COLUMN, i, str, 50);
             fprintf(fpt, "%s", str);
@@ -1250,3 +1253,130 @@ int delete_lnode(CDATAFRAME* Cdata, int position) {
     return 0;
 }
 
+
+// Permet d'ajouter une valeur à la fin d'une colonne et de l'agrandir si besoin
+int load_from_cqv_insert_value(COLUMN* col, char* str, ENUM_TYPE col_type) {
+
+    // Si la colonne est vide
+    if (col == NULL) {
+        printf("COLONNE NON INITIALISEE\n");
+        return 0;
+    }
+
+    // Allouer de la mémoire pour le tableau de pointeurs si ce n'est pas déjà fait
+    if (col->DONNEES == NULL) {
+        col->DONNEES = (COL_TYPE**) malloc(sizeof(COL_TYPE*));
+        if (col->DONNEES == NULL) {
+            printf( "ERREUR ALLOCATION\n");
+            return 0;
+        }
+    }
+
+    if (col->TAILLE_LOGIQUE == col->TAILLE_PHYSIQUE) {
+        col->TAILLE_PHYSIQUE += REALOC_SIZE;
+        col->DONNEES = realloc(col->DONNEES, col->TAILLE_PHYSIQUE);
+        col->INDEX = realloc(col->INDEX, col->TAILLE_PHYSIQUE);
+        printf("REALLOCATION...");
+    }
+
+
+    col->INDEX[col->TAILLE_LOGIQUE] = col->TAILLE_LOGIQUE;
+
+    if (str == NULL){
+        col->DONNEES[col->TAILLE_LOGIQUE] = NULL;
+    }
+
+    else {
+
+        // Affecter la valeur en fonction du type de colonne
+        switch (col->COLUMN_TYPE) {
+
+            case CHAR:
+
+                char value_char;
+                if (sscanf(str, "%c", &value_char) != 1) {
+                    printf("Échec de la conversion.\n");
+                    return 0;
+                }
+                col->DONNEES[col->TAILLE_LOGIQUE] = (COL_TYPE *) (char *) malloc(sizeof(char));
+                *((char *) col->DONNEES[col->TAILLE_LOGIQUE]) = value_char;
+                break;
+
+            case INT:
+
+                int value_int;
+                if (sscanf(str, "%d", &value_int) != 1) {
+                    printf("Échec de la conversion.\n");
+                    return 0;
+                }
+
+                col->DONNEES[col->TAILLE_LOGIQUE] = (COL_TYPE *) (int *) malloc(sizeof(int));
+                if (col->DONNEES[col->TAILLE_LOGIQUE] == NULL) {
+                    printf("ERREUR ALLOCATION");
+                    printf("%d", value_int);
+                }
+
+                *((int *) col->DONNEES[col->TAILLE_LOGIQUE]) = value_int;
+                if (col->DONNEES[col->TAILLE_LOGIQUE] == NULL) {
+                    printf("ERREUR D ASSIGNATION DE LA VALEUR");
+                }
+                break;
+
+            case UINT:
+
+                unsigned int value_uint;
+                if (sscanf(str, "%u", &value_uint) != 1) {
+                    printf("Échec de la conversion.\n");
+                    return 0;
+                }
+                col->DONNEES[col->TAILLE_LOGIQUE] = (unsigned int *) malloc(sizeof(unsigned int));
+                *((unsigned int *) col->DONNEES[col->TAILLE_LOGIQUE]) = value_uint;
+                break;
+
+            case FLOAT:
+
+                float value_float;
+                if (sscanf(str, "%f", &value_float) != 1) {
+                    printf("Échec de la conversion.\n");
+                    return 0;
+                }
+                col->DONNEES[col->TAILLE_LOGIQUE] = (float *) malloc(sizeof(float));
+                *((float *) col->DONNEES[col->TAILLE_LOGIQUE]) = value_float;
+                break;
+
+            case DOUBLE:
+
+                double value_double;
+                if (sscanf(str, "%lf", &value_double) != 1) {
+                    printf("Échec de la conversion.\n");
+                    return 0;
+                }
+                col->DONNEES[col->TAILLE_LOGIQUE] = (double *) malloc(sizeof(double));
+                *((double *) col->DONNEES[col->TAILLE_LOGIQUE]) = value_double;
+                break;
+
+            case STRING:
+                col->DONNEES[col->TAILLE_LOGIQUE] = (char *) malloc(sizeof(char));
+                col->DONNEES[col->TAILLE_LOGIQUE] = str;
+                break;
+
+            case NULLVAL:
+                col->DONNEES[col->TAILLE_LOGIQUE] = NULL;
+                break;
+
+            case STRUCTURE:
+                //col->DONNEES[col->TAILLE_LOGIQUE] = (double *) malloc(sizeof(double ));
+                //*((double *) col->DONNEES[col->TAILLE_LOGIQUE]) = *((double *) value);
+                break;
+
+                // Ajoutez d'autres cas pour les autres types ici
+            default:
+                printf("TYPE DE COLONNE ERRONE\n");
+                break;
+        }
+
+    }
+
+    col->TAILLE_LOGIQUE++;
+    return 1;
+}
