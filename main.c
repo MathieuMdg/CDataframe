@@ -1,11 +1,19 @@
+// Librairies nécessaires
 #include <stdio.h>
-#include "column.h"
-#include "fonctions.h"
 #include <stdlib.h>
 #include <string.h>
-#include "CDataframe.h"
+
+// Appel des fichiers contenant les fonctions
+#include "column.h"
+#include "cdataframe.h"
+#include "list.h"
+#include "sort.h"
+
 #define ASC 0
 #define DESC 1
+
+
+
 
 int main() {
 

@@ -1,43 +1,11 @@
 #include "column.h"
-#include "CDataframe.h"
-#include "fonctions.h"
+#include "cdataframe.h"
 #define REALOC_SIZE 256
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
 #define ASC 0
 #define DESC 1
-
-LNODE * CData_create_column() {
-    LNODE *nouveau = (LNODE *) malloc(sizeof(LNODE));
-    char title[100];
-    printf("\n\n\n");
-    printf("TITRE COLONNE : ");
-    scanf(" %s", title);
-    char *ptr_title = malloc(strlen(title) + 1);
-    strcpy(ptr_title, title);
-    enum enum_type type;
-    printf("\n\n\nTYPE DE LA COLONNE %s (NULLVAL[1] , UINT[2], INT[3], CHAR[4], FLOAT[5], DOUBLE[6], STRING[7], STRUCTURE[8]) : ",
-           ptr_title);
-    scanf(" %u", &type);
-    printf("\n\n\n");
-    nouveau->COLUMN = create_column(type, ptr_title);
-    int number_lines;
-    printf("CHOISIR NOMBRE DE LIGNE POUR LA COLONNE [%d] %s : ",
-           nouveau->NUMBER_COLONNE, nouveau->COLUMN->CHAINE);
-    scanf(" %d", &number_lines);
-    for (int i = 0; i < 3; i++)
-        printf("\n");
-    for (int j = 0; j < number_lines; j++) {
-        void *value = type_choice(nouveau->COLUMN);
-        if (nouveau->COLUMN->COLUMN_TYPE == STRING) {
-            insert_value(nouveau->COLUMN, value, nouveau->COLUMN->COLUMN_TYPE);
-        } else {
-            insert_value(nouveau->COLUMN, &value, nouveau->COLUMN->COLUMN_TYPE);
-        }
-    }
-    return nouveau;
-}
 
 
 // Affiche le menu du programme
@@ -50,7 +18,7 @@ void menu() {
 }
 
 
-// Fonction d'affichage des réponseds
+// Fonction d'affichage des réponses dans le main.c
 void print_answer(char* string) {
     printf("\n\n\n");
     for(int i = 0; i < strlen(string) + 6; i++) {
@@ -64,7 +32,7 @@ void print_answer(char* string) {
 }
 
 
-// Fonction qui permet à l'utilisateur de saisir la donnée dans le type de la colonne
+// Fonction qui permet à l'utilisateur de saisir la donnée dans le type de la colonne (pour faciliter l'affectation des données)
 void* type_choice(COLUMN* col) {
     switch (col->COLUMN_TYPE) {
 
@@ -129,7 +97,7 @@ void* type_choice(COLUMN* col) {
 }
 
 
-// Fonction qui prend un titre de colonne et renvoie un pointer sur la colonne.
+// Fonction qui prend un titre de colonne et renvoie un pointer
 COLUMN* create_column(ENUM_TYPE type, char* title) {
     COLUMN* ptr_colonne = (COLUMN*)malloc(sizeof(COLUMN));
     ptr_colonne->CHAINE = title;
@@ -224,11 +192,10 @@ int insert_value(COLUMN* col, void* value, ENUM_TYPE col_type) {
                 break;
 
             case STRUCTURE:
-                //col->DONNEES[col->TAILLE_LOGIQUE] = (double *) malloc(sizeof(double ));
-                //*((double *) col->DONNEES[col->TAILLE_LOGIQUE]) = *((double *) value);
+                col->DONNEES[col->TAILLE_LOGIQUE] = NULL; // Les structures ne sont pas prises en charge
                 break;
 
-                // Ajoutez d'autres cas pour les autres types ici
+
             default:
                 printf("TYPE DE COLONNE ERRONE\n");
                 break;
@@ -241,7 +208,7 @@ int insert_value(COLUMN* col, void* value, ENUM_TYPE col_type) {
 }
 
 
-// Fonction de tri par insertion pour un tableau d'index
+// Fonction de tri par insertion
 void insertion(COL_TYPE * arr[], unsigned long long int index[], unsigned int n) {
     int i, j;
     unsigned long long int key_index;
@@ -259,7 +226,7 @@ void insertion(COL_TYPE * arr[], unsigned long long int index[], unsigned int n)
 }
 
 
-// Fonction Partition utilisée dans Quicksort pour un tableau d'index
+// Fonction Partition utilisée dans Quicksort
 int partition(COL_TYPE * arr[], unsigned long long int index[], int low, unsigned int high, COLUMN* col) {
     if (col->COLUMN_TYPE == STRING) {
         char* pivot = (char*) arr[index[high]];
@@ -275,7 +242,7 @@ int partition(COL_TYPE * arr[], unsigned long long int index[], int low, unsigne
                 index[j] = temp;
             }
         }
-        // Échanger index[i + 1] et index[high] (pivot)
+        // Échanger index[i + 1] et index[high]
         unsigned long long int temp = index[i + 1];
         index[i + 1] = index[high];
         index[high] = temp;
@@ -294,7 +261,7 @@ int partition(COL_TYPE * arr[], unsigned long long int index[], int low, unsigne
                 index[j] = temp;
             }
         }
-        // Échanger index[i + 1] et index[high] (pivot)
+        // Échanger index[i + 1] et index[high]
         unsigned long long int temp = index[i + 1];
         index[i + 1] = index[high];
         index[high] = temp;
@@ -362,14 +329,11 @@ int binarySearch(COLUMN * col, int left, int right, void* value) {
             printf(" %s", current);
 
 
-            // Comparaison de l'élément actuel avec la cible
-            // Ici, nous supposons que nous comparons des entiers (à adapter en fonction de COLUMN_TYPE)
             if (strcmp(current, (char *) value) == 0) {
 
                 return middle; // Retourne l'indice dans le tableau d'index
             }
 
-            // Mise à jour des limites de recherche en fonction de la comparaison
             if (col->SORT_DIR == ASC) {
                 if (strcmp(current, (char *) value) < 0 ) {
                     left = middle + 1;
@@ -397,14 +361,11 @@ int binarySearch(COLUMN * col, int left, int right, void* value) {
             int current = *((int *) col->DONNEES[col->INDEX[middle]]);
 
 
-            // Comparaison de l'élément actuel avec la cible
-            // Ici, nous supposons que nous comparons des entiers (à adapter en fonction de COLUMN_TYPE)
             if (current == (int *) value) {
 
                 return middle; // Retourne l'indice dans le tableau d'index
             }
 
-            // Mise à jour des limites de recherche en fonction de la comparaison
             if (col->SORT_DIR == ASC) {
                 if (current < (int *) value) {
                     left = middle + 1;
@@ -442,6 +403,7 @@ int search_value_in_column(COLUMN* col, void* value) {
 }
 
 
+// Supprime l'index d'une colonne
 void erase_index(COLUMN *col) {
     for (int i = 0; i<col->TAILLE_LOGIQUE; i++) {
         col->INDEX[i] = i;
@@ -450,6 +412,7 @@ void erase_index(COLUMN *col) {
 }
 
 
+// Affiche une colonne triée par son index
 void print_col_by_index(COLUMN *col) {
     for (int i = 0; i < col->TAILLE_LOGIQUE; i++) {
         if (col->DONNEES[col->INDEX[i]] == NULL) {
@@ -470,7 +433,7 @@ void print_col_by_index(COLUMN *col) {
 }
 
 
-// Affiche une colonne en entier
+// Affiche une colonne entière
 void print_col(COLUMN* col) {
 
     for (int i = 0; i < col->TAILLE_LOGIQUE; i++) {
@@ -492,6 +455,7 @@ void print_col(COLUMN* col) {
 }
 
 
+// Renvoie l'index d'une colonne
 int check_index(COLUMN *col) {
     if (col->VALID_INDEX == 0) {
         return 0;
@@ -505,6 +469,7 @@ int check_index(COLUMN *col) {
 }
 
 
+// Mets à jour l'index d'une colonne
 void update_index(COLUMN *col) {
     sort(col, col->SORT_DIR);
 }
@@ -572,7 +537,7 @@ void delete_line(COLUMN* col) {
 }
 
 
-// Détermine le nombre d'occurence d'une valeur dans une colonne
+// Détermine le nombre d'occurences d'une valeur dans une colonne
 int occurence(COLUMN* colonne, int val) {
     int occurence = 0;
     for (int i = 0; i < colonne->TAILLE_LOGIQUE; i++) {
@@ -584,7 +549,7 @@ int occurence(COLUMN* colonne, int val) {
 }
 
 
-// Calcul le nombre de valeur supérieure à x dans une colonne
+// Calcul le nombre de valeurs supérieures à x dans une colonne
 int sup_x(COLUMN* colonne, int x) {
     int sup_x = 0;
     for (int i = 0; i < colonne->TAILLE_LOGIQUE; i++) {
@@ -596,7 +561,7 @@ int sup_x(COLUMN* colonne, int x) {
 }
 
 
-// Calcul le nombre de valeur inférieure à x dans une colonne
+// Calcul le nombre de valeurs inférieures à x dans une colonne
 int inf_x(COLUMN* colonne, int x) {
     int inf_x = 0;
     for (int i = 0; i < colonne->TAILLE_LOGIQUE; i++) {
@@ -606,11 +571,6 @@ int inf_x(COLUMN* colonne, int x) {
     }
     return inf_x;
 }
-
-
-// Affichage
-
-
 
 
 // Change le nom d'une colonne par un nom donné par l'utilisateur
@@ -623,22 +583,7 @@ void rename_columns_name(COLUMN* col) {
 }
 
 
-// Cherche si une valeur est présente dans une colonne
-int value_research(COLUMN* col, int value) {
-    int presence = 0;
-    for (int i = 0; i < col->TAILLE_LOGIQUE; i++) {
-            if (col->DONNEES[i] == value) {
-                printf("La valeur %d est presente a la colonne %s.\n", value, col->CHAINE);
-                presence = 1;
-            }
-    }
-    if (presence == 0) {
-        printf("La valeur n'est pas presente dans la colonne %s.\n", col->CHAINE);
-    }
-    return presence;
-}
-
-
+// Message pour préciser à l'utilisateur d'initialiser le CDataframe
 void init_CData() {
     for(int i = 0; i < 3; i++) {
         printf("\n");
@@ -648,52 +593,8 @@ void init_CData() {
     printf("========================================================================\n");
 }
 
-// Analyse et statistiques
 
-
-//
-int equal_x(COLUMN** CData, int nbre_colonne) {
-    int nbre = 0, val;
-    printf("valeur de x : ");
-    scanf(" %d", &val);
-    printf("\n");
-    for (int i = 0; i < nbre_colonne; i++) {
-        if (occurence(CData[i], val)) {
-            nbre++;
-        }
-    }
-    return nbre;
-}
-
-int CData_sup_x(COLUMN** CData, int nbre_colonne) {
-    int nbre = 0, val;
-    printf("valeur de x : ");
-    scanf(" %d", &val);
-    for (int i = 0; i < nbre_colonne; i++) {
-        if (sup_x(CData[i], val)) {
-            nbre++;
-        }
-    }
-    return nbre;
-}
-
-int CData_inf_x(COLUMN** CData, int nbre_colonne) {
-    int nbre = 0, val;
-    printf("valeur de x : ");
-    scanf(" %d", &val);
-    for (int i = 0; i < nbre_colonne; i++) {
-        if (inf_x(CData[i], val)) {
-            nbre++;
-        }
-    }
-    return nbre;
-}
-
-
-
-// Affichage (CDataframe chainé)
-
-
+// Affiche le CDataframe en entier (toutes les données des colonnes)
 void print_CData_chaine(CDATAFRAME* CData) {
 
     LNODE* tmp ;
@@ -710,6 +611,8 @@ void print_CData_chaine(CDATAFRAME* CData) {
     }
 }
 
+
+// Affiche les colonnes du CDataframe entre nombres saisies par l'utilisateur
 void print_CData_selected_column(CDATAFRAME* CData) {
 
     LNODE* tmp ;
@@ -745,6 +648,8 @@ void print_CData_selected_column(CDATAFRAME* CData) {
     }
 }
 
+
+// Affiche les lignes comprises entre deux nombres selectionnées par l'utilisateur
 int print_Col_lines(COLUMN* col, int value1, int value2) {
     if(value2 < col->TAILLE_LOGIQUE) {
 
@@ -809,6 +714,8 @@ int print_Col_lines(COLUMN* col, int value1, int value2) {
     }
 }
 
+
+// Affiche les lignes du CDataframe entre deux valeurs choisies par l'utilisateur
 void print_CData_selected_lines(CDATAFRAME* CData) {
     LNODE* tmp ;
     int value1, value2;
@@ -834,6 +741,8 @@ void print_CData_selected_lines(CDATAFRAME* CData) {
     }
 }
 
+
+// Retourne le nombre de lignes dans chaque colonne, puis dans le CDataframe
 void print_CData_number_lines(CDATAFRAME* CData) {
     unsigned int number_lines = 0;
     LNODE* tmp ;
@@ -851,21 +760,8 @@ void print_CData_number_lines(CDATAFRAME* CData) {
 
 }
 
-void print_CData_number_column(LNODE* CData) {
-    int number_column = 0;
-    LNODE* tmp ;
-    if (CData != NULL)
-    {
-        tmp = CData;
-        while(tmp != NULL)
-        {
-            number_column++;
-            tmp = (LNODE *) tmp->SUCC;
-        }
-    }
-    printf("Le nombre de colonne du CDataframe est de %d\n", number_column);
-}
 
+// Créer un CDataframe rempli de n colonnes vides
 CDATAFRAME *create_cdataframe(ENUM_TYPE *cdata_type, int number_column) {
     CDATAFRAME* CData = (LIST*) malloc(sizeof (LIST));
     CData->head = NULL;
@@ -902,6 +798,8 @@ CDATAFRAME *create_cdataframe(ENUM_TYPE *cdata_type, int number_column) {
     return CData;
 }
 
+
+// Fonction qui supprime un CDataframe
 void delete_cdataframe(CDATAFRAME **cdf) {
     LNODE* tmp = (*cdf)->head;
     while (tmp != NULL) {
@@ -914,6 +812,8 @@ void delete_cdataframe(CDATAFRAME **cdf) {
     free(*cdf);
 }
 
+
+// Renvoie le nobre de colonne du CDataframe
 int get_cdataframe_cols_size(CDATAFRAME *cdf) {
     int number_column = 0;
     LNODE* tmp = cdf->head;
@@ -924,6 +824,8 @@ int get_cdataframe_cols_size(CDATAFRAME *cdf) {
     return number_column;
 }
 
+
+// Importe un CDataframe à partir de données d'un fichier .csv
 CDATAFRAME* load_from_csv(char *file_name, ENUM_TYPE *dftype, int size) {
 
     CDATAFRAME* Cdata = create_cdataframe(dftype, size);
@@ -970,6 +872,7 @@ CDATAFRAME* load_from_csv(char *file_name, ENUM_TYPE *dftype, int size) {
 }
 
 
+// Fonction qui rempli un fichier .csv avec les données du CDataframe donné en paramètre
 void save_into_csv(CDATAFRAME *cdf, char *file_name) {
     FILE *fpt;
 
@@ -1002,6 +905,7 @@ void save_into_csv(CDATAFRAME *cdf, char *file_name) {
 }
 
 
+// Renvoie l'adresse d'une colonne quand on donne son nom en paramètre
 COLUMN* acces_column_by_name(CDATAFRAME* cdata, char* column_name) {
     LNODE* tmp = cdata->head;
     while (tmp != NULL && strcmp((tmp->COLUMN->CHAINE), column_name) != 0) {
@@ -1059,16 +963,10 @@ CDATAFRAME* fill_CDataframe(CDATAFRAME* Cdata) {
 
 
 
-            if (insert_value(lnode->COLUMN, type_choice(lnode->COLUMN), lnode->COLUMN->COLUMN_TYPE)) {
-                printf("\nINSERTION GOOD");
-            }
-            else {
-                printf("\nNICHT GUT");
-            }
+            (insert_value(lnode->COLUMN, type_choice(lnode->COLUMN), lnode->COLUMN->COLUMN_TYPE));
 
         }
     }
-    printf("mim");
     return Cdata;
 }
 
@@ -1085,6 +983,8 @@ LNODE* create_lnode() {
 
 }
 
+
+// Ajoute un nouveau maillon au CDataframe
 int insert_lnode(CDATAFRAME* Cdata, LNODE* lnode, int position) {
 
     if (Cdata == NULL) {
@@ -1132,6 +1032,7 @@ int insert_lnode(CDATAFRAME* Cdata, LNODE* lnode, int position) {
 }
 
 
+// Rempli le CDataframe en dur
 CDATAFRAME* fill_CDataframe_auto(CDATAFRAME* Cdata) {
 
     int number_column = 3;
@@ -1168,6 +1069,8 @@ CDATAFRAME* fill_CDataframe_auto(CDATAFRAME* Cdata) {
     return Cdata;
 }
 
+
+// Ajoute une ligne à une colonne
 int add_lines(CDATAFRAME* CData) {
 
     printf("NOM DE LA COLONNE :");

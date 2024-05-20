@@ -18,9 +18,6 @@ typedef struct list_ {
 typedef LIST CDATAFRAME;
 
 
-CDATAFRAME *create_cdataframe(ENUM_TYPE *cdftype, int size);
-
-void delete_cdataframe(CDATAFRAME **cdf);
 
 int get_cdataframe_cols_size(CDATAFRAME *cdf);
 
@@ -34,14 +31,16 @@ CDATAFRAME* fill_CDataframe(CDATAFRAME* Cdata);
 
 int load_from_cqv_insert_value(COLUMN* col, char* str, ENUM_TYPE col_type);
 
-LNODE* create_lnode();
-
-int insert_lnode(CDATAFRAME* Cdata, LNODE* lnode, int position);
-
 CDATAFRAME* fill_CDataframe_auto(CDATAFRAME* Cdata);
 
-int delete_lnode(CDATAFRAME* Cdata, int position);
+void print_CData_chaine(CDATAFRAME* CData);
 
+void print_CData_selected_column(CDATAFRAME* CData);
 
+void print_CData_selected_lines(CDATAFRAME* CData);
+
+void print_CData_number_lines(CDATAFRAME* CData);
+
+void save_into_csv(CDATAFRAME *cdf, char *file_name);
 
 #endif //CDATAFRAME_CDATAFRAME_H
