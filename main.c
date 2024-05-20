@@ -164,196 +164,67 @@ int main() {
 
                         case 'b':
 
+                            printf("\n\n\nNOM COLONNE :");
+                            char name[100];
+                            scanf(" %s", name);
+                            printf("\n");
 
-                            if (init_CDataframe == 1) {
-                                LNODE *tmp = NULL;
-                                int column_number;
-                                printf("\n\n\n");
-                                printf("NUMERO COLONNE : ");
-                                scanf(" %d", &column_number);
-                                column_number++;
-                                if (ptr_CDataframe != NULL) {
-                                    int i = 0;
-                                    tmp = ptr_CDataframe->head;
-                                    while (tmp != NULL && i < column_number - 1) {
-                                        i++;
-                                        tmp = (LNODE *) tmp->SUCC;
-                                    }
-                                }
-                                if (tmp == NULL) {
-                                    print_answer("Colonne inexistante...");
-                                } else {
-                                    delete_line(tmp->COLUMN);
-                                }
-                            } else {
-                                init_CData();
-                            }
+                            delete_line(acces_column_by_name(ptr_CDataframe, name));
+
                             break;
 
 
                         case 'c':
 
+                            printf("\n\n\nPOSITION DE LA COLONNE (DEBUT[0], POSTION[x],  FIN[-1]) : ");
+                            int pos;
+                            scanf(" %d", &pos);
+                            printf("\n");
 
-                            if (init_CDataframe == 1) {
-                                LNODE *tmp;
-                                int column_position;
-                                printf("\n\n\n");
-                                printf("POSITION NOUVELLE COLONNE (DEBUT[0], POSITION[0], FIN[-1]) : ");
-                                scanf(" %d", &column_position);
-                                printf("\n");
-                                if (ptr_CDataframe != NULL) {
-                                    LNODE * nouveau = NULL;
-                                    nouveau = CData_create_column();
-                                    switch (column_position) {
+                            LNODE* new_lnode = create_lnode();
 
-                                        case -1 :
-                                            tmp = ptr_CDataframe;
-                                            while (tmp->SUCC != NULL) {
-                                                tmp = (LNODE *) tmp->SUCC;
-                                            }
-                                            tmp->SUCC = (struct mailllon *) nouveau;
-                                            nouveau->SUCC = NULL;
-                                            break;
+                            insert_lnode(ptr_CDataframe, new_lnode, pos);
 
-                                        case 0:
-                                            printf("fiefe");
-                                            nouveau->SUCC = (struct mailllon *) ptr_CDataframe;
-                                            ptr_CDataframe = nouveau;
-                                            tmp = nouveau;
-                                            tmp->NUMBER_COLONNE = 0;
-                                            tmp = (LNODE *) tmp->SUCC;
-                                            while (tmp != NULL) {
-                                                tmp->NUMBER_COLONNE++;
-                                                tmp = (LNODE *) tmp->SUCC;
-                                            }
-                                            printf("lo");
-                                            break;
+                            printf("NOM DE LA COLONNE [%d]: ", new_lnode->NUMBER_COLONNE);
+                            char title[100] = "";
+                            char *ptr_title = malloc(strlen(title) + 1);
+                            enum enum_type type;
 
-                                        default:
-                                            int i = 0;
-                                            tmp = ptr_CDataframe;
-                                            while (tmp != NULL && i < column_position - 1) {
-                                                tmp = (LNODE *) tmp->SUCC;
-                                                i++;
-                                            }
-                                            nouveau->SUCC = tmp->SUCC;
-                                            tmp->SUCC = (struct mailllon *) nouveau;
-                                            break;
-                                    }
-                                }
-                                else {
-                                    LNODE *nouveau = (LNODE *) malloc(sizeof(LNODE));
-                                    nouveau->NUMBER_COLONNE = 0;
-                                    nouveau->SUCC = NULL;
-                                    printf("NOM DE LA COLONNE %d : ", nouveau->NUMBER_COLONNE);
-                                    char title[100] = "";
-                                    char *ptr_title = malloc(strlen(title) + 1);
-                                    enum enum_type type;
-                                    scanf(" %s", title);
-                                    strcpy(ptr_title, title);
-                                    printf("\n\n\nTYPE DE LA COLONNE %s (NULLVAL[1] , UINT[2], INT[3], CHAR[4], FLOAT[5], DOUBLE[6], STRING[7], STRUCTURE[8]) : ",
-                                           ptr_title);
-                                    scanf(" %u", &type);
-                                    printf("\n\n\n");
-                                    nouveau->COLUMN = create_column(type, ptr_title);
-                                    int number_lines;
-                                    printf("CHOISIR NOMBRE DE LIGNE POUR LA COLONNE [%d] %s : ",
-                                           nouveau->NUMBER_COLONNE, nouveau->COLUMN->CHAINE);
-                                    scanf(" %d", &number_lines);
-                                    for (int i = 0; i < 3; i++)
-                                        printf("\n");
-                                    for (int j = 0; j < number_lines; j++) {
-                                        void *value = type_choice(nouveau->COLUMN);
-                                        if (nouveau->COLUMN->COLUMN_TYPE == STRING) {
-                                            insert_value(nouveau->COLUMN, value, nouveau->COLUMN->COLUMN_TYPE);
-                                        } else {
-                                            insert_value(nouveau->COLUMN, &value, nouveau->COLUMN->COLUMN_TYPE);
-                                        }
-                                    }
-                                    ptr_CDataframe = nouveau;
-                                    print_answer("COLONNE AJOUTEE");
-                                }
-                            }
-                            else {
-                                init_CData();
-                            }
+
+                            scanf(" %s", title);
+                            strcpy(ptr_title, title);
+                            printf("\n\n\nTYPE DE LA COLONNE %s (NULLVAL[1] , UINT[2], INT[3], CHAR[4], FLOAT[5], DOUBLE[6], STRING[7], STRUCTURE[8]) : ", ptr_title);
+                            scanf(" %u", &type);
+                            printf("\n\n\n");
+
+                            new_lnode->COLUMN = create_column(type, ptr_title);
+
                             break;
 
 
                         case 'd':
 
 
-                            if (init_CDataframe == 1) {
-                                LNODE *tmp;
-                                LNODE *ptmp;
-                                int column_position;
-                                printf("Position du nouveau LNODE a supprimer (0: debut, x: postion de x et -1 : fin : ");
-                                scanf(" %d", &column_position);
-                                if (ptr_CDataframe != NULL) {
-                                    if (column_position == -1) {
-                                        tmp = ptr_CDataframe;
-                                        while (tmp->SUCC != NULL) {
-                                            ptmp = tmp;
-                                            tmp = (LNODE *) tmp->SUCC;
-                                        }
-                                        free(tmp);
-                                        ptmp->SUCC = NULL;
-                                    }
-                                    if (column_position == 0) {
-                                        tmp = ptr_CDataframe;
-                                        delete_column(tmp->COLUMN);
-                                        free(tmp);
-                                    }
-                                    if (column_position != 0 && column_position != -1) {
-                                        int i = 0;
-                                        column_position += 1;
-                                        tmp = ptr_CDataframe;
-                                        while (tmp != NULL && i < column_position - 1) {
-                                            i++;
-                                            ptmp = tmp;
-                                            tmp = (LNODE *) tmp->SUCC;
-                                        }
-                                        if (tmp == NULL) {
-                                            printf("La colonne n existe pas...");
-                                        } else {
-                                            ptmp->SUCC = tmp->SUCC;
-                                            delete_column(tmp->COLUMN);
-                                        }
-                                    }
-                                }
-                            } else {
-                                init_CData();
-                            }
+                            printf("\n\n\nNUMERO COLONNE:");
+                            int number;
+                            scanf(" %d", &number);
+                            printf("\n");
+
+                            delete_lnode(ptr_CDataframe, number);
+
+                            print_answer("Supprime...");
+
                             break;
 
                         case 'e':
 
+                            printf("\n\n\nNOM COLONNE :");
+                            char named[100];
+                            scanf(" %s", named);
+                            printf("\n");
 
-                            if (init_CDataframe == 1) {
-                                int column_number;
-                                printf("------------------------------------------\n\n\n");
-                                printf("CHOISIR NUMERO DE COLONNE : ");
-                                scanf(" %d", &column_number);
-                                printf("\n");
-                                LNODE *tmp = NULL;
-                                if (ptr_CDataframe != NULL) {
-                                    int i = 0;
-                                    tmp = ptr_CDataframe;
-                                    while (tmp != NULL && i < column_number) {
-                                        i++;
-                                        tmp = (LNODE *) tmp->SUCC;
-                                    }
-                                }
-                                if (tmp == NULL) {
-                                    print_answer("Colonne inexistante...");
-                                } else {
-                                    printf("Nouveau nom de la colonne %s [%d]...\n ", tmp->COLUMN->CHAINE,
-                                           column_number);
-                                    rename_columns_name(tmp->COLUMN);
-                                }
-                            } else {
-                                init_CData();
-                            }
+                            rename_columns_name(acces_column_by_name(ptr_CDataframe, named));
+
                             break;
 
 

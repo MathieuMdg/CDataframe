@@ -38,6 +38,8 @@ int insert_lnode(CDATAFRAME* Cdata, LNODE* lnode, int position);
 
 CDATAFRAME* fill_CDataframe_auto(CDATAFRAME* Cdata);
 
+int delete_lnode(CDATAFRAME* Cdata, int position);
+
 
 
 #endif //CDATAFRAME_CDATAFRAME_H

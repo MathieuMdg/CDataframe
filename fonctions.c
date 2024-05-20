@@ -468,7 +468,7 @@ void print_col_by_index(COLUMN *col) {
 
 // Affiche une colonne en entier
 void print_col(COLUMN* col) {
-    printf("hehe");
+
     for (int i = 0; i < col->TAILLE_LOGIQUE; i++) {
         if (col->DONNEES[i] == NULL) {
             printf("[%d] NULL\n", i);
@@ -619,34 +619,14 @@ int inf_x(COLUMN* colonne, int x) {
 
 
 
-// Opérations usuelles
-
-void add_line(COLUMN** CData, int nbre_colonne) {
-    int val, colonne;
-    do {
-        printf("Dans quelle colonne ajouter la valeur (indiqué le numéro) : ");
-        scanf(" %d", &colonne);
-        if (colonne > nbre_colonne - 1) {
-            printf("Colonne inexistante.");
-        }
-    }
-    while (colonne > nbre_colonne - 1);
-    printf("valuer à ajouter : ");
-    scanf(" %d", &val);
-    if (insert_value(CData[colonne], val, INT)) {
-    }
-    else {
-        printf("Error adding value to my column\n");
-    }
-}
-
 
 // Change le nom d'une colonne par un nom donné par l'utilisateur
 void rename_columns_name(COLUMN* col) {
-    char title[100] = "";
-    printf("Nouveau nom : ");
+    char* title = (char*) malloc(sizeof (char));
+    printf("\n\n\nNOUVEAU NOM : ");
     scanf(" %s", title);
-    strcpy(col->CHAINE, title);
+    printf("\n");
+    col->CHAINE = title;
 }
 
 
@@ -1056,7 +1036,6 @@ CDATAFRAME* fill_CDataframe(CDATAFRAME* Cdata) {
 
 
         insert_lnode(Cdata, lnode, 1);
-        printf("ZJFQOF");
 
         printf("NOM DE LA COLONNE %d : ", i);
         char title[100] = "";
@@ -1128,11 +1107,25 @@ int insert_lnode(CDATAFRAME* Cdata, LNODE* lnode, int position) {
                 Cdata->head = lnode;
                 return 1;
             } else {
-                LNODE *tmp = Cdata->tail;
-                tmp->SUCC = lnode;
-                lnode->PREC = tmp;
-                Cdata->tail = lnode;
-                return 1;
+                if (position == -1) {
+                    LNODE *tmp = Cdata->tail;
+                    tmp->SUCC = lnode;
+                    lnode->PREC = tmp;
+                    Cdata->tail = lnode;
+                    return 1;
+                }
+                else {
+                    LNODE *tmp = Cdata->head;
+                    int i = 0;
+                    while (tmp != NULL && i<position-1) {
+                        tmp = tmp->SUCC;
+                        i++;
+                    }
+                    tmp->SUCC->PREC = lnode;
+                    lnode->SUCC = tmp->SUCC;
+
+                    tmp->SUCC = lnode;
+                }
             }
         }
     }
@@ -1151,7 +1144,7 @@ CDATAFRAME* fill_CDataframe_auto(CDATAFRAME* Cdata) {
         LNODE* lnode = create_lnode();
 
 
-        insert_lnode(Cdata, lnode, 1);
+        insert_lnode(Cdata, lnode, -1);
 
 
         lnode->COLUMN = create_column(INT, "colonne");
@@ -1201,6 +1194,70 @@ int add_lines(CDATAFRAME* CData) {
     }
 
     return 1;
-
-
 }
+
+
+
+int delete_lnode(CDATAFRAME* Cdata, int position) {
+    if (Cdata == NULL) {
+        print_answer("Pas de CDataframe...");
+        return 0;
+
+    } else {
+        if (Cdata->head == NULL) {
+            print_answer("CDataframe vide...");
+
+        } else {
+            if (position == 0) {
+
+                if(Cdata->head->SUCC != NULL) {
+                    LNODE *tmp = Cdata->head;
+                    Cdata->head = tmp->SUCC;
+                    Cdata->head->PREC = NULL;
+
+                    delete_column(tmp->COLUMN);
+                    free(tmp);
+
+                    return 1;
+                }
+                else {
+                    print_answer("CDataframe ne contenant qu'une seule colonne...");
+                    return 0;
+                }
+            } else {
+                if (position == -1) {
+                    if(Cdata->head->SUCC != NULL) {
+
+                        LNODE *tmp = Cdata->tail;
+
+                        Cdata->tail = tmp->PREC;
+                        Cdata->tail->SUCC = NULL;
+
+                        delete_column(tmp->COLUMN);
+                        free(tmp);
+                        return 1;
+                    }
+                    else {
+                        print_answer("CDataframe vide...");
+                    }
+                }
+                else {
+                    LNODE *tmp = Cdata->head;
+                    int i = 0;
+                    while (tmp != NULL && i<position-1) {
+                        tmp = tmp->SUCC;
+                        i++;
+                    }
+                    tmp->SUCC->PREC = tmp->PREC;
+                    tmp->PREC->SUCC = tmp->SUCC;
+
+                    delete_column(tmp->COLUMN);
+                    free(tmp);
+                    return 1;
+                }
+            }
+        }
+    }
+    return 0;
+}
+
