@@ -12,7 +12,7 @@ void print_CData_selected_column(CDATAFRAME* CData);
 void print_CData_selected_lines(CDATAFRAME* CData);
 
 // Affiche le nombre de ligne contenu dans le CDataframe
-void print_CData_number_lines(LNODE* CData);
+void print_CData_number_lines(CDATAFRAME* CData);
 
 // Affiche le nombre de colonne contenu dans le CDataframe
 void print_CData_number_column(LNODE* CData);

@@ -439,7 +439,9 @@ int search_value_in_column(COLUMN* col, void* value) {
 
 void erase_index(COLUMN *col) {
     free(col->INDEX);
-    col->INDEX = NULL;
+    for (int i = 0; i<col->TAILLE_LOGIQUE; i++) {
+        col->INDEX[i] = col->TAILLE_LOGIQUE;
+    }
     col->VALID_INDEX = 0;
 }
 
@@ -466,6 +468,7 @@ void print_col_by_index(COLUMN *col) {
 
 // Affiche une colonne en entier
 void print_col(COLUMN* col) {
+    printf("hehe");
     for (int i = 0; i < col->TAILLE_LOGIQUE; i++) {
         if (col->DONNEES[i] == NULL) {
             printf("[%d] NULL\n", i);
@@ -569,7 +572,7 @@ void delete_line(COLUMN* col) {
 int occurence(COLUMN* colonne, int val) {
     int occurence = 0;
     for (int i = 0; i < colonne->TAILLE_LOGIQUE; i++) {
-        if (colonne->DONNEES[i] == val) {
+        if (*((int*) colonne->DONNEES[i]) == val) {
             occurence++;
         }
     }
@@ -592,7 +595,7 @@ int positionx(COLUMN* colonne, int position) {
 int sup_x(COLUMN* colonne, int x) {
     int sup_x = 0;
     for (int i = 0; i < colonne->TAILLE_LOGIQUE; i++) {
-        if (colonne->DONNEES[i] > x) {
+        if (*((int*)colonne->DONNEES[i]) > x) {
             sup_x++;
         }
     }
@@ -604,7 +607,7 @@ int sup_x(COLUMN* colonne, int x) {
 int inf_x(COLUMN* colonne, int x) {
     int inf_x = 0;
     for (int i = 0; i < colonne->TAILLE_LOGIQUE; i++) {
-        if (colonne->DONNEES[i] < x) {
+        if (*((int*)colonne->DONNEES[i]) < x) {
             inf_x++;
         }
     }
@@ -729,7 +732,7 @@ void print_CData_chaine(CDATAFRAME* CData) {
             printf("%s\n", tmp->COLUMN->CHAINE);
             print_col(tmp->COLUMN);
             printf("\n");
-            tmp = (LNODE *) tmp->SUCC;
+            tmp = tmp->SUCC;
         }
     }
 }
@@ -858,12 +861,12 @@ void print_CData_selected_lines(CDATAFRAME* CData) {
     }
 }
 
-void print_CData_number_lines(LNODE* CData) {
-    int number_lines = 0;
+void print_CData_number_lines(CDATAFRAME* CData) {
+    unsigned int number_lines = 0;
     LNODE* tmp ;
-    if (CData != NULL)
+    if (CData != NULL && CData->head != NULL)
     {
-        tmp = CData;
+        tmp = CData->head;
         while(tmp != NULL)
         {
             printf("Le nombre de ligne de la colonne %s est de %d\n", tmp->COLUMN->CHAINE, tmp->COLUMN->TAILLE_LOGIQUE);

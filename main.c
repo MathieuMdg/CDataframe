@@ -434,7 +434,7 @@ int main() {
                                 printf("\n\n\n");
                                 LNODE *tmp;
                                 if (ptr_CDataframe != NULL) {
-                                    tmp = ptr_CDataframe;
+                                    tmp = ptr_CDataframe->head;
                                     printf("%s ", tmp->COLUMN->CHAINE);
                                     tmp = (LNODE *) tmp->SUCC;
                                     while (tmp != NULL) {
@@ -478,96 +478,88 @@ int main() {
 
                         case 'a':
 
+                            printf("\n\n\n");
+                            print_CData_number_lines(ptr_CDataframe);
 
-                            if (init_CDataframe == 1) {
-                                print_CData_number_lines(ptr_CDataframe);
-                            } else {
-                                init_CData();
-                            }
                             break;
 
                         case 'b':
 
+                            printf("\n\n\nLe nombre de colonne du CDataframe est : %d",get_cdataframe_cols_size(ptr_CDataframe));
 
-                            if (init_CDataframe == 1) {
-                                print_CData_number_column(ptr_CDataframe);
-                            } else {
-                                init_CData();
-                            }
                             break;
 
 
                         case 'c':
 
+                            LNODE * tmp = ptr_CDataframe->head;
 
-                            if (init_CDataframe == 1) {
-                                LNODE *tmp;
-                                int value, occ = 0;
-                                printf("\n\n\nVALEUR RECHERCHEE? : ");
-                                scanf(" %d", &value);
-                                printf("\n");
-                                if (ptr_CDataframe != NULL) {
-                                    tmp = ptr_CDataframe;
-                                    while (tmp != NULL) {
-                                        if (value_research(tmp->COLUMN, value)) {
-                                            occ++;
-                                        }
-                                        tmp = (LNODE *) tmp->SUCC;
-                                    }
+                            printf("\n\n\nVALEUR A CHERCHER :");
+                            void* value = type_choice(tmp->COLUMN);;
+                            printf("\n");
+
+
+
+                            ENUM_TYPE type = INT;
+
+                            int occ = 0;
+
+                            while(tmp != NULL) {
+                                if (tmp->COLUMN->COLUMN_TYPE == type) {
+                                    occ += occurence(tmp->COLUMN, *((int*)value));
+                                    tmp = tmp->SUCC;
                                 }
-                                printf("La valeur recherchee est presente dans %d cellule(s).", occ);
-                            } else {
-                                init_CData();
                             }
+                            printf("Le nombre d'occurence de %d est : %d", *((int*)value), occ);
+
+
+
+
                             break;
 
                         case 'd':
 
+                            LNODE * tmp1 = ptr_CDataframe->head;
 
-                            if (init_CDataframe == 1) {
-                                LNODE *tmp;
-                                int value, sup = 0;
-                                printf("\n\n\nVALEUR RECHERCHEE? : ");
-                                scanf(" %d", &value);
-                                printf("\n");
-                                if (ptr_CDataframe != NULL) {
-                                    tmp = ptr_CDataframe;
-                                    while (tmp != NULL) {
-                                        sup += sup_x(tmp->COLUMN, value);
-                                        tmp = (LNODE *) tmp->SUCC;
-                                    }
+                            printf("\n\n\nVALEUR A CHERCHER :");
+                            void* value2 = type_choice(tmp1->COLUMN);;
+                            printf("\n");
+
+                            ENUM_TYPE type1 = INT;
+
+                            int sup = 0;
+
+                            while(tmp1 != NULL) {
+                                if (tmp1->COLUMN->COLUMN_TYPE == type1) {
+                                    sup += sup_x(tmp1->COLUMN, *((int*)value2));
+                                    tmp1 = tmp1->SUCC;
                                 }
-                                printf("Le nombre de cellule contenant une valeur superieur a %d est de %d.", value,
-                                       sup);
-                            } else {
-                                init_CData();
                             }
+                            printf("Le nombre d'occurence de %d est : %d", *((int*)value2), sup);
+
                             break;
 
                         case 'e':
 
 
-                            if (init_CDataframe == 1) {
-                                LNODE *tmp;
-                                int value, inf = 0;
-                                printf("<\n\n\nVALEUR RECHERCHEE? : ");
-                                scanf(" %d", &value);
-                                printf("\n");
-                                if (ptr_CDataframe != NULL) {
-                                    tmp = ptr_CDataframe;
-                                    while (tmp != NULL) {
-                                        inf += inf_x(tmp->COLUMN, value);
-                                        tmp = (LNODE *) tmp->SUCC;
-                                    }
+                            LNODE * tmp3 = ptr_CDataframe->head;
+
+                            printf("\n\n\nVALEUR A CHERCHER :");
+                            void* value3 = type_choice(tmp3->COLUMN);;
+                            printf("\n");
+
+                            ENUM_TYPE type3 = INT;
+
+                            int inf = 0;
+
+                            while(tmp3 != NULL) {
+                                if (tmp3->COLUMN->COLUMN_TYPE == type3) {
+                                    inf += inf_x(tmp3->COLUMN, *((int*)value3));
+                                    tmp3 = tmp3->SUCC;
                                 }
-                                printf("\n\n\n");
-                                printf("========================================================================\n");
-                                printf("|| Le nombre de cellule contenant une valeur inferieur a %d est de %d ||\n",
-                                       value, inf);
-                                printf("========================================================================\n");
-                            } else {
-                                init_CData();
                             }
+                            printf("Le nombre d'occurence de %d est : %d", *((int*)value3), inf);
+
                             break;
 
 
