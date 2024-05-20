@@ -420,14 +420,18 @@ void erase_index(COLUMN *col) {
 
 // Affiche une colonne triée par son index
 void print_col_by_index(COLUMN *col) {
+
     for (int i = 0; i < col->TAILLE_LOGIQUE; i++) {
         if (col->DONNEES[col->INDEX[i]] == NULL) {
+            printf("col[i]");
             printf("[%d] NULL\n", i);
         }
         else {
             if (col->COLUMN_TYPE != STRING) {
                 char str[100];
+                printf("avant convert");
                 convert_value(col, col->INDEX[i], str, 100);
+                printf("après convert");
                 printf("[%d] %s\n", i, str);
             }
             else {
@@ -620,7 +624,7 @@ void print_CData_chaine(CDATAFRAME* CData) {
         while(tmp != NULL)
         {
             printf("%s\n", tmp->COLUMN->CHAINE);
-            print_col_by_index(tmp->COLUMN);
+            print_col(tmp->COLUMN);
             printf("\n");
             tmp = tmp->SUCC;
         }
@@ -854,7 +858,7 @@ CDATAFRAME* load_from_csv(char *file_name, ENUM_TYPE *dftype, int size) {
     file = fopen(file_path, "rt");
 
     if (file == NULL) {
-        perror("Erreur lors de l'ouverture du fichier");
+        print_answer("Erreur lors de l'ouverture du fichier");
         return NULL;
     }
 
@@ -881,6 +885,7 @@ CDATAFRAME* load_from_csv(char *file_name, ENUM_TYPE *dftype, int size) {
         }
 
     }
+    fclose(file);
     return Cdata;
 
 }
@@ -951,7 +956,6 @@ CDATAFRAME* fill_CDataframe(CDATAFRAME* Cdata) {
 
 
         insert_lnode(Cdata, lnode, -1);
-        printf("sheeesh");
         printf("NOM DE LA COLONNE %d : ", i);
         char title[100] = "";
         char *ptr_title = malloc(strlen(title) + 1);
@@ -1087,15 +1091,17 @@ int add_lines(CDATAFRAME* CData) {
     char *ptr_title = malloc(strlen(title) + 1);
     scanf(" %s", title);
     strcpy(ptr_title, title);
+    printf("\n");
 
     LNODE* tmp = CData->head;
 
     while (tmp != NULL && strcmp(ptr_title, tmp->COLUMN->CHAINE) != 0) {
         tmp = tmp->SUCC;
     }
-
+    printf("\n\n\n");
     if (tmp == NULL) {
         print_answer("Colonne inexistante...");
+        return 0;
     }
     if (strcmp(ptr_title, tmp->COLUMN->CHAINE) == 0) {
         if (insert_value(tmp->COLUMN, type_choice(tmp->COLUMN) ,tmp->COLUMN->COLUMN_TYPE)) {

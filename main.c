@@ -80,7 +80,6 @@ int main() {
 
                             } else{
 
-                                delete_cdataframe( ptr_CDataframe);
                                 ptr_CDataframe = NULL;
 
                                 ENUM_TYPE INIT[10];
@@ -204,7 +203,7 @@ int main() {
 
                             case 'a':
                                 if (full == 1) {
-
+                                    printf("\n\n\n");
                                     add_lines(ptr_CDataframe);
                                 }
                                 else {
@@ -219,7 +218,12 @@ int main() {
                                     scanf(" %s", name);
                                     printf("\n");
 
-                                    delete_line(acces_column_by_name(ptr_CDataframe, name));
+                                    COLUMN* column = acces_column_by_name(ptr_CDataframe, name);
+
+                                    if (column != NULL) {
+                                        delete_line(column);
+                                    }
+
                                 }
                                 else{
                                     full_CData();
@@ -234,27 +238,32 @@ int main() {
                                 scanf(" %d", &pos);
                                 printf("\n");
 
-                                LNODE *new_lnode = create_lnode();
+                                if (pos > get_cdataframe_cols_size(ptr_CDataframe)) {
+                                    print_answer("Position erronee...");
+                                }
+                                else {
 
-                                insert_lnode(ptr_CDataframe, new_lnode, pos);
+                                    LNODE *new_lnode = create_lnode();
 
-                                printf("NOM DE LA COLONNE [%d]: ", new_lnode->NUMBER_COLONNE);
-                                char title[100] = "";
-                                char *ptr_title = malloc(strlen(title) + 1);
-                                enum enum_type type;
+                                    insert_lnode(ptr_CDataframe, new_lnode, pos);
+
+                                    printf("NOM DE LA COLONNE [%d]: ", new_lnode->NUMBER_COLONNE);
+                                    char title[100] = "";
+                                    char *ptr_title = malloc(strlen(title) + 1);
+                                    enum enum_type type;
 
 
-                                scanf(" %s", title);
-                                strcpy(ptr_title, title);
-                                printf("\n\n\nTYPE DE LA COLONNE %s (NULLVAL[1] , UINT[2], INT[3], CHAR[4], FLOAT[5], DOUBLE[6], STRING[7], STRUCTURE[8]) : ",
-                                       ptr_title);
-                                scanf(" %u", &type);
-                                printf("\n\n\n");
+                                    scanf(" %s", title);
+                                    strcpy(ptr_title, title);
+                                    printf("\n\n\nTYPE DE LA COLONNE %s (NULLVAL[1] , UINT[2], INT[3], CHAR[4], FLOAT[5], DOUBLE[6], STRING[7], STRUCTURE[8]) : ",
+                                           ptr_title);
+                                    scanf(" %u", &type);
+                                    printf("\n\n\n");
 
-                                new_lnode->COLUMN = create_column(type, ptr_title);
+                                    new_lnode->COLUMN = create_column(type, ptr_title);
 
-                                full = 1;
-
+                                    full = 1;
+                                }
                                 break;
 
 
@@ -266,9 +275,13 @@ int main() {
                                     scanf(" %d", &number);
                                     printf("\n");
 
-                                    delete_lnode(ptr_CDataframe, number);
+                                    if (number < get_cdataframe_cols_size(ptr_CDataframe)) {
+                                        delete_lnode(ptr_CDataframe, number);
+                                        print_answer("Suppression...");
+                                    } else{
+                                        print_answer("Colonne intouvable...");
+                                    }
 
-                                    print_answer("Supprime...");
                                 }
                                 else{
                                     full_CData();
@@ -303,23 +316,27 @@ int main() {
 
                                     COLUMN *col = acces_column_by_name(ptr_CDataframe, namee);
 
-                                    int line_number;
-                                    printf("NUMERO LIGNE : ");
-                                    scanf(" %d", &line_number);
-                                    printf("\n");
+                                    if (col != NULL) {
 
-                                    printf("La valeur a la ligne %d de la colonne %s est %d\n", line_number,
-                                           col->CHAINE,
-                                           *((int *) col->DONNEES[line_number]));
+                                        int line_number;
+                                        printf("NUMERO LIGNE : ");
+                                        scanf(" %d", &line_number);
+                                        printf("\n");
 
-                                    printf("\n\nCHANGER VALEUR (OUI[1]/ NON[0]) : ");
-                                    int answer;
-                                    scanf(" %d", &answer);
-                                    printf("\n");
+                                        printf("La valeur a la ligne %d de la colonne %s est %d\n", line_number,
+                                               col->CHAINE,
+                                               *((int *) col->DONNEES[line_number]));
 
-                                    if (answer == 1) {
-                                        col->DONNEES[line_number] = type_choice(col);
+                                        printf("\n\nCHANGER VALEUR (OUI[1]/ NON[0]) : ");
+                                        int answer;
+                                        scanf(" %d", &answer);
+                                        printf("\n");
+
+                                        if (answer == 1) {
+                                            col->DONNEES[line_number] = type_choice(col);
+                                        }
                                     }
+
                                 }
                                 else{
                                     full_CData();
@@ -495,15 +512,18 @@ int main() {
 
                                     COLUMN *new_column = acces_column_by_name(ptr_CDataframe, column_name);
 
-                                    printf("\n\n\nTYPE DE TRI (ASC[0] ou DES[1]) :");
+                                    if (new_column != NULL) {
 
-                                    int sort_dir;
-                                    scanf(" %d", &sort_dir);
-                                    printf("\n");
-                                    printf("slure");
-                                    sort(new_column, sort_dir);
-                                    printf("miam");
-                                    print_col_by_index(new_column);
+                                        printf("\n\n\nTYPE DE TRI (ASC[0] ou DES[1]) :");
+
+                                        int sort_dir;
+                                        scanf(" %d", &sort_dir);
+                                        printf("\n");
+                                        printf("slure");
+                                        sort(new_column, sort_dir);
+                                        printf("miam");
+                                        print_col_by_index(new_column);
+                                    }
                                 } else{
                                     full_CData();
                                 }
@@ -515,9 +535,12 @@ int main() {
                                     printf("\n\n\nNOM COLONNE :");
                                     scanf(" %s", name_column);
 
-                                    int index = check_index(acces_column_by_name(ptr_CDataframe, name_column));
+                                    COLUMN* column = acces_column_by_name(ptr_CDataframe, name_column);
+                                    if (column != NULL) {
+                                        int index = check_index(column);
 
-                                    printf("Indice de la colonne : %d", index);
+                                        printf("Indice de la colonne : %d", index);
+                                    }
                                 }
                                 else {
                                     full_CData();
@@ -531,9 +554,13 @@ int main() {
                                     printf("\n\n\nNOM COLONNE :");
                                     scanf(" %s", column);
 
-                                    erase_index(acces_column_by_name(ptr_CDataframe, column));
+                                    COLUMN* new = acces_column_by_name(ptr_CDataframe, column);
 
-                                    print_answer("Indice de la colonne efface...");
+                                    if (new != NULL) {
+                                        erase_index(new);
+
+                                        print_answer("Indice de la colonne efface...");
+                                    }
                                 } else{
                                     full_CData();
                                 }
@@ -547,6 +574,7 @@ int main() {
                                     char file_name[100];
                                     scanf(" %s", file_name);
                                     printf("\n\n\n\n");
+
 
                                     printf("NOMBRE DE COLONNE :");
                                     int column_number;
@@ -563,10 +591,14 @@ int main() {
 
                                     ptr_CDataframe = load_from_csv(file_name, type, column_number);
 
-                                    print_answer("CDataframe cree...");
+                                    if (ptr_CDataframe != NULL) {
+                                        print_answer("CDataframe cree...");
+                                        full = 1;
+                                    }
 
-                                    full = 1;
-                                } else {
+
+                                }
+                                else {
                                     print_answer("CDataframe deja rempli, veuillez en creer un nouveau...");
                                 }
 
