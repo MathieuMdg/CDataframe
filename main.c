@@ -149,7 +149,7 @@ int main() {
                     printf("\t 'd' - Supprimer une colonne du ptr_CDataframe\n");
                     printf("\t 'e' - Renommer le titre d une colonne du ptr_CDataframe\n");
                     printf("\t 'f' - Verifier l existence d une valeur (recherche) dans le ptr_CDataframe\n");
-                    printf("\t 'g' - Acceder/remplacer la valeur se trouvant dans une cellule du ptr_CDataframe en utilisant son numero de ligne\n\t\t et de colonne\n");
+                    printf("\t 'g' - Acceder/remplacer la valeur se trouvant dans une cellule du ptr_CDataframe en utilisant son numero de ligne et de colonne\n");
                     printf("\t 'h' - Afficher les noms des colonnes\n ");
                     printf("\nChoisissez une fonctionnalite a, b ou c (pour revenir au menu tapez 0) :");
                     scanf(" %c", &fonction);
@@ -181,7 +181,7 @@ int main() {
                             scanf(" %d", &pos);
                             printf("\n");
 
-                            LNODE* new_lnode = create_lnode();
+                            LNODE *new_lnode = create_lnode();
 
                             insert_lnode(ptr_CDataframe, new_lnode, pos);
 
@@ -193,7 +193,8 @@ int main() {
 
                             scanf(" %s", title);
                             strcpy(ptr_title, title);
-                            printf("\n\n\nTYPE DE LA COLONNE %s (NULLVAL[1] , UINT[2], INT[3], CHAR[4], FLOAT[5], DOUBLE[6], STRING[7], STRUCTURE[8]) : ", ptr_title);
+                            printf("\n\n\nTYPE DE LA COLONNE %s (NULLVAL[1] , UINT[2], INT[3], CHAR[4], FLOAT[5], DOUBLE[6], STRING[7], STRUCTURE[8]) : ",
+                                   ptr_title);
                             scanf(" %u", &type);
                             printf("\n\n\n");
 
@@ -260,73 +261,53 @@ int main() {
                         case 'g':
 
 
-                            if (init_CDataframe == 1) {
-                                int column_number, line_number;
-                                printf("\n\n\nNUMERO COLONNE : ");
-                                scanf(" %d", &column_number);
-                                printf("\n");
-                                printf("NUMERO LIGNE : ");
-                                scanf(" %d", &line_number);
-                                printf("\n");
-                                LNODE *tmp = NULL;
-                                if (ptr_CDataframe != NULL) {
-                                    int i = 0;
-                                    tmp = ptr_CDataframe;
-                                    while (tmp != NULL && i < column_number) {
-                                        i++;
-                                        tmp = (LNODE *) tmp->SUCC;
-                                    }
-                                }
-                                if (tmp == NULL) {
-                                    print_answer("La colonne n existe pas...");
-                                } else {
-                                    printf("La valeur a la ligne %d de la colonne %s [%d] est %d\n", line_number,
-                                           tmp->COLUMN->CHAINE, column_number, tmp->COLUMN->DONNEES[line_number]);
-                                    ENUM_TYPE value;
-                                    printf("\n\nCHANGER VALEUR? (oui: 1/ non: 0) : ");
-                                    scanf(" %d", &value);
-                                    printf("\n");
-                                    if (value) {
-                                        printf("\n\nVALEUR : ");
-                                        scanf(" %d", &value);
-                                        printf("\n");
-                                    }
-                                }
-                            } else {
-                                init_CData();
+                            printf("\n\n\nNOM COLONNE :");
+                            char namee[100];
+                            scanf(" %s", namee);
+                            printf("\n");
+
+                            COLUMN *col = acces_column_by_name(ptr_CDataframe, namee);
+
+                            int line_number;
+                            printf("NUMERO LIGNE : ");
+                            scanf(" %d", &line_number);
+                            printf("\n");
+
+                            printf("La valeur a la ligne %d de la colonne %s est %d\n", line_number, col->CHAINE,
+                                   *((int *) col->DONNEES[line_number]));
+
+                            printf("\n\nCHANGER VALEUR (OUI[1]/ NON[0]) : ");
+                            int answer;
+                            scanf(" %d", &answer);
+                            printf("\n");
+
+                            if (answer == 1) {
+                                col->DONNEES[line_number] = type_choice(col);
                             }
+
                             break;
 
 
                         case 'h':
 
+                            LNODE *tmp = ptr_CDataframe->head;
 
-                            if (init_CDataframe == 1) {
-                                printf("\n\n\n");
-                                LNODE *tmp;
-                                if (ptr_CDataframe != NULL) {
-                                    tmp = ptr_CDataframe->head;
-                                    printf("%s ", tmp->COLUMN->CHAINE);
-                                    tmp = (LNODE *) tmp->SUCC;
-                                    while (tmp != NULL) {
-                                        printf("- %s ", tmp->COLUMN->CHAINE);
-                                        tmp = (LNODE *) tmp->SUCC;
-                                    }
-                                }
-                            } else {
-                                init_CData();
+                            while (tmp->SUCC != NULL) {
+                                tmp = tmp->SUCC;
+                                printf("\n\n\n%s - ", tmp->COLUMN->CHAINE);
                             }
+                            printf("%s\n", tmp->COLUMN->CHAINE);
                             break;
-
 
                         case '0':
                             categorie = 0;
                             break;
 
-                    }
 
+                    }
                 }
                 break;
+
             }
 
 
