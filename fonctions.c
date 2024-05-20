@@ -4,6 +4,8 @@
 
 #include "column.h"
 #include "cdataframe.h"
+#include "list.h"
+#include "sort.h"
 #define REALOC_SIZE 256
 #include <string.h>
 #include <stdio.h>
@@ -1059,12 +1061,7 @@ CDATAFRAME* fill_CDataframe_auto(CDATAFRAME* Cdata) {
 
             int number = j + i;
 
-            if (insert_value(lnode->COLUMN, &number, lnode->COLUMN->COLUMN_TYPE)) {
-                printf("\nINSERTION GOOD");
-            }
-            else {
-                printf("\nNICHT GUT");
-            }
+            (insert_value(lnode->COLUMN, &number, lnode->COLUMN->COLUMN_TYPE));
 
 
         }
