@@ -599,6 +599,16 @@ void init_CData() {
     printf("========================================================================\n");
 }
 
+// Message pour préciser à l'utilisateur de remplir le CDataframe
+void full_CData() {
+    for(int i = 0; i < 3; i++) {
+        printf("\n");
+    }
+    printf("====================================================================\n");
+    printf("|| Il faut remplir le Cdataframe avant de pouvoir le manipuler... ||\n");
+    printf("====================================================================\n");
+}
+
 
 // Affiche le CDataframe en entier (toutes les données des colonnes)
 void print_CData_chaine(CDATAFRAME* CData) {
@@ -858,7 +868,6 @@ CDATAFRAME* load_from_csv(char *file_name, ENUM_TYPE *dftype, int size) {
     char* chaine;
 
     while (fgets(ligne, sizeof(ligne), file) != NULL) {
-        printf("%s", ligne);
 
         tmp = Cdata->head;
         const char * separators = ",;\n";
@@ -866,7 +875,6 @@ CDATAFRAME* load_from_csv(char *file_name, ENUM_TYPE *dftype, int size) {
         while (tmp != NULL) {
             char *ptr_chaine = (char*) malloc(sizeof (char));
             strcpy(ptr_chaine, chaine);
-            printf("%s\n", ptr_chaine);
             load_from_cqv_insert_value(tmp->COLUMN, ptr_chaine, tmp->COLUMN->COLUMN_TYPE);
             tmp = tmp->SUCC;
             chaine = strtok (NULL, separators);

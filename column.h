@@ -87,4 +87,6 @@ void* type_choice(COLUMN* col);
 
 void init_CData();
 
+void full_CData();
+
 #endif
