@@ -444,18 +444,21 @@ int main() {
 
                         case 'a':
 
-                            char* column_name = NULL;
+                            char column_name[100];
                             printf("\n\n\nNOM COLONNE :");
                             scanf(" %s", column_name);
                             printf("\n");
 
                             COLUMN* new_column = acces_column_by_name(ptr_CDataframe, column_name);
 
-                            printf("\n\n\nTYPE DE TRI (ASC ou DES) :");
+                            printf("\n\n\nTYPE DE TRI (ASC[0] ou DES[1]) :");
+
                             int sort_dir;
                             scanf(" %d", &sort_dir);
                             printf("\n");
+                            printf("slure");
                             sort(new_column, sort_dir);
+                            printf("miam");
                             print_col_by_index(new_column);
 
                             break;
@@ -487,6 +490,7 @@ int main() {
 
                         case 'd':
                                 if(full != 1) {
+                                    printf("\n\n\n\n");
 
                                     printf("NOM DU FICHIER :");
                                     char file_name[100];
@@ -500,14 +504,14 @@ int main() {
 
                                     ENUM_TYPE type[100];
                                     for(int i = 0; i<column_number; i++){
-                                        printf("TYPE DE LA COLONNE [%d] :", i);
+                                        printf("TYPE DE LA COLONNE [%d] (NULLVAL[1] , UINT[2], INT[3], CHAR[4], FLOAT[5], DOUBLE[6], STRING[7], STRUCTURE[8]) : ", i);
                                         scanf(" %d", &type[i]);
                                         printf("\n");
                                     }
 
                                     ptr_CDataframe = load_from_csv(file_name, type, column_number);
 
-                                    print_answer("ptr_CDataframe cree...");
+                                    print_answer("CDataframe cree...");
                                 }
                                 else{
                                     print_answer("CDataframe deja rempli, veuillez en creer un nouveau...");

@@ -318,13 +318,20 @@ void quicksort(COL_TYPE * arr[], unsigned long long int index[], int low, unsign
 
 // Fonction de tri générale en fonction du type de tri pour un tableau d'index
 void sort(COLUMN* col, int sort_dir) {
+    printf("entre");
     if (col->VALID_INDEX == 0) {
+        printf("valid");
         // Tri non trié : Utiliser Quicksort pour le tableau d'index
         quicksort(col->DONNEES, col->INDEX, 0, col->TAILLE_LOGIQUE - 1, col);
-    } else if (col->VALID_INDEX == -1) {
-        // Tri partiellement trié : Utiliser Insertion Sort pour le tableau d'index
-        insertion(col->DONNEES, col->INDEX, col->TAILLE_LOGIQUE);
-    }
+        printf("quicksort");
+    } else {
+        if (col->VALID_INDEX == -1) {
+            printf("egal 1");
+                // Tri partiellement trié : Utiliser Insertion Sort pour le tableau d'index
+                insertion(col->DONNEES, col->INDEX, col->TAILLE_LOGIQUE);
+            printf("insertion");
+            }
+        }
 
     // Si le tri est DESC, inverser le tableau d'index trié
     if (sort_dir == DESC) {
@@ -436,9 +443,8 @@ int search_value_in_column(COLUMN* col, void* value) {
 
 
 void erase_index(COLUMN *col) {
-    free(col->INDEX);
     for (int i = 0; i<col->TAILLE_LOGIQUE; i++) {
-        col->INDEX[i] = col->TAILLE_LOGIQUE;
+        col->INDEX[i] = i;
     }
     col->VALID_INDEX = 0;
 }
@@ -697,7 +703,7 @@ void print_CData_chaine(CDATAFRAME* CData) {
         while(tmp != NULL)
         {
             printf("%s\n", tmp->COLUMN->CHAINE);
-            print_col(tmp->COLUMN);
+            print_col_by_index(tmp->COLUMN);
             printf("\n");
             tmp = tmp->SUCC;
         }
@@ -944,6 +950,7 @@ CDATAFRAME* load_from_csv(char *file_name, ENUM_TYPE *dftype, int size) {
     char* chaine;
 
     while (fgets(ligne, sizeof(ligne), file) != NULL) {
+        printf("%s", ligne);
 
         tmp = Cdata->head;
         const char * separators = ",;\n";
@@ -973,7 +980,6 @@ void save_into_csv(CDATAFRAME *cdf, char *file_name) {
 
 
     LNODE* tmp = cdf->head;
-    printf("%d", tmp->COLUMN->TAILLE_LOGIQUE);
 
         for(int i = 0; i<tmp->COLUMN->TAILLE_LOGIQUE; i++) {
 
@@ -1189,7 +1195,7 @@ int add_lines(CDATAFRAME* CData) {
 }
 
 
-
+// Supprime un maillon (contenant une colonne) du Cdataframe
 int delete_lnode(CDATAFRAME* Cdata, int position) {
     if (Cdata == NULL) {
         print_answer("Pas de CDataframe...");
@@ -1254,7 +1260,7 @@ int delete_lnode(CDATAFRAME* Cdata, int position) {
 }
 
 
-// Permet d'ajouter une valeur à la fin d'une colonne et de l'agrandir si besoin
+// Permet d'ajouter une valeur à la fin d'une colonne et de l'agrandir si besoin (pour la fonction d'importation via un fichier .csv)
 int load_from_cqv_insert_value(COLUMN* col, char* str, ENUM_TYPE col_type) {
 
     // Si la colonne est vide
@@ -1270,6 +1276,7 @@ int load_from_cqv_insert_value(COLUMN* col, char* str, ENUM_TYPE col_type) {
             printf( "ERREUR ALLOCATION\n");
             return 0;
         }
+
     }
 
     if (col->TAILLE_LOGIQUE == col->TAILLE_PHYSIQUE) {
@@ -1286,7 +1293,7 @@ int load_from_cqv_insert_value(COLUMN* col, char* str, ENUM_TYPE col_type) {
         col->DONNEES[col->TAILLE_LOGIQUE] = NULL;
     }
 
-    else {
+    if (str != NULL) {
 
         // Affecter la valeur en fonction du type de colonne
         switch (col->COLUMN_TYPE) {
