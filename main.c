@@ -148,9 +148,8 @@ int main() {
                     printf("\t 'c' - Ajouter une colonne au ptr_CDataframe\n");
                     printf("\t 'd' - Supprimer une colonne du ptr_CDataframe\n");
                     printf("\t 'e' - Renommer le titre d une colonne du ptr_CDataframe\n");
-                    printf("\t 'f' - Verifier l existence d une valeur (recherche) dans le ptr_CDataframe\n");
-                    printf("\t 'g' - Acceder/remplacer la valeur se trouvant dans une cellule du ptr_CDataframe en utilisant son numero de ligne et de colonne\n");
-                    printf("\t 'h' - Afficher les noms des colonnes\n ");
+                    printf("\t 'f' - Acceder/remplacer la valeur se trouvant dans une cellule du ptr_CDataframe en utilisant son numero de ligne et de colonne\n");
+                    printf("\t 'g' - Afficher les noms des colonnes\n ");
                     printf("\nChoisissez une fonctionnalite a, b ou c (pour revenir au menu tapez 0) :");
                     scanf(" %c", &fonction);
 
@@ -229,36 +228,8 @@ int main() {
                             break;
 
 
+
                         case 'f':
-
-
-                            if (init_CDataframe == 1) {
-                                LNODE *tmp;
-                                int presence = 0, value;
-                                printf("\n\n");
-                                printf("------------------------------------------\n\n");
-                                printf("VALEUR RECHERCHEE : ");
-                                scanf(" %d", &value);
-                                if (ptr_CDataframe != NULL) {
-                                    tmp = ptr_CDataframe;
-                                    while (tmp != NULL && presence != 1) {
-                                        if (value_research(tmp->COLUMN, value)) {
-                                            presence = 1;
-                                        }
-                                        tmp = (LNODE *) tmp->SUCC;
-                                    }
-                                }
-                                if (presence == 1) {
-                                    print_answer("La valeur est presente dans le ptr_CDataframe");
-                                } else {
-                                    print_answer("La valeur n'est pas presente dans le ptr_CDataframe");
-                                }
-                            } else {
-                                init_CData();
-                            }
-                            break;
-
-                        case 'g':
 
 
                             printf("\n\n\nNOM COLONNE :");
@@ -288,13 +259,14 @@ int main() {
                             break;
 
 
-                        case 'h':
+                        case 'g':
 
                             LNODE *tmp = ptr_CDataframe->head;
 
+                            printf("\n\n\n");
                             while (tmp->SUCC != NULL) {
+                                printf("%s - ", tmp->COLUMN->CHAINE);
                                 tmp = tmp->SUCC;
-                                printf("\n\n\n%s - ", tmp->COLUMN->CHAINE);
                             }
                             printf("%s\n", tmp->COLUMN->CHAINE);
                             break;
@@ -468,9 +440,9 @@ int main() {
                             printf("\n\n\nNOM COLONNE :");
                             scanf(" %s", name_column);
 
-                            check_index(acces_column_by_name(ptr_CDataframe, name_column));
+                            int index = check_index(acces_column_by_name(ptr_CDataframe, name_column));
 
-                            print_answer("Indice de la colonne efface...");
+                            printf("Indice de la colonne : %d", index);
 
                             break;
 
@@ -550,35 +522,8 @@ int main() {
         }
     }
 
-    ENUM_TYPE cdata_type[] = {INT, INT, INT, INT, CHAR, INT, INT, CHAR, INT};
-    int number_column = 3;
-    CDATAFRAME* MIAM = create_cdataframe(cdata_type,  number_column);
-    LNODE * tmp = MIAM->head;
+    delete_cdataframe(ptr_CDataframe);
 
-    while (tmp!= NULL) {
-        int* ch = (int*) malloc(sizeof (int));
-        *ch= 1;
-        insert_value(tmp->COLUMN, ch, tmp->COLUMN->COLUMN_TYPE);
-        insert_value(tmp->COLUMN, ch, tmp->COLUMN->COLUMN_TYPE);
-        print_col(tmp->COLUMN);
-        tmp = tmp->SUCC;
-    }
-
-    printf("\n");
-
-    save_into_csv(MIAM, "CHIPS.csv");
-
-    CDATAFRAME* SLURP = load_from_csv("MIAM.csv", cdata_type, 3);
-
-    printf("\n\n\n\n");
-    tmp = SLURP->head;
-    while (tmp!= NULL) {
-        print_col(tmp->COLUMN);
-        tmp = tmp->SUCC;
-    }
-
-    delete_cdataframe(&MIAM);
-    delete_cdataframe(&SLURP);
     return 0;
 }
 
