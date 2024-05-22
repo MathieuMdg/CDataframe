@@ -873,7 +873,7 @@ CDATAFRAME* load_from_csv(char *file_name, ENUM_TYPE *dftype, int size) {
     LNODE* tmp = Cdata->head;
 
     while (tmp != NULL) {
-        tmp->COLUMN = create_column(dftype[tmp->NUMBER_COLONNE],"");
+        tmp->COLUMN = create_column(dftype[tmp->NUMBER_COLONNE],"FILE_COLUMN");
         tmp = tmp->SUCC;
     }
 
@@ -922,9 +922,15 @@ void save_into_csv(CDATAFRAME *cdf, char *file_name) {
             }
 
             char* str = (char*) malloc(sizeof (char) * 50);
-            convert_value(tmp->COLUMN, i, str, 50);
-            fprintf(fpt, "%s", str);
-            fprintf(fpt, "\n");
+            if (tmp->COLUMN->COLUMN_TYPE != NULLVAL) {
+                convert_value(tmp->COLUMN, i, str, 50);
+                fprintf(fpt, "%s", str);
+                fprintf(fpt, "\n");
+            }
+            if (tmp->COLUMN->COLUMN_TYPE == NULLVAL) {
+                fprintf(fpt, "NULL");
+                fprintf(fpt, "\n");
+            }
         }
 
 
@@ -1061,7 +1067,7 @@ int insert_lnode(CDATAFRAME* Cdata, LNODE* lnode, int position) {
 // Rempli le CDataframe en dur
 CDATAFRAME* fill_CDataframe_auto(CDATAFRAME* Cdata) {
 
-    int number_column = 3;
+    int number_column = 2;
 
 
     for (int i = 0; i < number_column; i++) {
